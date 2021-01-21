@@ -5,9 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
-        @section('page_title')
+        {{-- @section('page_title')
         {{ env('APP_NAME') }}
-        @show
+        @show --}}
+        نوبت دهی باشگاه imotion 
     </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,53 +50,12 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <!-- Right navbar links -->
+            {{-- <!-- Right navbar links -->
             <ul class="navbar-nav mr-auto-navbav">
                 <!-- Messages Dropdown Menu -->
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <div class="media">
-                                {{-- <img src="/uploads/{{ $item->themessage->user->image_path }}" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle"> --}}
-                                <img src="/dist/img/user1-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        <!--<span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>-->
-                                    </h3>
-                                    <p class="text-sm"></p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>
-                                        {{-- {{ jdate(strtotime($item->created_at))->format("Y/m/d H:i:s") }} --}}
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
 
-                        <a href="#" class="dropdown-item dropdown-footer">صندوق پیام</a>
-                    </div>
-                </li>
-
-                <!-- Notifications Dropdown Menu -->
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">4</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">3 بخشنامه</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">مشاهده همه</a>
-                    </div>
-                </li>
-            </ul>
+            </ul> --}}
         </nav>
         <!-- /.navbar -->
 
@@ -103,8 +63,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/" class="brand-link">
-                <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                    style="opacity: .8">
+                {{-- <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" --}}
+                    {{-- style="opacity: .8"> --}}
                 <span class="brand-text font-weight-light">{{ env('APP_NAME') }}</span>
             </a>
 
@@ -114,7 +74,7 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         {{-- <img src="/uploads/{{ Auth::user()->image_path }}" class="img-circle elevation-2" alt="User Image"> --}}
-                        <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="/dist/img/prof.jpeg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="/login" class="d-block">
@@ -166,16 +126,16 @@
                             <a href="#" class="nav-link">
                                 <!-- <i class="nav-icon fas fa-bookmark"></i> -->
                                 <p>
-                                    تعاریف پایه
+                                    تنظیمات
                                     <i class="fas fa-angle-left right"></i>
                                     <!--<span class="badge badge-info right">6</span>-->
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    {{-- <a href="{{ route('need_parent_tag_ones') }}" class="nav-link">
-                                        <p>برچسب اصلی نیازسنجی</p>
-                                    </a> --}}
+                                    <a href="#" class="nav-link">
+                                        <p>تغییر رمز عبور</p>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     {{-- @if(strpos(\Request::route()->getName(), 'need_parent_tag_two')===0)
@@ -276,13 +236,13 @@
                             @if(strpos(\Request::route()->getName(), 'message')===0)
                             <a href="#" class="nav-link active">
                                 @else
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('athletetaketurn') }}" class="nav-link">
                                     @endif
-                                    <p>ارسال و دریافت پیام</p>
+                                    <p>نوبت گیری</p>
                                 </a>
                         </li>
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             @if(strpos(\Request::route()->getName(), 'grid')===0)
                             <a href="#" class="nav-link active">
                             @else
@@ -290,7 +250,7 @@
                             @endif
                                 <p>آموزش و راهنما</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </nav>
