@@ -48,29 +48,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
-                <!--<li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>-->
             </ul>
-
-
-            <!-- SEARCH FORM -->
-            <!--
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-    -->
-
             <!-- Right navbar links -->
             <ul class="navbar-nav mr-auto-navbav">
                 <!-- Messages Dropdown Menu -->
@@ -78,35 +56,29 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">{{ count($usermessages) }}</span>
+                        <span class="badge badge-danger navbar-badge">3</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        @foreach ($usermessages as $item)
-                        <a href="{{ route('messages') }}" class="dropdown-item">
+                        <a href="#" class="dropdown-item">
                             <div class="media">
-                                @if($item->themessage->user->image_path)
-                                <img src="/uploads/{{ $item->themessage->user->image_path }}" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                @else
+                                {{-- <img src="/uploads/{{ $item->themessage->user->image_path }}" alt="User Avatar"
+                                    class="img-size-50 mr-3 img-circle"> --}}
                                 <img src="/dist/img/user1-128x128.jpg" alt="User Avatar"
                                     class="img-size-50 mr-3 img-circle">
-                                @endif
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        {{ $item->themessage->user->first_name }}
-                                        {{ $item->themessage->user->last_name }}
                                         <!--<span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>-->
                                     </h3>
-                                    <p class="text-sm">{{ $item->themessage->message }}</p>
+                                    <p class="text-sm"></p>
                                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>
-                                        {{ jdate(strtotime($item->created_at))->format("Y/m/d H:i:s") }} </p>
+                                        {{-- {{ jdate(strtotime($item->created_at))->format("Y/m/d H:i:s") }} --}}
+                                    </p>
                                 </div>
                             </div>
                         </a>
                         <div class="dropdown-divider"></div>
 
-                        @endforeach
-                        <a href="{{ route('messages') }}" class="dropdown-item dropdown-footer">صندوق پیام</a>
+                        <a href="#" class="dropdown-item dropdown-footer">صندوق پیام</a>
                     </div>
                 </li>
 
@@ -115,22 +87,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">{{ count($usercircular) }}</span>
+                    <span class="badge badge-warning navbar-badge">4</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">{{ count($usercircular) }} بخشنامه</span>
+                    <span class="dropdown-item dropdown-header">3 بخشنامه</span>
                     <div class="dropdown-divider"></div>
-                    <a href="{{ route('circulars') }}" class="dropdown-item dropdown-footer">مشاهده همه</a>
+                    <a href="#" class="dropdown-item dropdown-footer">مشاهده همه</a>
                     </div>
                 </li>
-
-                <!--
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-      -->
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -149,15 +113,12 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @if(Auth::user()->image_path)
-                        <img src="/uploads/{{ Auth::user()->image_path }}" class="img-circle elevation-2" alt="User Image">
-                        @else
+                        {{-- <img src="/uploads/{{ Auth::user()->image_path }}" class="img-circle elevation-2" alt="User Image"> --}}
                         <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                        @endif
                     </div>
                     <div class="info">
                         <a href="/login" class="d-block">
-                            {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                            {{ Auth::user()->name }}
 
                             <i class="fa fa-window-close"></i>
                         </a>
@@ -171,16 +132,16 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'dashboard')===0)
-                            <a href="/" class="nav-link active">
-                                @else
+                            {{-- @if(strpos(\Request::route()->getName(), 'dashboard')===0) --}}
+                            {{-- <a href="/" class="nav-link active"> --}}
+                                {{-- @else --}}
                                 <a href="/" class="nav-link">
-                                    @endif
+                                    {{-- @endif --}}
                                     <!-- <i class="far fa-circle nav-icon"></i> -->
                                     <p>داشبورد</p>
                                 </a>
                         </li>
-                        @if (Gate::allows('parameters'))
+                        {{-- @if (Gate::allows('parameters')) --}}
                         <!-- <li class="nav-header">تعاریف پایه</li> -->
                         @if(strpos(\Request::route()->getName(), 'tag')===0 || strpos(\Request::route()->getName(),
                         'need_tag')===0 || strpos(\Request::route()->getName(), 'parent_tag')===0 ||
@@ -212,18 +173,12 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'need_parent_tag_one')===0)
-                                    <a href="{{ route('need_parent_tag_ones') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('need_parent_tag_ones') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
+                                    {{-- <a href="{{ route('need_parent_tag_ones') }}" class="nav-link">
                                         <p>برچسب اصلی نیازسنجی</p>
-                                    </a>
+                                    </a> --}}
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'need_parent_tag_two')===0)
+                                    {{-- @if(strpos(\Request::route()->getName(), 'need_parent_tag_two')===0)
                                     <a href="{{ route('need_parent_tag_twos') }}" class="nav-link active">
                                     @else
                                     <a href="{{ route('need_parent_tag_twos') }}" class="nav-link">
@@ -231,532 +186,79 @@
                                         <!-- <i class="far fa-circle nav-icon"></i> -->
                                         -
                                         <p>برچسب فرعی 1 نیازسنجی</p>
-                                    </a>
+                                    </a> --}}
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'need_parent_tag_three')===0)
-                                    <a href="{{ route('need_parent_tag_threes') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('need_parent_tag_threes') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 2 نیازسنجی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'need_parent_tag_four')===0)
-                                    <a href="{{ route('need_parent_tag_fours') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('need_parent_tag_fours') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 3 نیازسنجی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'need_tag')===0)
-                                    <a href="{{ route('need_tags') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('need_tags') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>نیازسنجی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'parent_tag_one')===0)
-                                    <a href="{{ route('parent_tag_ones') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('parent_tag_ones') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب اصلی اخلاقی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'parent_tag_two')===0)
-                                    <a href="{{ route('parent_tag_twos') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('parent_tag_twos') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 1 اخلاقی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'parent_tag_three')===0)
-                                    <a href="{{ route('parent_tag_threes') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('parent_tag_threes') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 2 اخلاقی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'parent_tag_four')===0)
-                                    <a href="{{ route('parent_tag_fours') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('parent_tag_fours') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 3 اخلاقی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'tag')===0)
-                                    <a href="{{ route('tags') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('tags') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>اخلاقی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'school')===0)
-                                    <a href="{{ route('schools') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('schools') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>تعریف مدرسه</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'temperature')===0)
-                                    <a href="{{ route('temperatures') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('temperatures') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>داغ/سرد</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'collection')===0)
-                                    <a href="{{ route('collections') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('collections') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>دسته محصولات</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'product')===0)
-                                    <a href="{{ route('products') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('products') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>محصول</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'source')===0)
-                                    <a href="{{ route('sources') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('sources') }}" class="nav-link">
-                                    @endif
-                                            <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>منبع</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'call_result')===0)
-                                    <a href="{{ route('call_results') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('call_results') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>نتایج تماس</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'notice')===0)
-                                    <a href="{{ route('notices') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('notices') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>اطلاع رسانی</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'user_all')===0)
-                                    <a href="{{ route('user_alls') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('user_alls') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف پشتیبان</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'sale_suggestion')===0)
-                                    <a href="{{ route('sale_suggestions') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('sale_suggestions') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف شروط</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'province')===0)
-                                    <a href="{{ route('provinces') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('provinces') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف استان</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'cit')===0)
-                                    <a href="{{ route('cities') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('cities') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف شهر</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'class_room')===0)
-                                    <a href="{{ route('class_rooms') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('class_rooms') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف کلاس</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'lesson')===0)
-                                    <a href="{{ route('lessons') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('lessons') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف درس</p>
-                                    </a>
+
                                 </li>
                                 <li class="nav-item">
-                                    @if(strpos(\Request::route()->getName(), 'exam')===0)
-                                    <a href="{{ route('exams') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('exams') }}" class="nav-link">
-                                    @endif
-                                        -
-                                        <p>تعریف آزمون</p>
-                                    </a>
+
                                 </li>
                             </ul>
                         </li>
-                        @endif
-                        @if (Gate::allows('students'))
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'students')===0)
-                            <a href="{{ route('students') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('students') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>ورودی و تقسیم دانش آموز</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'student_csv')===0)
-                            <a href="{{ route('student_csv') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('student_csv') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>ثبت دانش آموز از اکسل</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'student_all')===0)
-                            <a href="{{ route('student_all') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('student_all') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>فهرست دانش آموزان</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'merge_students_index')===0)
-                            <a href="{{ route('merge_students_index') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('merge_students_index') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>همگام سازی دانش آموزان</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'student_banned')===0)
-                            <a href="{{ route('student_banned') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('student_banned') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>فهرست سیاه دانش آموزان</p>
-                            </a>
-                        </li>
+                        {{-- @endif --}}
 
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'student_archived')===0)
-                            <a href="{{ route('student_archived') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('student_archived') }}" class="nav-link">
-                            @endif
-                                <!-- <i class="far fa-circle nav-icon"></i> -->
-                                <p>فهرست آرشیو دانش آموزان</p>
-                            </a>
-                        </li>
-                        @endif
-                        @if (Gate::allows('users'))
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'user_supporters')===0)
-                            <a href="{{ route('user_supporters') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('user_supporters') }}" class="nav-link">
-                            @endif
-                                <p>لیست کامل پشتیبان ها</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'user_supporter_call')===0)
-                            <a href="{{ route('user_supporter_calls') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('user_supporter_calls') }}" class="nav-link">
-                            @endif
-                                <p>لیست تماس پشتیبان ها</p>
-                            </a>
-                        </li>
-
-                        @endif
-                        @if (Gate::allows('sale_suggestions'))
-                        <!--
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'sale_suggestion')===0)
-                            <a href="{{ route('sale_suggestions') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('sale_suggestions') }}" class="nav-link">
-                                    @endif
-                                    <p> پیشنهاد فروش برای دانش آموز</p>
-                                </a>
-                        </li>
-                        -->
-                        @endif
-                        @if (Gate::allows('purchases'))
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'purchase')===0)
-                            <a href="{{ route('purchases') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('purchases') }}" class="nav-link">
-                                    @endif
-                                    <p>ثبت خرید های حضوری</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'supporter_student_purchases')===0)
-                            <a href="{{ route('supporter_student_purchases') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('supporter_student_purchases') }}" class="nav-link">
-                                    @endif
-                                    <p>گزارش خرید ها</p>
-                                </a>
-                        </li>
-                        @endif
-                        @if(Gate::allows('parameters'))
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'help')===0)
-                            <a href="{{ route('helps') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('helps') }}" class="nav-link">
-                            @endif
-                                <p>مدیریت آموزش و راهنما</p>
-                            </a>
-                        </li>
-                        @endif
-                        @if (Gate::allows('marketers'))
-                        <li class="nav-header">نمایندگان</li>
-                        </li>
-                        @if(strpos(\Request::route()->getName(), 'marketer')===0)
-                        <li class="nav-item has-treeview menu-open">
-                            @else
-                        <li class="nav-item has-treeview">
-                            @endif
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerdashboard')===0)
-                            <a href="{{ route('marketerdashboard') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerdashboard') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-palette nav-icon"></i>
-                                    <p>داشبورد</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketermystudents')===0)
-                            <a href="{{ route('marketermystudents') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketermystudents') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-street-view nav-icon"></i>
-                                    <p>دانش آموزان من</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerstudents')===0)
-                            <a href="{{ route('marketerstudents') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerstudents') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-address-book nav-icon"></i>
-                                    <p>لیست مالی دانش آموزان</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerpayments')===0)
-                            <a href="{{ route('marketerpayments') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerpayments') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-donate nav-icon"></i>
-                                    <p>وصولی های من</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketercirculars')===0)
-                            <a href="{{ route('marketercirculars') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketercirculars') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-book nav-icon"></i>
-                                    <p>آموزش و راهنما </p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketermails')===0)
-                            <a href="{{ route('marketermails') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketermails') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-bell nav-icon"></i>
-                                    <p>دریافت بخش نامه </p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerdiscounts')===0)
-                            <a href="{{ route('marketerdiscounts') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerdiscounts') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-chart-pie nav-icon"></i>
-                                    <p>ایجاد کد تخفیف</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerproducts')===0)
-                            <a href="{{ route('marketerproducts') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerproducts') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-project-diagram nav-icon"></i>
-                                    <p>فهرست محصولات</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketerprofile')===0)
-                            <a href="{{ route('marketerprofile') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketerprofile') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-address-card nav-icon"></i>
-                                    <p>مشخصات من</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'marketercode')===0)
-                            <a href="{{ route('marketercode') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('marketercode') }}" class="nav-link">
-                                    @endif
-                                    <i class="fa fa-link nav-icon"></i>
-                                    <p>لینک معرفی و کد شناسایی</p>
-                                </a>
-                        </li>
-                        </li>
-                        @endif
-                        @if(Gate::allows('supporters'))
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'supporter_students')===0)
-                            <a href="{{ route('supporter_students') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('supporter_students') }}" class="nav-link">
-                                    @endif
-                                    <p>فهرست دانش آموزان/ تماس</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'supporter_student_new')===0)
-                            <a href="{{ route('supporter_student_new') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('supporter_student_new') }}" class="nav-link">
-                                    @endif
-                                    <p>ورودی جدید</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'supporter_student_purchases')===0)
-                            <a href="{{ route('supporter_student_purchases') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('supporter_student_purchases') }}" class="nav-link">
-                                @endif
-                                <p>خریدهای قطعی</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'reminder')===0)
-                            <a href="{{ route('reminders') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('reminders') }}" class="nav-link">
-                                @endif
-                                <p>یادآورها</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'user_a_supporter_call')===0)
-                            <a href="{{ route('user_a_supporter_calls') }}" class="nav-link active">
-                            @else
-                            <a href="{{ route('user_a_supporter_calls') }}" class="nav-link">
-                            @endif
-                                <p>لیست تماس</p>
-                            </a>
-                        </li>
-                        @endif
-                        @if (!Gate::allows('marketers'))
+                        {{-- @if (!Gate::allows('marketers'))
                         <li class="nav-item">
                             @if(strpos(\Request::route()->getName(), 'circular')===0)
                             <a href="{{ route('circulars') }}" class="nav-link active">
@@ -769,12 +271,12 @@
                                     <p>دریافت  بخشنامه ها</p>
                                     @endif
                                 </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             @if(strpos(\Request::route()->getName(), 'message')===0)
-                            <a href="{{ route('messages') }}" class="nav-link active">
+                            <a href="#" class="nav-link active">
                                 @else
-                                <a href="{{ route('messages') }}" class="nav-link">
+                                <a href="#" class="nav-link">
                                     @endif
                                     <p>ارسال و دریافت پیام</p>
                                 </a>
@@ -782,445 +284,14 @@
 
                         <li class="nav-item">
                             @if(strpos(\Request::route()->getName(), 'grid')===0)
-                            <a href="{{ route('grid') }}" class="nav-link active">
+                            <a href="#" class="nav-link active">
                             @else
-                            <a href="{{ route('grid') }}" class="nav-link">
+                            <a href="#" class="nav-link">
                             @endif
                                 <p>آموزش و راهنما</p>
                             </a>
                         </li>
-                        @endif
-                        <!--
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Layout Options
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Charts
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                UI Elements
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/modals.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Modals & Alerts</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/navbar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Navbar & Tabs</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/timeline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Timeline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/ribbons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Forms
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Advanced Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/editors.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Editors</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Tables
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>jsGrid</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">EXAMPLES</li>
-          <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
-              <p>
-                Calendar
-                <span class="badge badge-info right">2</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Gallery
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-envelope"></i>
-              <p>
-                Mailbox
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inbox</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Compose</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/read-mail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Read</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Pages
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/examples/invoice.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Invoice</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/profile.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profile</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/e_commerce.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>E-commerce</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/projects.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Projects</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project_add.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Add</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project_edit.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Edit</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project_detail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Detail</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contacts.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contacts</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-plus-square"></i>
-              <p>
-                Extras
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/examples/login.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Login</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/register.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Register</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/lockscreen.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Lockscreen</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/legacy-user-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Legacy User Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/language-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Language Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/404.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 404</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/500.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 500</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/blank.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Blank Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="starter.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Starter Page</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">MISCELLANEOUS</li>
-          <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.0" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>Documentation</p>
-            </a>
-          </li>
-          <li class="nav-header">LABELS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>Warning</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
-              <p>Informational</p>
-            </a>
-          </li>
-          -->
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -1281,11 +352,10 @@
     -->
             کلیه حقوق متعلق به
             <strong>
-                <a href="https://aref-group.ir/">
-                    خانه کنکور عارف
+                <a href="http://i-motion.ir/">
+                    imotion
                 </a>
                 &copy;
-                1390-1399
             </strong>
             است
         </footer>
