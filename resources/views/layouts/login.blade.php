@@ -19,15 +19,15 @@
   <!-- Custom style for RTL -->
   <link rel="stylesheet" href="/dist/css/custom.css">
 </head>
-<body class="hold-transition login-page" style="background-image: url('/dist/img/photo2.png');background-size: cover;">
+<body class="hold-transition login-page bg-image">
 <div class="login-box">
   <div class="login-logo">
-    <a href="index2.html">سامانه اتوماسیون اداری <b>عارف</b></a>
+    <p class="text-white">imotion</p>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">لطفا برای دسترسی به پنل اتو ماسیون اداری وارد شوید</p>
+      <p class="login-box-msg">لطفا برای دسترسی به پنل نوبت دهی imotion وارد شوید</p>
       @if(isset($error))
       <div class="alert alert-danger">
           {{ $error->getMessage() }}
@@ -55,7 +55,7 @@
           <div class="col-8">
             <div class="icheck-primary">
               <a href="{{ route('register') }}" >
-              ثبت نام نمایند‌گان
+              ثبت نام
               </a>
             </div>
           </div>

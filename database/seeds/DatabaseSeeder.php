@@ -1,5 +1,6 @@
 <?php
 
+use App\Athlete;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,7 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(AthleteSeeder::class);
+        $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(GroupSeeder::class);
     }
 }

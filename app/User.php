@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role_id','athlete_id'
     ];
 
     /**
@@ -37,11 +37,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function group(){
-        return $this->hasOne('App\Group', 'id', 'groups_id');
-    }
+    public function role(){
 
-    public function students(){
-        return $this->hasMany('App\Student', 'supporters_id', 'id')->where('is_deleted', false)->where('banned', false)->where('archived', false);
+        return $this->hasOne('App\Role','id','role_id');
     }
 }
