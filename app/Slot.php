@@ -17,12 +17,12 @@ class Slot extends Model
 
     public function first_athlete(){
 
-        return $this->belongsTo('App\Athlete','id','athlete_id_1');
+        return $this->belongsTo('App\Athlete','athlete_id_1','id');
     }
     public function second_athlete(){
-        return $this->belongsTo('App\Athlete','id','athlete_id_2');
+        return $this->belongsTo('App\Athlete','athlete_id_2','id');
     }
     public function third_athlete(){
-        return $this->belongsTo('App\Athlete','id','athlete_id_3');
+        return $this->belongsTo('App\Athlete','athlete_id_3','id');
     }
 }

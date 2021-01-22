@@ -45,8 +45,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="time">بازه های زمانی</label>
-                            <select id="sources_id" name="time" class="form-control">
-                                <option value="0">-</option>
+                            <select id="time" name="time" class="form-control">
                                 @foreach($arrOfTimes as $time)
                                    <option value="{{ $time }}">{{ $time }}</option>
                                 @endforeach

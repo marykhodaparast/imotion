@@ -1,33 +1,37 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 
-use App\Student;
-use App\Group;
-use App\User;
+use App\Slot;
 use Morilog\Jalali\CalendarUtils;
 
 class DashboardController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         $user = Auth::user();
         $role = $user->role;
-        // if($role->type == 'admin'){
-        //     dd('hello admin');
-        // }
-        if($role->type == 'athlete'){
-            return view('Athlete.dashboard');
-        }else{
-            dd('admin');
+        $slots = Slot::all();
+        $i = 1;
+        if ($role->type == 'athlete') {
+            return view('Athlete.dashboard')->with([
+                'msg_success' => request()->session()->get('msg_success'),
+                'msg_error' => request()->session()->get('msg_error'),
+                'role' => $role->type,
+                'slots' => $slots,
+                'i' => $i
+            ]);
+        } else {
+            return view('Admin.dashboard')->with([
+                'msg_success' => request()->session()->get('msg_success'),
+                'msg_error' => request()->session()->get('msg_error'),
+                'role' => $role->type,
+                'slots' => $slots,
+                'i' => $i
+            ]);
         }
-
-        // return view('dashboard.admin', [
-        //     'devideStudents'=>$devideStudents,
-        //     'todayStudents'=>$todayStudents,
-        //     'results'=>$results,
-        //     'supporters'=>$supporters
-        // ]);
     }
 }

@@ -8,7 +8,7 @@
         {{-- @section('page_title')
         {{ env('APP_NAME') }}
         @show --}}
-        نوبت دهی باشگاه imotion 
+        نوبت دهی باشگاه imotion
     </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -138,102 +138,14 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    {{-- @if(strpos(\Request::route()->getName(), 'need_parent_tag_two')===0)
-                                    <a href="{{ route('need_parent_tag_twos') }}" class="nav-link active">
-                                    @else
-                                    <a href="{{ route('need_parent_tag_twos') }}" class="nav-link">
-                                    @endif
-                                        <!-- <i class="far fa-circle nav-icon"></i> -->
-                                        -
-                                        <p>برچسب فرعی 1 نیازسنجی</p>
-                                    </a> --}}
-                                </li>
-                                <li class="nav-item">
 
                                 </li>
-                                <li class="nav-item">
 
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
-                                <li class="nav-item">
-
-                                </li>
                             </ul>
                         </li>
-                        {{-- @endif --}}
-
-                        {{-- @if (!Gate::allows('marketers'))
+                        @if($role == 'athlete')
                         <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'circular')===0)
-                            <a href="{{ route('circulars') }}" class="nav-link active">
-                                @else
-                                <a href="{{ route('circulars') }}" class="nav-link">
-                                    @endif
-                                    @if(Gate::allows('parameters'))
-                                    <p>ارسال بخشنامه برای پشتیبان ها</p>
-                                    @else
-                                    <p>دریافت  بخشنامه ها</p>
-                                    @endif
-                                </a>
-                        </li> --}}
-                        <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'message')===0)
+                            @if($role == 'athlete')
                             <a href="#" class="nav-link active">
                                 @else
                                 <a href="{{ route('athletetaketurn') }}" class="nav-link">
@@ -241,16 +153,7 @@
                                     <p>نوبت گیری</p>
                                 </a>
                         </li>
-
-                        {{-- <li class="nav-item">
-                            @if(strpos(\Request::route()->getName(), 'grid')===0)
-                            <a href="#" class="nav-link active">
-                            @else
-                            <a href="#" class="nav-link">
-                            @endif
-                                <p>آموزش و راهنما</p>
-                            </a>
-                        </li> --}}
+                        @endif
 
                     </ul>
                 </nav>

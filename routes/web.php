@@ -26,5 +26,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('dashboard','AthleteController@dashboard')->name('athletedashboard');
         Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
+    Route::group(['prefix' => '/admin'], function(){
+        Route::get('/','AdminController@dashboard')->name('admin_dashboard');
+    });
 });
 

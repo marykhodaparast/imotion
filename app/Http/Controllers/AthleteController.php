@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as FacadesRequest;
 use Morilog\Jalali\CalendarUtils;
+use App\Slot;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 
 class AthleteController extends Controller
 {
 
-    public static function persianToEnglishDigits($pnumber) {
+    public static function persianToEnglishDigits($pnumber)
+    {
         $number = str_replace('۰', '0', $pnumber);
         $number = str_replace('۱', '1', $number);
         $number = str_replace('۲', '2', $number);
@@ -23,65 +26,150 @@ class AthleteController extends Controller
         $number = str_replace('۹', '9', $number);
         return $number;
     }
-    public static function jalaliToGregorian($pdate){
-		$pdate = explode('/', AthleteController::persianToEnglishDigits($pdate));
-		$date = "";
-		if(count($pdate)==3){
-			$y = (int)$pdate[0];
-			$m = (int)$pdate[1];
-			$d = (int)$pdate[2];
-			if($d > $y)
-			{
-				$tmp = $d;
-				$d = $y;
-				$y = $tmp;
-			}
-			$y = (($y<1000)?$y+1300:$y);
-			$gregorian = CalendarUtils::toGregorian($y,$m,$d);
-			$gregorian = $gregorian[0]."-".$gregorian[1]."-".$gregorian[2];
-		}
-		return $gregorian;
-	}
-    public function takeTurn(Request $request){
+    public static function jalaliToGregorian($pdate)
+    {
+        $pdate = explode('/', AthleteController::persianToEnglishDigits($pdate));
+        $date = "";
+        if (count($pdate) == 3) {
+            $y = (int)$pdate[0];
+            $m = (int)$pdate[1];
+            $d = (int)$pdate[2];
+            if ($d > $y) {
+                $tmp = $d;
+                $d = $y;
+                $y = $tmp;
+            }
+            $y = (($y < 1000) ? $y + 1300 : $y);
+            $gregorian = CalendarUtils::toGregorian($y, $m, $d);
+            $gregorian = $gregorian[0] . "-" . $gregorian[1] . "-" . $gregorian[2];
+        }
+        return $gregorian;
+    }
+    public function saveAthlete($start, $end, $from_date, $id, $athlete)
+    {
+        $slot = new Slot;
+        $slot->start = $start;
+        $slot->end = $end;
+        $slot->date = $from_date;
+        $athlete = $id;
+        try {
+            $slot->save();
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function takeTurn(Request $request)
+    {
+        $user = Auth::user();
+        $role = $user->role;
         $from_date = null;
         $arrOfTimes = [
-           '08:30 - 08:00',
-           '09:00 - 08:30',
-           '09:30 - 09:00',
-           '10:00 - 09:30',
-           '10:30 - 10:00',
-           '11:00 - 10:30',
-           '11:30 - 11:00',
-           '12:00 - 11:30',
-           '12:30 - 12:00',
-           '13:00 - 12:30',
-           '13:30 - 13:00',
-           '14:00 - 13:30',
-           '14:30 - 14:00',
-           '15:00 - 14:30',
-           '15:30 - 15:00',
-           '16:00 - 15:30',
-           '16:30 - 16:00',
-           '17:00 - 16:30',
-           '17:30 - 17:00',
-           '18:00 - 17:30'
+            '08:30 - 08:00',
+            '09:00 - 08:30',
+            '09:30 - 09:00',
+            '10:00 - 09:30',
+            '10:30 - 10:00',
+            '11:00 - 10:30',
+            '11:30 - 11:00',
+            '12:00 - 11:30',
+            '12:30 - 12:00',
+            '13:00 - 12:30',
+            '13:30 - 13:00',
+            '14:00 - 13:30',
+            '14:30 - 14:00',
+            '15:00 - 14:30',
+            '15:30 - 15:00',
+            '16:00 - 15:30',
+            '16:30 - 16:00',
+            '17:00 - 16:30',
+            '17:30 - 17:00',
+            '18:00 - 17:30'
         ];
+        $firstAthlete = null;
+        $secondAthlete = null;
+        $thirdAthlete = null;
+        if ($request->getMethod() == 'POST') {
+            $arr = explode('-', $request->input('time'));
+            $start = trim($arr[1]);
+            $end = trim($arr[0]);
+            if ($request->input('from_date')) {
+                $from_date = $this->jalaliToGregorian($request->input('from_date'));
+            }
+            $found = Slot::where('start', $start)
+                ->where('end', $end)
+                ->where('date', $from_date)
+                ->first();
+            if ($found) {
+                $firstAthlete = $found->athlete_id_1;
+                $secondAthlete = $found->athlete_id_2;
+                $thirdAthlete = $found->athlete_id_3;
+                if ($firstAthlete == null) {
+                    $slot = new Slot;
+                    $slot->start = $start;
+                    $slot->end = $end;
+                    $slot->date = $from_date;
+                    $slot->athlete_id_1 = Auth::user()->id;
+                    try {
+                        $slot->save();
+                        $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                        return redirect()->back();
+                    } catch (Exception $e) {
+                        dd($e);
+                    }
+                } else if ($firstAthlete != null && $secondAthlete == null) {
+                    $found->athlete_id_2 = Auth::user()->id;
+                    try {
+                        if ($firstAthlete != $found->athlete_id_2) {
+                            $found->save();
+                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                            return redirect()->back();
+                        } else {
+                            $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
+                            return redirect()->back();
+                        }
+                    } catch (Exception $e) {
+                        dd($e);
+                    }
+                } else if ($firstAthlete != null && $secondAthlete != null && $thirdAthlete == null) {
+                    $found->athlete_id_3 = Auth::user()->id;
+                    try {
+                        if ($firstAthlete != $found->athlete_id_3  && $secondAthlete !=  $found->athlete_id_3 ) {
+                            $found->save();
+                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                            return redirect()->back();
+                        } else {
+                            $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
+                            return redirect()->back();
+                        }
+                    } catch (Exception $e) {
+                        dd($e);
+                    }
+                } else if ($firstAthlete != null && $secondAthlete != null && $thirdAthlete != null) {
+                    $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
+                    return redirect()->back();
+                }
+            } else {
+                $slot = new Slot;
+                $slot->start = $start;
+                $slot->end = $end;
+                $slot->date = $from_date;
+                $slot->athlete_id_1 = Auth::user()->id;
+                try {
+                    $slot->save();
+                    $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                    return redirect()->back();
+                } catch (Exception $e) {
+                    dd($e);
+                }
+            }
+        }
         return view('Athlete.takeTurn')->with([
             'from_date' => $from_date,
-            'arrOfTimes' => $arrOfTimes
+            'arrOfTimes' => $arrOfTimes,
+            'msg_success' => request()->session()->get('msg_success'),
+            'msg_error' => request()->session()->get('msg_error'),
+            'role' => $role->type
         ]);
-        dd($request->getMethod());
-        if($request->getMethod() == 'POST'){
-            dd($request->all());
-            if($request->input('from_date')){
-                $from_date = $this->jalaliToGregorian(request()->input('from_date'));
-                // if($from_date != '')
-                //     $call->where('created_at', '>=', $from_date);
-            }
-            // return view('Athlete.takeTurn',[
-            //   'from_date' => $from_date
-            // ]);
-        }
     }
     /**
      * Display a listing of the resource.
