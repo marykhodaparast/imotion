@@ -145,7 +145,7 @@
                         </li>
                         @if($role == 'athlete')
                         <li class="nav-item">
-                            @if($role == 'athlete')
+                            @if(strpos(\Request::route()->getName(), 'message')===0)
                             <a href="#" class="nav-link active">
                                 @else
                                 <a href="{{ route('athletetaketurn') }}" class="nav-link">
