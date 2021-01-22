@@ -52,15 +52,15 @@
           <input type="password" name="password" class="form-control" placeholder="رمزعبور">
         </div>
         <div class="row">
-          <div class="col-8">
+          {{-- <div class="col-8">
             <div class="icheck-primary">
               <a href="{{ route('register') }}" >
               ثبت نام
               </a>
             </div>
-          </div>
+          </div> --}}
           <!-- /.col -->
-          <div class="col-4">
+          <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block btn-flat">ورود</button>
           </div>
           <!-- /.col -->
