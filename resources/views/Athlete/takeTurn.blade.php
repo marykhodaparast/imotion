@@ -104,41 +104,29 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {{-- @foreach($slots as $slot)
-                        <tr class="{{ ($slot->first_athlete && $slot->second_athlete && $slot->third_athlete) ? 'bg-danger' : '' }}">
-                          <th scope="row">{{ $i++ }}</th>
-                          <td>{{ $slot->start }}</td>
-                          <td>{{ $slot->end }}</td>
-                          <td>{{ ($slot->date)?jdate($slot->date)->format("Y/m/d"):jdate()->format("Y/m/d") }}</td>
-                          <td>{{ ($slot->first_athlete) ? $slot->first_athlete->user->name : '-' }}</td>
-                          <td>{{ ($slot->second_athlete) ? $slot->second_athlete->user->name : '-' }}</td>
-                          <td>{{ ($slot->third_athlete) ? $slot->third_athlete->user->name : '-' }}</td>
-                        </tr>
-
-                        @endforeach --}}
                         @for($i = 1; $i <= 10; $i++)
-                           <tr data-day="{{ (jdate()->format('w')  + $i) % 7 }}">
+                           <tr>
                                <th scope="row">{{ $i }}</th>
-                               <td class="cursor_pointer bg-success table_inactive" >{{ (jdate()->format('w')  + $i) % 7}}</td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
-                               <td class="cursor_pointer bg-success" ></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
+                               <td class="{{ (jdate()->format('w')  + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive'}}"></td>
                            </tr>
 
                         @endfor
@@ -158,21 +146,18 @@
 <!-- Select2 -->
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script>
-    // console.log(arr);
-    // function getColumn(i){
-
-    // }
-    // var x = '.1';
-    // console.log($('tr').children(x).text());
 
     $(document).ready(function(){
         $('select.select2').select2();
-    });
-    $('td').on('click',function(){
+        $('td').on('click',function(){
         var row = $(this).closest("tr").index() + 1;
         var column = $(this).closest("td").index();
         column = $('tr').children('.' + column).text();
-        console.log(row,column);
+        var item = $(this).parent().data('day');
+        console.log($(this).parent().data('day'),row,column);
     });
+
+ });
+
 </script>
 @endsection
