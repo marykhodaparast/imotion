@@ -123,7 +123,7 @@
                             @else
                         <li class="nav-item has-treeview">
                             @endif
-                            <a href="#" class="nav-link">
+                            {{-- <a href="#" class="nav-link">
                                 <!-- <i class="nav-icon fas fa-bookmark"></i> -->
                                 <p>
                                     تنظیمات
@@ -141,7 +141,7 @@
 
                                 </li>
 
-                            </ul>
+                            </ul> --}}
                         </li>
                         @if($role == 'athlete')
                         <li class="nav-item">

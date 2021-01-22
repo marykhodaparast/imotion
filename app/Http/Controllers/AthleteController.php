@@ -63,35 +63,37 @@ class AthleteController extends Controller
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
+        //$from_date = $this->jalaliToGregorian($request->input('from_date'));
+
         $arrOfTimes = [
-            '08:30 - 08:00',
-            '09:00 - 08:30',
-            '09:30 - 09:00',
-            '10:00 - 09:30',
-            '10:30 - 10:00',
-            '11:00 - 10:30',
-            '11:30 - 11:00',
-            '12:00 - 11:30',
-            '12:30 - 12:00',
-            '13:00 - 12:30',
-            '13:30 - 13:00',
-            '14:00 - 13:30',
-            '14:30 - 14:00',
-            '15:00 - 14:30',
-            '15:30 - 15:00',
-            '16:00 - 15:30',
-            '16:30 - 16:00',
-            '17:00 - 16:30',
-            '17:30 - 17:00',
-            '18:00 - 17:30'
+            '08:00 - 08:30',
+            '08:30 - 09:00',
+            '09:00 - 09:30',
+            '09:30 - 10:00',
+            '10:00 - 10:30',
+            '10:30 - 11:00',
+            '11:00 - 11:30',
+            '11:30 - 12:00',
+            '12:00 - 12:30',
+            '12:30 - 13:00',
+            '13:00 - 13:30',
+            '13:30 - 14:00',
+            '14:00 - 14:30',
+            '14:30 - 15:00',
+            '15:00 - 15:30',
+            '15:30 - 16:00',
+            '16:00 - 16:30',
+            '16:30 - 17:00',
+            '17:00 - 17:30',
+            '17:30 - 18:00'
         ];
         $firstAthlete = null;
         $secondAthlete = null;
         $thirdAthlete = null;
         if ($request->getMethod() == 'POST') {
             $arr = explode('-', $request->input('time'));
-            $start = trim($arr[1]);
-            $end = trim($arr[0]);
+            $start = trim($arr[0]);
+            $end = trim($arr[1]);
             if ($request->input('from_date')) {
                 $from_date = $this->jalaliToGregorian($request->input('from_date'));
             }
