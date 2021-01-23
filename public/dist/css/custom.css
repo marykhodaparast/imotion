@@ -67,3 +67,21 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.table_inactive {
+    background: lightgrey !important;
+}
+.bg-maryam{
+    background-color: #ade498;
+}
+.display_none{
+    display: none;
+}
+#day{
+    display:none;
+    justify-content: flex-end;
+    direction:ltr !important;
+}

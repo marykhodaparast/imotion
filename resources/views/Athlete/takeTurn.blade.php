@@ -1,16 +1,7 @@
 @extends('layouts.index')
 @section('css')
     <link href="/plugins/select2/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .cursor_pointer {
-            cursor: pointer;
-        }
-
-        .table_inactive {
-            background: lightgrey !important;
-        }
-
-    </style>
+    <link href="/dist/css/custom.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -19,7 +10,6 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    {{-- <h1>دانش آموز</h1> --}}
                 </div>
                 <div class="col-sm-6">
 
@@ -39,31 +29,15 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('athletetaketurn') }}">
                             @csrf
+                            <input type="hidden" id="hidden_day" name="date">
+                            <input type="hidden" id="hidden_time" name="time">
                             <div class="row">
-                                {{-- <div class="col">
-                                    <div class="form-group">
-                                        <label for="from_date">تاریخ نوبت گیری</label>
-                                        <input type="text" id="from_date" name="from_date" class="form-control pdate"
-                                            value="{{ $from_date ? jdate($from_date)->format('Y/m/d') : jdate()->format('Y/m/d') }}" />
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="time">بازه های زمانی</label>
-                                        <select id="time" name="time" class="form-control">
-                                            @foreach ($arrOfTimes as $time)
-                                                <option value="{{ $time }}">{{ $time }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
-                                <div class="col">
-
-                                </div>
+                                <div class="col form-control display_none" id="day"> </div>
+                                <div class="col form-control display_none" id="time"> </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary mt-2">
                                         ذخیره
                                     </button>
                                 </div>
@@ -92,10 +66,27 @@
                         <tbody>
                             @for ($i = 1; $i <= 10; $i++)
                                 <tr>
-                                    <th scope="row">{{ $i }}</th>
+                                    <th scope="row">
+                                       @if((jdate()->format('w') + $i) % 7 == 0)
+                                       جمعه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 1)
+                                       شنبه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 2)
+                                       یکشنبه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 3)
+                                       دوشنبه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 4)
+                                       سه شنبه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 5)
+                                       چهارشنبه
+                                       @elseif((jdate()->format('w') + $i) % 7 == 6)
+                                       پنج شنبه
+                                       @endif
+
+                                    </th>
                                     @for ($j = 0; $j < 20; $j++)
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-success' : 'table_inactive' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"></td>
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-gradient-lime' : 'table_inactive' }}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                     @endfor
                                 </tr>
 
@@ -121,8 +112,16 @@
             $('td').on('click', function() {
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
+                var date = $(this).data('date');
+                var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.' + column).text();
-                console.log($(this).data('date'), column);
+                console.log(date, column);
+                $('#day').css('display','flex');
+                $('#time').css('display','block');
+                $('#day').text(date + ' ' +  nameofday);
+                $('#time').text(column);
+                $('#hidden_day').val(date);
+                $('#hidden_time').val(column);
             });
 
         });

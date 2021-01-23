@@ -28,7 +28,7 @@ class AthleteController extends Controller
     }
     public static function jalaliToGregorian($pdate)
     {
-        $pdate = explode('/', AthleteController::persianToEnglishDigits($pdate));
+        $pdate = explode('-', AthleteController::persianToEnglishDigits($pdate));
         $date = "";
         if (count($pdate) == 3) {
             $y = (int)$pdate[0];
@@ -63,7 +63,6 @@ class AthleteController extends Controller
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
-        //$from_date = $this->jalaliToGregorian($request->input('from_date'));
 
         $arrOfTimes = [
             '08:00 - 08:30',
@@ -94,8 +93,8 @@ class AthleteController extends Controller
             $arr = explode('-', $request->input('time'));
             $start = trim($arr[0]);
             $end = trim($arr[1]);
-            if ($request->input('from_date')) {
-                $from_date = $this->jalaliToGregorian($request->input('from_date'));
+            if ($request->input('date')) {
+                $from_date = $this->jalaliToGregorian($request->input('date'));
             }
             $found = Slot::where('start', $start)
                 ->where('end', $end)
