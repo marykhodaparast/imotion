@@ -87,9 +87,8 @@
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
                                         @if($user_slot>=0 && $user_slot!="")
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'table_inactive bg-maryam bordered' : 'table_inactive bordered' }}"
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                            {{$user_slot==$j?'X':''}}
                                         </td>
                                         @else
                                         <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"

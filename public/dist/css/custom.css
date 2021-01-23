@@ -78,7 +78,7 @@
     background-color: #b7efcd;
 }
 .bg-red{
-    background-color: #ffbcbc;
+    background-color: #ffbcbc !important;
 }
 .display_none{
     display: none;
