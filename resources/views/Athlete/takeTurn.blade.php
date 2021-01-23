@@ -84,10 +84,27 @@
                                        @endif
 
                                     </th>
+                                    @if($user_slots)
+                                       @foreach($user_slots as $slot)
+                                           @if(jdate($slot->date)->format('Y-m-d') == jdate()->addDays($i - 1)->format('Y-m-d') )
+                                           @for ($j = 0; $j < 20; $j++)
+
+                                           <td class="table_inactive bordered"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
+                                            @endfor
+                                            @else
+                                            @for ($j = 0; $j < 20; $j++)
+                                           <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
+                                            @endfor
+                                         @endif
+                                       @endforeach
+                                    @else
                                     @for ($j = 0; $j < 20; $j++)
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-gradient-lime' : 'table_inactive' }}"
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                     @endfor
+                                    @endif
                                 </tr>
 
                             @endfor
@@ -115,13 +132,14 @@
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.' + column).text();
-                console.log(date, column);
-                $('#day').css('display','flex');
-                $('#time').css('display','block');
-                $('#day').text(date + ' ' +  nameofday);
-                $('#time').text(column);
-                $('#hidden_day').val(date);
-                $('#hidden_time').val(column);
+                if(nameofday != 'جمعه'){
+                    $('#day').css('display','flex');
+                    $('#time').css('display','block');
+                    $('#day').text(date + ' ' +  nameofday);
+                    $('#time').text(column);
+                    $('#hidden_day').val(date);
+                    $('#hidden_time').val(column);
+                }
             });
 
         });

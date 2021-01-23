@@ -75,7 +75,10 @@
     background: lightgrey !important;
 }
 .bg-maryam{
-    background-color: #ade498;
+    background-color: #b7efcd;
+}
+.bg-red{
+    background-color: #ffbcbc;
 }
 .display_none{
     display: none;
@@ -84,4 +87,7 @@
     display:none;
     justify-content: flex-end;
     direction:ltr !important;
+}
+td.bordered{
+    border:solid 1px #a9a9a94d;
 }

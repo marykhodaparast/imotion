@@ -89,12 +89,24 @@ class AthleteController extends Controller
         $firstAthlete = null;
         $secondAthlete = null;
         $thirdAthlete = null;
+        $start = 0;
+        $end = 0;
+        $user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
         if ($request->getMethod() == 'POST') {
-            $arr = explode('-', $request->input('time'));
-            $start = trim($arr[0]);
-            $end = trim($arr[1]);
+            if($request->input('time')){
+                $arr = explode('-', $request->input('time'));
+                $start = trim($arr[0]);
+                $end = trim($arr[1]);
+            }else{
+                $request->session()->flash("msg_error", "لطفا زمان موردنظر خود را انتخاب کنید.");
+                return redirect()->back();
+            }
+
             if ($request->input('date')) {
                 $from_date = $this->jalaliToGregorian($request->input('date'));
+            }else{
+                $request->session()->flash("msg_error", "لطفا تاریخ موردنظر خود را انتخاب کنید.");
+                return redirect()->back();
             }
             $found = Slot::where('start', $start)
                 ->where('end', $end)
@@ -169,7 +181,9 @@ class AthleteController extends Controller
             'arrOfTimes' => $arrOfTimes,
             'msg_success' => request()->session()->get('msg_success'),
             'msg_error' => request()->session()->get('msg_error'),
-            'role' => $role->type
+            'role' => $role->type,
+            'user_slots' => $user_slots,
+            'sw' => 0
         ]);
     }
     /**
