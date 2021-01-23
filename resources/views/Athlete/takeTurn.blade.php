@@ -122,7 +122,7 @@
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.' + column).text();
-                if(nameofday != 'جمعه'){
+                if(nameofday != 'جمعه' && !$(this).hasClass('table_inactive')){
                     $('#day').css('display','flex');
                     $('#time').css('display','block');
                     $('#day').text(date + ' ' +  nameofday);
