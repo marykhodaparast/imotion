@@ -176,13 +176,46 @@ class AthleteController extends Controller
                 }
             }
         }
+        $theUserSlots = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
+        }
+        $slotIndex = [
+            "08:00:00"=>1,
+            "08:30:00"=>2,
+            "09:00:00"=>3,
+            "09:30:00"=>4,
+            "10:00:00"=>5,
+            "10:30:00"=>6,
+            "11:00:00"=>7,
+            "11:30:00"=>8,
+            "12:00:00"=>9,
+            "12:30:00"=>10,
+            "13:00:00"=>11,
+            "13:30:00"=>12,
+            "14:00:00"=>13,
+            "14:30:00"=>14,
+            "15:00:00"=>15,
+            "15:30:00"=>16,
+            "16:00:00"=>17,
+            "16:30:00"=>18,
+            "17:00:00"=>19,
+            "17:30:00"=>20,
+        ];
+        foreach($user_slots as $user_slot) {
+            $date = jdate($user_slot->date)->format('Y-m-d');
+            if(isset($theUserSlots[$date])) {
+                $theUserSlots[$date] = $slotIndex[$user_slot->start];
+            }
+        }
+
         return view('Athlete.takeTurn')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
             'msg_success' => request()->session()->get('msg_success'),
             'msg_error' => request()->session()->get('msg_error'),
             'role' => $role->type,
-            'user_slots' => $user_slots,
+            'user_slots' => $theUserSlots,
             'sw' => 0
         ]);
     }
