@@ -45,25 +45,18 @@ class AthleteController extends Controller
         }
         return $gregorian;
     }
-    public function saveAthlete($start, $end, $from_date, $id, $athlete)
-    {
-        $slot = new Slot;
-        $slot->start = $start;
-        $slot->end = $end;
-        $slot->date = $from_date;
-        $athlete = $id;
-        try {
-            $slot->save();
-        } catch (Exception $e) {
-            dd($e);
-        }
-    }
-    public function takeTurn(Request $request)
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
-
+        $i = 1;
         $arrOfTimes = [
             '08:00 - 08:30',
             '08:30 - 09:00',
@@ -208,25 +201,22 @@ class AthleteController extends Controller
                 $theUserSlots[$date] = $slotIndex[$user_slot->start];
             }
         }
-
-        return view('Athlete.takeTurn')->with([
+        foreach($theUserSlots as $date => $slot){
+            $Edate = $this->jalaliToGregorian($date);
+            $s = SLot::where('athlete_id_1','!=',null)->where('athlete_id_2','!=',null)->where('athlete_id_3','!=',null)->where('date',$Edate)->first();
+           if($s != null){
+               $theUserSlots[$date] = $slotIndex[$s->start]."banned";
+           }
+        }
+        return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
             'msg_success' => request()->session()->get('msg_success'),
             'msg_error' => request()->session()->get('msg_error'),
             'role' => $role->type,
             'user_slots' => $theUserSlots,
-            'sw' => 0
+            'i' => $i,
         ]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
     }
 
     /**

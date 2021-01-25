@@ -23,11 +23,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => '/athlete'], function () {
         Route::any('profile','AthleteController@profile')->name('athleteprofile');
-        Route::get('dashboard','AthleteController@dashboard')->name('athletedashboard');
-        Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
+        Route::any('dashboard','AthleteController@index')->name('athletedashboard');
+        // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
     Route::group(['prefix' => '/admin'], function(){
-        Route::get('/','AdminController@dashboard')->name('admin_dashboard');
+        Route::any('/','AdminController@dashboard')->name('admin_dashboard');
+        Route::post('/ajax','AdminController@ajaxCall')->name('admin_ajax');
+        Route::post('/save','AdminController@saveNewSlot')->name('admin_save_slot');
     });
 });
 

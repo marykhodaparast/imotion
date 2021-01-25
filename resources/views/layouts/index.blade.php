@@ -95,7 +95,7 @@
                             {{-- @if(strpos(\Request::route()->getName(), 'dashboard')===0) --}}
                             {{-- <a href="/" class="nav-link active"> --}}
                                 {{-- @else --}}
-                                <a href="/" class="nav-link">
+                                <a href="{{ $role == 'athlete' ? route('athletedashboard') : route('admin_dashboard') }}" class="nav-link">
                                     {{-- @endif --}}
                                     <!-- <i class="far fa-circle nav-icon"></i> -->
                                     <p>داشبورد</p>
@@ -143,7 +143,7 @@
 
                             </ul> --}}
                         </li>
-                        @if($role == 'athlete')
+                        {{-- @if($role == 'athlete')
                         <li class="nav-item">
                             @if(strpos(\Request::route()->getName(), 'message')===0)
                             <a href="#" class="nav-link active">
@@ -153,7 +153,7 @@
                                     <p>نوبت گیری</p>
                                 </a>
                         </li>
-                        @endif
+                        @endif --}}
 
                     </ul>
                 </nav>
