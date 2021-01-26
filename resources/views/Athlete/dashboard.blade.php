@@ -68,19 +68,19 @@
                             @foreach ($user_slots as $date=>$user_slot)
                                 <tr>
                                     <th scope="row">
-                                       @if((jdate()->format('w') + $i) % 7 == 0)
+                                       @if((jdate()->format('w') + $i -1) % 7 == 0)
                                        جمعه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 1)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 1)
                                        شنبه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 2)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 2)
                                        یکشنبه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 3)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 3)
                                        دوشنبه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 4)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 4)
                                        سه شنبه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 5)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 5)
                                        چهارشنبه
-                                       @elseif((jdate()->format('w') + $i) % 7 == 6)
+                                       @elseif((jdate()->format('w') + $i-1) % 7 == 6)
                                        پنج شنبه
                                        @endif
 
