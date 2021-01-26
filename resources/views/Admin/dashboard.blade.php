@@ -141,7 +141,7 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script>
         function makeSelectToBeDisabled(item,id){
-            if(item!= 0){
+            if(item!= null){
                 $(id).prop('disabled','disabled');
             }
         }
@@ -190,7 +190,7 @@
                         $('#first_athlete').val(res[0][0]);
                         $('#second_athlete').val(res[1][0]);
                         $('#third_athlete').val(res[2][0]);
-                        if($('#first_athlete').val()!= 0 && $('#second_athlete').val()!= 0 && $('#third_athlete').val() != 0){
+                        if($('#first_athlete').val()!= null && $('#second_athlete').val()!= null && $('#third_athlete').val() != null){
                             $('#saveBtn').prop('disabled','disabled');
                         }
                        }
