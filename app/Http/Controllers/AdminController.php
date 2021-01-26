@@ -250,7 +250,15 @@ class AdminController extends Controller
         $end = trim($arr[1]);
         $slot = Slot::where('date',$this->jalaliToGregorian($date))->where('start',$start)->where('end',$end)->first();
         if($slot == null){
-            $request->session()->flash("msg_error", "وقت موردنظر پیدا نشد!");
+            $s = new Slot;
+            $s->date = $this->jalaliToGregorian($date);
+            $s->start = $start;
+            $s->end = $end;
+            $s->athlete_id_1 = $firstAthlete;
+            $s->athlete_id_2 = $secondAthlete;
+            $s->athlete_id_3 = $thirdAthlete;
+            $s->save();
+            $request->session()->flash("msg_success", "با موفقیت ثبت شد.");
             return redirect()->back();
         }
         $slot->athlete_id_1 = $firstAthlete ? $firstAthlete : $slot->athlete_id_1;

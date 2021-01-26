@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col">
                                     <select name="first_athlete" id="first_athlete" class="form-select display_none">
-                                        <option value="0">-</option>
+                                        <option value="null">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col">
                                     <select name="second_athlete" id="second_athlete" class="form-select display_none">
-                                        <option value="0">-</option>
+                                        <option value="null">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col">
                                     <select name="third_athlete" id="third_athlete" class="form-select display_none">
-                                        <option value="0">-</option>
+                                        <option value="null">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -201,14 +201,6 @@
                        console.log(error);
                     }
                 })
-                if(nameofday != 'جمعه'){
-                    // $('#day').css('display','flex');
-                    // $('#time').css('display','block');
-                    // $('#day').text(date + ' ' +  nameofday);
-                    // $('#time').text(column);
-                    // $('#hidden_day').val(date);
-                    // $('#hidden_time').val(column);
-                }
             });
 
         });
