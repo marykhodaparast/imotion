@@ -171,7 +171,7 @@ class AthleteController extends Controller
         }
         $theUserSlots = [];
         for ($i = 1; $i <= 10; $i++) {
-            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
+            $theUserSlots[jdate()->addDays($i)->format('Y-m-d')] = "";
         }
         $slotIndex = [
             "08:00:00"=>1,
