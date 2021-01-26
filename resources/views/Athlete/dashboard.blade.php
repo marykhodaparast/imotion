@@ -64,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php $i = 1; @endphp
+                            @php $i = 2; @endphp
                             @foreach ($user_slots as $date=>$user_slot)
                                 <tr>
                                     <th scope="row">
@@ -87,16 +87,16 @@
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
                                         @if(strpos($user_slot,'banned'))
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam  cursor_pointer bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        <td class="{{ (jdate()->format('w') + $i-1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam  cursor_pointer bordered' }}"
+                                            data-date="{{ jdate()->addDays($i-2)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i-2)->format('l')}}">
                                         </td>
                                         @elseif($user_slot>=0 && $user_slot!="")
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        <td class="{{ (jdate()->format('w') + $i-1) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
+                                            data-date="{{ jdate()->addDays($i - 2)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i-2)->format('l')}}">
                                         </td>
                                         @else
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
+                                        <td class="{{ (jdate()->format('w') + $i-1) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
+                                            data-date="{{ jdate()->addDays($i - 2)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 2)->format('l')}}"></td>
                                         @endif
                                     @endfor
                                 </tr>
