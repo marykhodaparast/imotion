@@ -171,7 +171,7 @@ class AthleteController extends Controller
         }
         $theUserSlots = [];
         for ($i = 1; $i <= 10; $i++) {
-            $theUserSlots[jdate()->addDays($i)->format('Y-m-d')] = "";
+            $theUserSlots[jdate()->addDays($i)->format('Y-m-d')] = [];
         }
         $slotIndex = [
             "08:00:00"=>1,
@@ -195,19 +195,68 @@ class AthleteController extends Controller
             "17:00:00"=>19,
             "17:30:00"=>20,
         ];
+        //dd($user_slots);
+        $sw = 0;
+        $bannedStart = [];
+        $bannedArr = [];
+        $fullSlots = Slot::where('athlete_id_1', '!=', null)
+        ->where('athlete_id_2', '!=', null)
+        ->where('athlete_id_3', '!=', null)
+        ->where(function ($query) use ($user) {
+            $query->where('athlete_id_1', $user->id)
+                ->orWhere('athlete_id_2', $user->id)
+                ->orWhere('athlete_id_3', $user->id)->first();
+        })->get();
+        if ($fullSlots != null) {
+            //$bannedStart = $fullSlots->start;
+            foreach ($fullSlots as $fullSlot) {
+                $bannedStart[] = $fullSlot->start;
+                //echo $fullSlot . "<br>";
+            }
+            if(count($bannedStart)){
+                foreach($bannedStart as $item){
+                    $bannedArr[] = $slotIndex[$item]." banned";
+
+                 }
+            }
+        }
+        //dd($bannedArr);
+
         foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
+            $slotsAccordingToDate = Slot::where('date',$user_slot->date)->get();
+            $count = count($slotsAccordingToDate);
+
+
             if(isset($theUserSlots[$date])) {
                 $theUserSlots[$date] = $slotIndex[$user_slot->start];
             }
+            // else if($count > 1 && isset($user_slot->start)){
+            //     for($i = 0; $i < $count; $i++){
+            //         $theUserSlots[$date]= $slotIndex[$user_slot->start];
+
+            //     }
+            //     //$bannedArr[] = $bannedStart;
+               if(count($bannedStart)){
+
+                    $theUserSlots[$date] = $bannedArr;
+
+                   //$theUserSlots[$date] = [$slotIndex[$bannedStart]." banned",$slotIndex[$user_slot->start]];
+                }
+            // }
         }
-        foreach($theUserSlots as $date => $slot){
-            $Edate = $this->jalaliToGregorian($date);
-            $s = SLot::where('athlete_id_1','!=',null)->where('athlete_id_2','!=',null)->where('athlete_id_3','!=',null)->where('date',$Edate)->first();
-           if($s != null){
-               $theUserSlots[$date] = $slotIndex[$s->start]."banned";
-           }
-        }
+        dd($theUserSlots);
+
+        // foreach($theUserSlots as $date => $slot){
+        //     $Edate = $this->jalaliToGregorian($date);
+        //     $s = SLot::where('athlete_id_1','!=',null)->where('athlete_id_2','!=',null)->where('athlete_id_3','!=',null)->where('date',$Edate)->first();
+        //     $slotsAccordingToDate = Slot::where('date',$Edate)->get();
+        //     // if($s != null){
+        //     //    $theUserSlots[$date] = $slotIndex[$s->start]."banned";
+        //     // }
+        // }
+
+       // dd($theUserSlots);
         return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
