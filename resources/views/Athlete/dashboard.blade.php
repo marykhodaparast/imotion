@@ -87,7 +87,7 @@
 
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
-                                        @if(strpos($user_slot,'banned'))
+                                        {{-- @if(strpos($user_slot,'banned'))
                                         <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam  cursor_pointer bordered' }}"
                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
                                         </td>
@@ -98,7 +98,7 @@
                                         @else
                                         <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
-                                        @endif
+                                        @endif --}}
                                     @endfor
                                 </tr>
                                 @php $i++; @endphp
