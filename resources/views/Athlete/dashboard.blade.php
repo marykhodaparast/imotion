@@ -87,18 +87,32 @@
 
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
-                                        {{-- @if(strpos($user_slot,'banned'))
-                                        <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam  cursor_pointer bordered' }}"
+                                           @if(!is_array($user_slot) && strpos($user_slot,'self') && !strpos($user_slot,'other'))
+                                           <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered ' : 'bg-maryam bordered table_inactive ' }}"
                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
-                                        </td>
-                                        @elseif($user_slot>=0 && $user_slot!="")
-                                        <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
-                                        </td>
-                                        @else
-                                        <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
+                                            </td>
+                                             @elseif(!is_array($user_slot) && $user_slot>=0 && $user_slot!="" && !strpos($user_slot,'other'))
+                                             <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
+                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
+                                             </td>
+                                             @elseif(!is_array($user_slot) && strpos($user_slot,'other'))
+                                             <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam cursor_pointer bordered' }}"
+                                                data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            @elseif(!is_array($user_slot) && !strpos($user_slot,'other'))
+                                            <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
-                                        @endif --}}
+
+                                            @elseif(is_array($user_slot))
+                                            @if($user_slot[0] == $j && !strpos($user_slot[0],'other'))
+                                            <td class="bg-red bordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            @elseif($user_slot[1] == $j && strpos($user_slot[1],'other'))
+                                            <td class="bg-danger bordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            @else
+                                             <td class="table_inactive bordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            @endif
+
+                                            @endif
+
                                     @endfor
                                 </tr>
                                 @php $i++; @endphp
