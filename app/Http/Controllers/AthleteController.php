@@ -86,7 +86,13 @@ class AthleteController extends Controller
         $start = 0;
         $end = 0;
         $user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
+
         if ($request->getMethod() == 'POST') {
+            if(count($user_slots) >= 2){
+                $sw = 1;
+                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
+                return redirect()->back();
+            }
             if($request->input('time')){
                 $arr = explode('-', $request->input('time'));
                 $start = trim($arr[0]);
@@ -102,11 +108,13 @@ class AthleteController extends Controller
                 $request->session()->flash("msg_error", "لطفا تاریخ موردنظر خود را انتخاب کنید.");
                 return redirect()->back();
             }
+
             $found = Slot::where('start', $start)
                 ->where('end', $end)
                 ->where('date', $from_date)
                 ->first();
-            if ($found) {
+            //if(!$sw){
+            if ($found && !$sw) {
                 $firstAthlete = $found->athlete_id_1;
                 $secondAthlete = $found->athlete_id_2;
                 $thirdAthlete = $found->athlete_id_3;
@@ -117,37 +125,45 @@ class AthleteController extends Controller
                     $slot->date = $from_date;
                     $slot->athlete_id_1 = Auth::user()->id;
                     try {
+                        //if(!$sw){
                         $slot->save();
                         $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                         return redirect()->back();
+                        //}
                     } catch (Exception $e) {
                         dd($e);
                     }
                 } else if ($firstAthlete != null && $secondAthlete == null) {
                     $found->athlete_id_2 = Auth::user()->id;
                     try {
-                        if ($firstAthlete != $found->athlete_id_2) {
-                            $found->save();
-                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
-                            return redirect()->back();
-                        } else {
-                            $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
-                            return redirect()->back();
-                        }
+                        //if(!$sw){
+                            if ($firstAthlete != $found->athlete_id_2) {
+                                $found->save();
+                                $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                                return redirect()->back();
+                            } else {
+                                $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
+                                return redirect()->back();
+                            }
+                        //}
+
                     } catch (Exception $e) {
                         dd($e);
                     }
                 } else if ($firstAthlete != null && $secondAthlete != null && $thirdAthlete == null) {
                     $found->athlete_id_3 = Auth::user()->id;
                     try {
-                        if ($firstAthlete != $found->athlete_id_3  && $secondAthlete !=  $found->athlete_id_3 ) {
-                            $found->save();
-                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
-                            return redirect()->back();
-                        } else {
-                            $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
-                            return redirect()->back();
-                        }
+                        //if(!$sw){
+                            if ($firstAthlete != $found->athlete_id_3  && $secondAthlete !=  $found->athlete_id_3 ) {
+                                $found->save();
+                                $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                                return redirect()->back();
+                            } else {
+                                $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
+                                return redirect()->back();
+                            }
+                        //}
+
                     } catch (Exception $e) {
                         dd($e);
                     }
@@ -155,7 +171,7 @@ class AthleteController extends Controller
                     $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
                     return redirect()->back();
                 }
-            } else {
+            } else if(!$found && !$sw) {
                 $slot = new Slot;
                 $slot->start = $start;
                 $slot->end = $end;
@@ -169,10 +185,11 @@ class AthleteController extends Controller
                     dd($e);
                 }
             }
+            //}
         }
         $theUserSlots = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $theUserSlots[jdate()->addDays($i)->format('Y-m-d')] = "";
+        for ($i = 1; $i <= 30; $i++) {
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
         }
         $slotIndex = [
             "08:00:00"=>1,
@@ -240,6 +257,7 @@ class AthleteController extends Controller
         }
 
         //dd($theUserSlots);
+        //dd(count($user_slots));
         return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,

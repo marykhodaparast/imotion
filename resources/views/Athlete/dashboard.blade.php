@@ -69,48 +69,47 @@
                                 <tr>
                                     <th scope="row">
                                         {{-- {{ jdate()->format('w') + $i + 1 }} --}}
-                                       @if((jdate()->format('w') + $i + 1 ) % 7 == 0)
+                                       @if((jdate()->format('w') + $i ) % 7 == 0)
                                        جمعه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 1)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 1)
                                        شنبه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 2)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 2)
                                        یکشنبه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 3)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 3)
                                        دوشنبه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 4)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 4)
                                        سه شنبه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 5)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 5)
                                        چهارشنبه
-                                       @elseif((jdate()->format('w') + $i + 1) % 7 == 6)
+                                       @elseif((jdate()->format('w') + $i) % 7 == 6)
                                        پنج شنبه
                                        @endif
 
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
                                            @if(!is_array($user_slot) && strpos($user_slot,'self') && !strpos($user_slot,'other'))
-                                           <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered ' : 'bg-maryam bordered table_inactive ' }}"
-                                            data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
+                                           <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered ' : 'bg-maryam bordered table_inactive ' }}"
+                                            data-date="{{ jdate()->addDays($i-1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i-1)->format('l')}}">
                                             </td>
                                              @elseif(!is_array($user_slot) && $user_slot>=0 && $user_slot!="" && !strpos($user_slot,'other'))
-                                             <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
-                                             data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}">
+                                             <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
+                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                              </td>
                                              @elseif(!is_array($user_slot) && strpos($user_slot,'other'))
-                                             <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam cursor_pointer bordered' }}"
-                                                data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                             <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam cursor_pointer bordered' }}"
+                                                data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @elseif(!is_array($user_slot) && !strpos($user_slot,'other'))
-                                            <td class="{{ (jdate()->format('w') + $i + 1) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
-
+                                            <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @elseif(is_array($user_slot))
                                             @if($user_slot[0] == $j && !strpos($user_slot[0],'other') && strpos($user_slot[0],'self'))
-                                            <td class="bg-danger dbordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            <td class="bg-danger dbordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @elseif($user_slot[0] == $j && !strpos($user_slot[0],'other') && !strpos($user_slot[0],'self'))
-                                            <td class="bg-red dbordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            <td class="bg-red dbordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @elseif($user_slot[1] == $j && strpos($user_slot[1],'other'))
-                                            <td class="bg-danger bordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                            <td class="bg-danger bordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @else
-                                             <td class="table_inactive bordered" data-date="{{ jdate()->addDays($i)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i)->format('l')}}"></td>
+                                             <td class="table_inactive bordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @endif
 
                                             @endif
