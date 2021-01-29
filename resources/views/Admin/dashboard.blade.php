@@ -158,7 +158,6 @@
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.' + column).text();
-                //console.log(date,column);
                 $.ajax({
                     url:'{{ route('admin_ajax') }}',
                     type:'POST',
