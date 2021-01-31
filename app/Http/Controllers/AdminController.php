@@ -237,7 +237,6 @@ class AdminController extends Controller
         }
         //dd($theUserSlots);
 
-        //dd($theUserSlots);
         return view('Admin.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,

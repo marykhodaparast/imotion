@@ -107,23 +107,13 @@
                                        @endif
 
                                     </th>
-                                    {{-- @if(is_array($user_slot))
-                                    @foreach($user_slot as $item)
-
-                                    @if(strpos($item,'banned'))
-                                    <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $item == $j ? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
-                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                    </td>
-                                    @endif --}}
-
-                                    {{-- @endforeach --}}
 
                                     @for ($j = 1; $j <= 20; $j++)
 
 
                                         @if(!is_array($user_slot))
                                         @if(strpos($user_slot,'banned'))
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && substr($user_slot,0,1) == $j ? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && substr($user_slot,0,1) == $j? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                         </td>
                                         @elseif($user_slot>=0 && $user_slot!="")
@@ -134,9 +124,20 @@
                                         <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                         @endif
+                                        @else
+                                        @if($j <= count($user_slot))
+
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot[$j-1] == $j ? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        </td>
+                                        @else
+                                        <td class="bg-maryam  cursor_pointer bordered"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        </td>
+                                        @endif
                                         @endif
 
-                                        
+
                                     @endfor
 
                                 </tr>
