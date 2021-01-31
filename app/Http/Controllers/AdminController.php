@@ -65,6 +65,10 @@ class AdminController extends Controller
         $role = $user->role;
         $from_date = null;
         $i = 1;
+        $sw = 0;
+        $s = null;
+        $arr = [];
+        $newArr = [];
         $arrOfTimes = [
             '08:00 - 08:30',
             '08:30 - 09:00',
@@ -219,14 +223,21 @@ class AdminController extends Controller
                 $theUserSlots[$date] = $slotIndex[$user_slot->start];
             }
         }
+
         foreach ($theUserSlots as $date => $slot) {
             $Edate = $this->jalaliToGregorian($date);
-            $s = SLot::where('athlete_id_1', '!=', null)->where('athlete_id_2', '!=', null)->where('athlete_id_3', '!=', null)->where('date', $Edate)->first();
+            $s = SLot::where('athlete_id_1', '!=', null)->where('athlete_id_2', '!=', null)->where('athlete_id_3', '!=', null)->where('date', $Edate)->get();
             if ($s != null) {
-                $theUserSlots[$date] = $slotIndex[$s->start] . "banned";
+                foreach($s as $item){
+                    $arr[] = $slotIndex[$item->start]."_banned";
+                    $theUserSlots[$date] = $arr;
+
+                }
             }
         }
-        //dd(jdate());
+        //dd($theUserSlots);
+
+        //dd($theUserSlots);
         return view('Admin.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
