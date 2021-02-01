@@ -91,3 +91,10 @@
 td.bordered{
     border:solid 1px #a9a9a94d;
 }
+td{
+    width:5% !important;
+}
+.my_rounded{
+    border: solid 1px #a9a9a94d;
+    border-radius:1.25rem !important;
+}

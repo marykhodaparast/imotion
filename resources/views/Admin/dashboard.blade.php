@@ -75,14 +75,17 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <table class="table table-responsive table-bordered">
+                {{-- <div class="card"> --}}
+                <div class="table-responsive my_rounded">
+                    <table class="table table-bordered bg-white">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                @for($k = 0; $k<20; $k++)
-                                   <th scope="col" class="{{ $k+1 }}">{{ $arrOfTimes[$k] }}</th>
-                                @endfor
+                                @php $k = 0; @endphp
+                                @foreach($arrOfTimes as $key => $item)
+                                   <th scope="col" class="c_{{ $k+1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
+                                @php $k++ @endphp
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
@@ -91,19 +94,19 @@
                                 <tr>
                                     <th scope="row">
                                        @if((jdate()->format('w') + $i) % 7 == 0)
-                                       جمعه
+                                       ج
                                        @elseif((jdate()->format('w') + $i) % 7 == 1)
-                                       شنبه
+                                       ش
                                        @elseif((jdate()->format('w') + $i) % 7 == 2)
-                                       یکشنبه
+                                       ی
                                        @elseif((jdate()->format('w') + $i) % 7 == 3)
-                                       دوشنبه
+                                       د
                                        @elseif((jdate()->format('w') + $i) % 7 == 4)
-                                       سه شنبه
+                                       س
                                        @elseif((jdate()->format('w') + $i) % 7 == 5)
-                                       چهارشنبه
+                                       چ
                                        @elseif((jdate()->format('w') + $i) % 7 == 6)
-                                       پنج شنبه
+                                       پ
                                        @endif
 
                                     </th>
@@ -146,6 +149,7 @@
                         </tbody>
                     </table>
                 </div>
+            {{-- </div> --}}
                 <!-- /.card -->
             </div>
             <!-- /.col -->
@@ -176,7 +180,7 @@
                 var column = $(this).closest("td").index();
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
-                column = $('tr').children('.' + column).text();
+                column = $('tr').children('.c_' + column).data('time');
                 $.ajax({
                     url:'{{ route('admin_ajax') }}',
                     type:'POST',

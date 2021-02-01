@@ -52,15 +52,17 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <table class="table table-responsive table-bordered">
+            <div class="col">
+                <div class="table-responsive my_rounded">
+                    <table class="table table-bordered bg-white">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                @for($k = 0; $k<20; $k++)
-                                   <th scope="col" class="{{ $k+1 }}">{{ $arrOfTimes[$k] }}</th>
-                                @endfor
+                                @php $k = 0; @endphp
+                                @foreach($arrOfTimes as $key => $item)
+                                   <th scope="col" class="c_{{ $k+1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
+                                @php $k++ @endphp
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
@@ -68,21 +70,20 @@
                             @foreach ($user_slots as $date=>$user_slot)
                                 <tr>
                                     <th scope="row">
-                                        {{-- {{ jdate()->format('w') + $i + 1 }} --}}
                                        @if((jdate()->format('w') + $i ) % 7 == 0)
-                                       جمعه
+                                       ج
                                        @elseif((jdate()->format('w') + $i) % 7 == 1)
-                                       شنبه
+                                       ش
                                        @elseif((jdate()->format('w') + $i) % 7 == 2)
-                                       یکشنبه
+                                       ی
                                        @elseif((jdate()->format('w') + $i) % 7 == 3)
-                                       دوشنبه
+                                       د
                                        @elseif((jdate()->format('w') + $i) % 7 == 4)
-                                       سه شنبه
+                                       س
                                        @elseif((jdate()->format('w') + $i) % 7 == 5)
-                                       چهارشنبه
+                                       چ
                                        @elseif((jdate()->format('w') + $i) % 7 == 6)
-                                       پنج شنبه
+                                       پ
                                        @endif
 
                                     </th>
@@ -134,6 +135,31 @@
     <!-- Select2 -->
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script>
+        function toPersianNum( num, dontTrim ) {
+
+          var i = 0,
+
+         dontTrim = dontTrim || false,
+
+         num = dontTrim ? num.toString() : num.toString().trim(),
+         len = num.length,
+
+         res = '',
+         pos,
+
+        persianNumbers = typeof persianNumber == 'undefined' ?
+        ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'] :
+        persianNumbers;
+
+        for (; i < len; i++)
+          if (( pos = persianNumbers[num.charAt(i)] ))
+            res += pos;
+          else
+        res += num.charAt(i);
+
+        return res;
+    }
+
         $(document).ready(function() {
             $('select.select2').select2();
             $('td').on('click', function() {
@@ -141,11 +167,11 @@
                 var column = $(this).closest("td").index();
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
-                column = $('tr').children('.' + column).text();
+                column = $('tr').children('.c_' + column).data('time');
                 if(nameofday != 'جمعه' && !$(this).hasClass('table_inactive') && !$(this).hasClass('bg-danger')){
                     $('#day').css('display','flex');
                     $('#time').css('display','block');
-                    $('#day').text(date + ' ' +  nameofday);
+                    $('#day').text(toPersianNum(date) + ' ' +  nameofday);
                     $('#time').text(column);
                     $('#hidden_day').val(date);
                     $('#hidden_time').val(column);
