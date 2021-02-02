@@ -7,6 +7,7 @@ use Morilog\Jalali\CalendarUtils;
 use App\Slot;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class AthleteController extends Controller
@@ -99,8 +100,8 @@ class AthleteController extends Controller
         $thirdAthlete = null;
         $start = 0;
         $end = 0;
+        $count = 0;
         $user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
-
         if ($request->getMethod() == 'POST') {
             if(count($user_slots) >= 2){
                 $sw = 1;
@@ -127,6 +128,11 @@ class AthleteController extends Controller
                 ->where('end', $end)
                 ->where('date', $from_date)
                 ->first();
+            $s = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)
+                     ->where(function($query) use($start,$end,$from_date){
+                        $query->where('start',$start)->where('end',$end)->where('date',$from_date)->get();
+                     })->get();
+            $count = count($s);
             //if(!$sw){
             if ($found && !$sw) {
                 $firstAthlete = $found->athlete_id_1;
@@ -280,7 +286,8 @@ class AthleteController extends Controller
             'role' => $role->type,
             'user_slots' => $theUserSlots,
             'i' => $i,
-            'sw' => $sw
+            'sw' => $sw,
+            'count' => $count
         ]);
     }
 

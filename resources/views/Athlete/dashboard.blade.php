@@ -88,7 +88,7 @@
 
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
-                                           @if(!is_array($user_slot) && strpos($user_slot,'self') && !strpos($user_slot,'other'))
+                                           {{-- @if(!is_array($user_slot) && strpos($user_slot,'self') && !strpos($user_slot,'other'))
                                            <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered ' : 'bg-maryam bordered table_inactive ' }}"
                                             data-date="{{ jdate()->addDays($i-1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i-1)->format('l')}}">
                                             </td>
@@ -113,8 +113,33 @@
                                              <td class="table_inactive bordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
                                             @endif
 
+                                            @endif --}}
+                                        @if(!is_array($user_slot))
+                                        <td class="{{ (jdate()->format('w') + $i) % 7 ? 'cursor_pointer hoverable':''}}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                            @if((jdate()->format('w') + $i) % 7)
+                                            <div class="row justify-content-center">
+                                                @if(!$count)
+                                                   @for($k = 0;$k < 3; $k++)
+                                                    <i class="far fa-user"></i>
+                                                   @endfor
+                                                @elseif($count == 1 && $user_slot == $j)
+                                                   <i class="fas fa-user accepted"></i>
+                                                   <i class="far fa-user"></i>
+                                                   <i class="far fa-user"></i>
+                                                @elseif($count == 2)
+                                                   <i class="fas fa-user accepted"></i>
+                                                   <i class="fas fa-user accepted"></i>
+                                                   <i class="far fa-user"></i>
+                                                @elseif($count == 3)
+                                                   @for($k = 0;$k < 3; $k++)
+                                                     <i class="fas fa-user accepted"></i>
+                                                   @endfor
+                                                @endif
+                                            </div>
                                             @endif
-
+                                        </td>
+                                        @endif
                                     @endfor
                                 </tr>
                                 @php $i++; @endphp

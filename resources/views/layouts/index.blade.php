@@ -35,6 +35,9 @@
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="/dist/css/custom.css">
     <!-- PersianCalender -->
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font awesome -->
     <link href="/plugins/persiancalender/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet"/>
     @yield('css')
 </head>
