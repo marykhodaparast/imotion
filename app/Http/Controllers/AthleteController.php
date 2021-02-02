@@ -128,11 +128,8 @@ class AthleteController extends Controller
                 ->where('end', $end)
                 ->where('date', $from_date)
                 ->first();
-            $s = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)
-                     ->where(function($query) use($start,$end,$from_date){
-                        $query->where('start',$start)->where('end',$end)->where('date',$from_date)->get();
-                     })->get();
-            $count = count($s);
+
+
             //if(!$sw){
             if ($found && !$sw) {
                 $firstAthlete = $found->athlete_id_1;
@@ -211,6 +208,10 @@ class AthleteController extends Controller
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
         }
+        $s = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)
+                     ->where(function($query) use($start,$end,$from_date){
+                        $query->where('start',$start)->where('end',$end)->where('date',$from_date)->get();
+                     })->get();
         $slotIndex = [
             "08:00:00"=>1,
             "08:30:00"=>2,
@@ -236,7 +237,7 @@ class AthleteController extends Controller
         foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
             if(isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start];
+                $theUserSlots[$date] = $slotIndex[$user_slot->start].'-'.count($s);
             }
         }
         foreach($theUserSlots as $date => $slot){

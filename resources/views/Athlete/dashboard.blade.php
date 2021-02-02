@@ -119,19 +119,19 @@
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                             @if((jdate()->format('w') + $i) % 7)
                                             <div class="row justify-content-center">
-                                                @if(!$count)
+                                                @if(!substr($user_slot,0,-1) || (substr($user_slot,0,-1) == 1 && $user_slot != $j))
                                                    @for($k = 0;$k < 3; $k++)
                                                     <i class="far fa-user"></i>
                                                    @endfor
-                                                @elseif($count == 1 && $user_slot == $j)
+                                                @elseif(substr($user_slot,0,-1) == 1 && $user_slot == $j)
                                                    <i class="fas fa-user accepted"></i>
                                                    <i class="far fa-user"></i>
                                                    <i class="far fa-user"></i>
-                                                @elseif($count == 2)
+                                                @elseif(substr($user_slot,0,-1) == 2 && $user_slot == $j)
                                                    <i class="fas fa-user accepted"></i>
                                                    <i class="fas fa-user accepted"></i>
                                                    <i class="far fa-user"></i>
-                                                @elseif($count == 3)
+                                                @elseif(substr($user_slot,0,-1) == 3 && $user_slot == $j )
                                                    @for($k = 0;$k < 3; $k++)
                                                      <i class="fas fa-user accepted"></i>
                                                    @endfor
