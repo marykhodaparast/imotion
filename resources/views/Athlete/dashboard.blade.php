@@ -119,7 +119,7 @@
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                             @if((jdate()->format('w') + $i) % 7)
                                             <div class="row justify-content-center">
-                                                @if(!substr($user_slot,0,-1) || (substr($user_slot,0,-1) == 1 && $user_slot != $j))
+                                                @if(!substr($user_slot,0,-1) || (substr($user_slot,0,-1) == 1 && $user_slot != $j) || (substr($user_slot,0,-1) == 2 && $user_slot != $j) || (substr($user_slot,0,-1) == 3 && $user_slot != $j) )
                                                    @for($k = 0;$k < 3; $k++)
                                                     <i class="far fa-user"></i>
                                                    @endfor
