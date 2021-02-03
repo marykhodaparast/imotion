@@ -100,7 +100,8 @@ class AthleteController extends Controller
         $thirdAthlete = null;
         $start = 0;
         $end = 0;
-        $count = 0;
+        $count = 1;
+        $found = null;
         $user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
         if ($request->getMethod() == 'POST') {
             if(count($user_slots) >= 2){
@@ -196,6 +197,7 @@ class AthleteController extends Controller
                 $slot->athlete_id_1 = Auth::user()->id;
                 try {
                     $slot->save();
+                    $count = 1;
                     $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                     return redirect()->back();
                 } catch (Exception $e) {
@@ -208,10 +210,6 @@ class AthleteController extends Controller
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
         }
-        $s = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)
-                     ->where(function($query) use($start,$end,$from_date){
-                        $query->where('start',$start)->where('end',$end)->where('date',$from_date)->get();
-                     })->get();
         $slotIndex = [
             "08:00:00"=>1,
             "08:30:00"=>2,
@@ -237,7 +235,7 @@ class AthleteController extends Controller
         foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
             if(isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start].'-'.count($s);
+                $theUserSlots[$date] = $slotIndex[$user_slot->start].'-'.$count;
             }
         }
         foreach($theUserSlots as $date => $slot){
@@ -278,7 +276,6 @@ class AthleteController extends Controller
         }
 
         //dd($theUserSlots);
-        //dd(count($user_slots));
         return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
