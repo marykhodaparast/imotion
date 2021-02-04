@@ -73,6 +73,7 @@ class AthleteController extends Controller
         $from_date = null;
         $i = 1;
         $sw = 0;
+        $countAthleteArr = [];
         $arrOfTimes = [
             '08:00 - 08:30' => $this->toPersianNum('8'),
             '08:30 - 09:00' => $this->toPersianNum('8/5'),
@@ -206,6 +207,27 @@ class AthleteController extends Controller
             }
             //}
         }
+        // $foundSlot = Slot::where('start', $start)
+        // ->where('end', $end)
+        // ->where('date', $from_date)
+        // ->first();
+        // if($foundSlot){
+        //    $first_athlete = $foundSlot->athlete_id_1;
+        //    $second_athlete = $foundSlot->athlete_id_2;
+        //    $third_athlete = $foundSlot->athlete_id_3;
+        //    if($first_athlete != null && $second_athlete == null && $third_athlete == null){
+        //        $count = 1;
+        //    }elseif($first_athlete != null && $second_athlete != null && $third_athlete == null){
+        //        $count = 2;
+        //    }elseif($first_athlete!= null && $second_athlete != null && $third_athlete != null){
+        //        $count = 3;
+        //    }
+        // }
+        $slots = Slot::all();
+        foreach($slots as $slot){
+            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = strlen($slot->athlete_id_1.$slot->athlete_id_2.$slot->athlete_id_3);
+        }
+        //dd($countAthleteArr);
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
@@ -235,7 +257,7 @@ class AthleteController extends Controller
         foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
             if(isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start].'-'.$count;
+                $theUserSlots[$date] = $slotIndex[$user_slot->start];
             }
         }
         foreach($theUserSlots as $date => $slot){
@@ -285,7 +307,7 @@ class AthleteController extends Controller
             'user_slots' => $theUserSlots,
             'i' => $i,
             'sw' => $sw,
-            'count' => $count
+            'count' => $countAthleteArr
         ]);
     }
 
