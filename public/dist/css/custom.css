@@ -72,7 +72,7 @@
 }
 
 .table_inactive {
-    background: lightgrey !important;
+    background-color: #e4e9ec !important;
 }
 .bg-maryam{
     background-color: #b7efcd;
@@ -82,6 +82,9 @@
 }
 .accepted{
     color:#ffbcbc !important;
+}
+.danger{
+    color:#dc3545 !important;
 }
 .display_none{
     display: none;

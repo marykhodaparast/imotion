@@ -88,61 +88,63 @@
 
                                     </th>
                                     @for ($j = 1; $j <= 20; $j++)
-                                           {{-- @if(!is_array($user_slot) && strpos($user_slot,'self') && !strpos($user_slot,'other'))
-                                           <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered ' : 'bg-maryam bordered table_inactive ' }}"
-                                            data-date="{{ jdate()->addDays($i-1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i-1)->format('l')}}">
-                                            </td>
-                                             @elseif(!is_array($user_slot) && $user_slot>=0 && $user_slot!="" && !strpos($user_slot,'other'))
-                                             <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'table_inactive bg-red bordered' : 'table_inactive bordered' }}"
-                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                             </td>
-                                             @elseif(!is_array($user_slot) && strpos($user_slot,'other'))
-                                             <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-danger bordered' : 'bg-maryam cursor_pointer bordered' }}"
-                                                data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @elseif(!is_array($user_slot) && !strpos($user_slot,'other'))
-                                            <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @elseif(is_array($user_slot))
-                                            @if($user_slot[0] == $j && !strpos($user_slot[0],'other') && strpos($user_slot[0],'self'))
-                                            <td class="bg-danger dbordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @elseif($user_slot[0] == $j && !strpos($user_slot[0],'other') && !strpos($user_slot[0],'self'))
-                                            <td class="bg-red dbordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @elseif($user_slot[1] == $j && strpos($user_slot[1],'other'))
-                                            <td class="bg-danger bordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @else
-                                             <td class="table_inactive bordered" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                            @endif
-
-                                            @endif --}}
-                                        @if(!is_array($user_slot))
-
-                                        <td class="{{ (jdate()->format('w') + $i) % 7  ? 'cursor_pointer hoverable':''}}"
+                                        @if((jdate()->format('w') + $i) % 7)
+                                        @if(!$user_slot[2])
+                                        <td class="cursor_pointer hoverable"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                            @if((jdate()->format('w') + $i) % 7)
                                             <div class="row justify-content-center">
-                                                @if(!substr($user_slot,-1) || ($count[$date] == 1 && $user_slot != $j) || ($count[$date] == 2 && $user_slot != $j) || ($count[$date] == 3 && $user_slot != $j) )
-                                                   @for($k = 0;$k < 3; $k++)
-                                                    <i class="far fa-user"></i>
-                                                   @endfor
-                                                @elseif($count[$date] == 1 && $user_slot == $j)
-                                                   <i class="fas fa-user accepted"></i>
-                                                   <i class="far fa-user"></i>
-                                                   <i class="far fa-user"></i>
-                                                {{-- @elseif($count[$date] == 1 && $user_slot != $j) --}}
-
-
-                                                @elseif($count[$date] == 2 && $user_slot == $j)
-                                                   <i class="fas fa-user accepted"></i>
-                                                   <i class="fas fa-user accepted"></i>
-                                                   <i class="far fa-user"></i>
-                                                @elseif($count[$date] == 3 && $user_slot == $j )
-                                                   @for($k = 0;$k < 3; $k++)
-                                                     <i class="fas fa-user accepted"></i>
-                                                   @endfor
-                                                @endif
+                                                @for($k = 0;$k < 3; $k++)
+                                                <i class="far fa-user"></i>
+                                               @endfor
                                             </div>
-                                            @endif
                                         </td>
+                                        @elseif($user_slot[2] == 1 && $user_slot[0] == $j)
+                                        <td class="{{ $user_slot[1] == 0 ? 'cursor_pointer hoverable':''}}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                            <div class="row justify-content-center">
+                                                <i class="fas fa-user accepted"></i>
+                                                <i class="far fa-user"></i>
+                                                <i class="far fa-user"></i>
+                                            </div>
+                                        </td>
+                                        @elseif(($user_slot[2] == 1 || $user_slot[2] == 2)  && $user_slot[0] != $j)
+                                        <td class="{{ $user_slot[1] == 0 ? 'cursor_pointer hoverable':'table_inactive'}}"
+                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                            <div class="row justify-content-center">
+                                                @for($k = 0;$k < 3; $k++)
+                                                <i class="far fa-user"></i>
+                                               @endfor
+                                            </div>
+                                        </td>
+                                        @elseif($user_slot[2] == 2 && $user_slot[0] == $j)
+                                        <td class="{{ $user_slot[1] == 0 ? 'cursor_pointer hoverable':''}}"
+                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        <div class="row justify-content-center">
+                                                <i class="fas fa-user accepted"></i>
+                                                <i class="fas fa-user accepted"></i>
+                                                <i class="far fa-user"></i>
+                                        </div>
+                                    </td>
+                                        @elseif($user_slot[2] == 3 && $user_slot[0] == $j)
+                                        <td class=""
+                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        <div class="row justify-content-center">
+                                             @for($k = 0;$k < 3; $k++)
+                                                <i class="fas fa-user danger"></i>
+                                             @endfor
+                                        </div>
+                                    </td>
+                                        @elseif($user_slot[2] == 3 && $user_slot[0] != $j)
+                                        <td class="{{ $user_slot[1] == 'selfBanned' ? 'table_inactive' : 'cursor_pointer hoverable' }}"
+                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        <div class="row justify-content-center">
+                                             @for($k = 0;$k < 3; $k++)
+                                                <i class="far fa-user"></i>
+                                             @endfor
+                                        </div>
+
+                                    </td>
+                                        @endif
                                         @endif
                                     @endfor
                                 </tr>

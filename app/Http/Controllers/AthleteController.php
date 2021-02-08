@@ -103,7 +103,8 @@ class AthleteController extends Controller
         $end = 0;
         $count = 1;
         $found = null;
-        $user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
+        //$user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
+        $user_slots = Slot::all();
         if ($request->getMethod() == 'POST') {
             if(count($user_slots) >= 2){
                 $sw = 1;
@@ -223,14 +224,13 @@ class AthleteController extends Controller
         //        $count = 3;
         //    }
         // }
-        $slots = Slot::all();
-        foreach($slots as $slot){
+        foreach($user_slots as $slot){
             $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = strlen($slot->athlete_id_1.$slot->athlete_id_2.$slot->athlete_id_3);
         }
         //dd($countAthleteArr);
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
-            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
         }
         $slotIndex = [
             "08:00:00"=>1,
@@ -256,8 +256,18 @@ class AthleteController extends Controller
         ];
         foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
+            $theSwitch = Slot::where('date',$user_slot->date)
+                     ->where('start',$user_slot->start)
+                     ->where('end',$user_slot->end)
+                     ->where(function($query) use($user){
+                        $query->where('athlete_id_1',$user->id)
+                              ->orWhere('athlete_id_2',$user->id)
+                              ->orWhere('athlete_id_3',$user->id)
+                              ->first();
+                     })->first();
+            $theSelf = $theSwitch != null ? 1 : 0;
             if(isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start];
+                $theUserSlots[$date] = $slotIndex[$user_slot->start].'-'.$theSelf.'-'.$countAthleteArr[$date];
             }
         }
         foreach($theUserSlots as $date => $slot){
@@ -281,20 +291,20 @@ class AthleteController extends Controller
                               ->where('athlete_id_3','!=',$user->id)
                               ->first();
            if($selfBanned != null){
-               $theUserSlots[$date] = $slotIndex[$selfBanned->start]." self_banned";
+               $theUserSlots[$date] = $slotIndex[$selfBanned->start]."-selfBanned".'-'.$countAthleteArr[$date];
            }
            if($otherBanned != null){
-               if($theUserSlots[$date] != ""){
-                $theUserSlots[$date] .=','.$slotIndex[$otherBanned->start]." other_banned";
-               }else{
-                   $theUserSlots[$date] = $slotIndex[$otherBanned->start]." other_banned";
-               }
+               //if($theUserSlots[$date] != ""){
+                $theUserSlots[$date] = $slotIndex[$otherBanned->start]."-otherBanned".'-'.$countAthleteArr[$date];
+               //}else{
+                //   $theUserSlots[$date] = $slotIndex[$otherBanned->start]."-otherBanned".'-'.$countAthleteArr[$date];
+               //}
            }
         }
         foreach($theUserSlots as $date => $slot){
-            if(strpos($theUserSlots[$date],',')){
-                $theUserSlots[$date] = explode(',',$theUserSlots[$date]);
-            }
+            //if(strpos($theUserSlots[$date],',')){
+                $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
+            //}
         }
 
         //dd($theUserSlots);
