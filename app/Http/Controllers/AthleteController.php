@@ -105,12 +105,13 @@ class AthleteController extends Controller
         $found = null;
         //$user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
         $user_slots = Slot::all();
+        $slotsOfTheUser = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
         if ($request->getMethod() == 'POST') {
-            // if(count($user_slots) >= 2){
-            //     $sw = 1;
-            //     $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
-            //     return redirect()->back();
-            // }
+            if(count($slotsOfTheUser) >= 2){
+                $sw = 1;
+                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
+                return redirect()->back();
+            }
             if($request->input('time')){
                 $arr = explode('-', $request->input('time'));
                 $start = trim($arr[0]);
