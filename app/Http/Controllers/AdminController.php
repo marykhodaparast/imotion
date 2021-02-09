@@ -79,6 +79,7 @@ class AdminController extends Controller
         $role = $user->role;
         $from_date = null;
         $i = 1;
+        $countAthleteArr = [];
         $sw = 0;
         $s = null;
         $arr = [];
@@ -205,49 +206,54 @@ class AdminController extends Controller
                 }
             }
         }
+        foreach($user_slots as $slot){
+            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = strlen($slot->athlete_id_1.$slot->athlete_id_2.$slot->athlete_id_3);
+        }
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
-            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "";
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
         }
         $slotIndex = [
-            "08:00:00" => 1,
-            "08:30:00" => 2,
-            "09:00:00" => 3,
-            "09:30:00" => 4,
-            "10:00:00" => 5,
-            "10:30:00" => 6,
-            "11:00:00" => 7,
-            "11:30:00" => 8,
-            "12:00:00" => 9,
-            "12:30:00" => 10,
-            "13:00:00" => 11,
-            "13:30:00" => 12,
-            "14:00:00" => 13,
-            "14:30:00" => 14,
-            "15:00:00" => 15,
-            "15:30:00" => 16,
-            "16:00:00" => 17,
-            "16:30:00" => 18,
-            "17:00:00" => 19,
-            "17:30:00" => 20,
+            "08:00:00"=>1,
+            "08:30:00"=>2,
+            "09:00:00"=>3,
+            "09:30:00"=>4,
+            "10:00:00"=>5,
+            "10:30:00"=>6,
+            "11:00:00"=>7,
+            "11:30:00"=>8,
+            "12:00:00"=>9,
+            "12:30:00"=>10,
+            "13:00:00"=>11,
+            "13:30:00"=>12,
+            "14:00:00"=>13,
+            "14:30:00"=>14,
+            "15:00:00"=>15,
+            "15:30:00"=>16,
+            "16:00:00"=>17,
+            "16:30:00"=>18,
+            "17:00:00"=>19,
+            "17:30:00"=>20,
         ];
-        foreach ($user_slots as $user_slot) {
+        foreach($user_slots as $user_slot) {
             $date = jdate($user_slot->date)->format('Y-m-d');
-            if (isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start];
+            if(isset($theUserSlots[$date])) {
+                $theUserSlots[$date] = $slotIndex[$user_slot->start].'--'.$countAthleteArr[$date];
             }
         }
-
-        foreach ($theUserSlots as $date => $slot) {
+        foreach($theUserSlots as $date => $slot){
             $Edate = $this->jalaliToGregorian($date);
-            $s = SLot::where('athlete_id_1', '!=', null)->where('athlete_id_2', '!=', null)->where('athlete_id_3', '!=', null)->where('date', $Edate)->get();
-            if ($s != null) {
-                foreach($s as $item){
-                    $arr[] = $slotIndex[$item->start]."_banned";
-                    $theUserSlots[$date] = $arr;
-
-                }
-            }
+            $banned = SLot::where('athlete_id_1','!=',null)
+                     ->where('athlete_id_2','!=',null)
+                     ->where('athlete_id_3','!=',null)
+                     ->where('date',$Edate)
+                     ->first();
+           if($banned != null){
+               $theUserSlots[$date] = $slotIndex[$banned->start]."-banned".'-'.$countAthleteArr[$date];
+           }
+        }
+        foreach($theUserSlots as $date => $slot){
+                $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
         }
         //dd($theUserSlots);
 
