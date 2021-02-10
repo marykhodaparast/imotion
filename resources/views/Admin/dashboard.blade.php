@@ -1,5 +1,6 @@
 @extends('layouts.index')
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="/plugins/select2/css/select2.min.css" rel="stylesheet" />
     <link href="/dist/css/custom.css" rel="stylesheet">
 @endsection
@@ -32,24 +33,24 @@
                             <input type="hidden" id="hidden_day" name="date">
                             <input type="hidden" id="hidden_time" name="time">
                             <div class="row">
-                                <div class="col">
-                                    <select name="first_athlete" id="first_athlete" class="form-select display_none">
+                                <div  class="col-4" id="first_select">
+                                    <select name="first_athlete" id="first_athlete" class="form-control select2">
+                                        <option value="null">-</option>
+                                        @foreach($athletes as $athlete)
+                                          <option value="{{ $athlete->id}}">{{ $athlete->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-4" id="second_select" >
+                                    <select name="second_athlete" id="second_athlete" class="form-control">
                                         <option value="null">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col">
-                                    <select name="second_athlete" id="second_athlete" class="form-select display_none">
-                                        <option value="null">-</option>
-                                        @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <select name="third_athlete" id="third_athlete" class="form-select display_none">
+                                <div class="col-4" id="third_select">
+                                    <select name="third_athlete" id="third_athlete" class="form-control">
                                         <option value="null">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
@@ -75,80 +76,6 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
-                {{-- <div class="card"> --}}
-                {{-- <div class="table-responsive my_rounded">
-                    <table class="table table-bordered bg-white">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                @php $k = 0; @endphp
-                                @foreach($arrOfTimes as $key => $item)
-                                   <th scope="col" class="c_{{ $k+1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
-                                @php $k++ @endphp
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $i = 1; @endphp
-                            @foreach ($user_slots as $date=>$user_slot)
-                                <tr>
-                                    <th scope="row">
-                                       @if((jdate()->format('w') + $i) % 7 == 0)
-                                       ج
-                                       @elseif((jdate()->format('w') + $i) % 7 == 1)
-                                       ش
-                                       @elseif((jdate()->format('w') + $i) % 7 == 2)
-                                       ی
-                                       @elseif((jdate()->format('w') + $i) % 7 == 3)
-                                       د
-                                       @elseif((jdate()->format('w') + $i) % 7 == 4)
-                                       س
-                                       @elseif((jdate()->format('w') + $i) % 7 == 5)
-                                       چ
-                                       @elseif((jdate()->format('w') + $i) % 7 == 6)
-                                       پ
-                                       @endif
-
-                                    </th>
-
-                                    @for ($j = 1; $j <= 20; $j++)
-
-
-                                        @if(!is_array($user_slot))
-                                        @if(strpos($user_slot,'banned'))
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && substr($user_slot,0,1) == $j? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        </td>
-                                        @elseif($user_slot>=0 && $user_slot!="")
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot == $j ? 'bg-red bordered cursor_pointer' : 'bg-maryam bordered cursor_pointer' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        </td>
-                                        @else
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 ? 'cursor_pointer bg-maryam bordered' : 'table_inactive bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}"></td>
-                                        @endif
-                                        @else
-                                        @if($j <= count($user_slot))
-
-                                        <td class="{{ (jdate()->format('w') + $i) % 7 != 0 && $user_slot[$j-1] == $j ? 'bg-danger bordered cursor_pointer' : 'bg-maryam  cursor_pointer bordered' }}"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        </td>
-                                        @else
-                                        <td class="bg-maryam  cursor_pointer bordered"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        </td>
-                                        @endif
-                                        @endif
-
-
-                                    @endfor
-
-                                </tr>
-                                @php $i++; @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div> --}}
                 <div class="table-responsive my_rounded">
                     <table class="table table-bordered bg-white">
                         <thead>
@@ -263,18 +190,16 @@
     <!-- Select2 -->
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script>
-        // function makeSelectToBeDisabled(item,id){
-        //     if(item!= null){
-        //         $(id).prop('disabled','disabled');
-        //     }
-        // }
-        // function makeDisabledToBeFalse(){
-        //     $('#first_athlete').prop('disabled',false);
-        //     $('#second_athlete').prop('disabled',false);
-        //     $('#third_athlete').prop('disabled',false);
-        // }
         $(document).ready(function() {
-            $('select.select2').select2();
+            $('select').next(".select2-container").hide();
+            // $('select').select2({
+            //     containerCss: function (element) {
+            //     var style = $(element)[0].style;
+            //    return {
+            //         display: style.display
+            //    };
+            // }
+            // });
             $('td').on('click', function() {
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
@@ -294,9 +219,23 @@
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
-                        $('#first_athlete').css('display','block');
-                        $('#second_athlete').css('display','block');
-                        $('#third_athlete').css('display','block');
+                        //$('#first_athlete').css('display','block');
+                        //$('#second_athlete').css('display','block');
+                        //$('#third_athlete').css('display','block');
+                        //$('#first_select').css('display','block');
+                        //$('#first_select').addClass('col-4');
+                        $('select').next(".select2-container").show();
+
+
+                        // $('select').select2({
+                        //    containerCss: function (element) {
+                        //    var style = $(element)[0].style;
+                        //    return {
+                        //      display: 'block'
+                        //    };
+                        //    });
+                        // });
+
                        if(res.length < 1 || res == undefined){
                         $('#saveBtn').prop('disabled',false);
                         //makeDisabledToBeFalse();
@@ -327,5 +266,56 @@
 
         });
 
+    </script>
+    <script type="text/javascript">
+       function removeItem(first, second_option, third_option) {
+        $(first).on('change', function() {
+            var x = $(this).val();
+            $(second_option).each(function() {
+                if ($(this).val() == x) {
+                    this.remove(x);
+                }
+            });
+            $(third_option).each(function() {
+                if ($(this).val() == x) {
+                    this.remove(x);
+                }
+            });
+        })
+    }
+    removeItem('#first_athlete', '#second_athlete option', '#third_athlete option');
+    removeItem('#second_athlete', '#first_athlete option', '#third_athlete option');
+    removeItem('#third_athlete', '#first_athlete option', '#second_athlete option');
+    </script>
+    <script type="text/javascript">
+        function select2_load_remote_data_with_ajax(item) {
+            // CSRF Token
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $(item).select2({
+                ajax: {
+                    url: "{{ route('admin_get_selects') }}"
+                    , type: 'post'
+                    , dataType: 'json'
+                    , delay: 250
+                    , data: function(params) {
+                        return {
+                            _token: CSRF_TOKEN
+                            , search: params.term
+                        };
+                    }
+                    , processResults: function(response) {
+                        return {
+                            results: response
+                        };
+                    }
+                    , cache: true
+                }
+                //,
+                //minimumInputLength: 3
+            });
+        }
+        select2_load_remote_data_with_ajax('#first_athlete');
+        select2_load_remote_data_with_ajax('#second_athlete');
+        select2_load_remote_data_with_ajax('#third_athlete');
     </script>
 @endsection

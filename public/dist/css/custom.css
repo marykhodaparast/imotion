@@ -107,3 +107,6 @@ td{
 .hoverable:hover{
     background:#e0f5e0;
 }
+li.select2-results__option:empty {
+    display: none;
+}

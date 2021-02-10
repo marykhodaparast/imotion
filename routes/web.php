@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::any('/','AdminController@dashboard')->name('admin_dashboard');
         Route::post('/ajax','AdminController@ajaxCall')->name('admin_ajax');
         Route::post('/save','AdminController@saveNewSlot')->name('admin_save_slot');
+        Route::post('/getSelects','AdminController@getAllSelects')->name('admin_get_selects');
     });
 });
 
