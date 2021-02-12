@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div  class="col-4" id="first_select">
                                     <select name="first_athlete" id="first_athlete" class="form-control select2">
-                                        <option value="null">-</option>
+                                        <option value="0">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id}}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-4" id="second_select" >
                                     <select name="second_athlete" id="second_athlete" class="form-control">
-                                        <option value="null">-</option>
+                                        <option value="0">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-4" id="third_select">
                                     <select name="third_athlete" id="third_athlete" class="form-control">
-                                        <option value="null">-</option>
+                                        <option value="0">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
                                         @endforeach
@@ -60,7 +60,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button class="btn btn-primary mt-2" id="saveBtn">
+                                    <button class="btn btn-primary mt-2" id="saveBtn" disabled>
                                         ذخیره
                                     </button>
                                 </div>
@@ -192,14 +192,6 @@
     <script>
         $(document).ready(function() {
             $('select').next(".select2-container").hide();
-            // $('select').select2({
-            //     containerCss: function (element) {
-            //     var style = $(element)[0].style;
-            //    return {
-            //         display: style.display
-            //    };
-            // }
-            // });
             $('td').on('click', function() {
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
@@ -207,7 +199,7 @@
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.c_' + column).data('time');
                 $.ajax({
-                    url:'{{ route('admin_ajax') }}',
+                    url:'{{ route('admin_dashboard') }}',
                     type:'POST',
                     data:{
                         'theTime':column,
@@ -215,51 +207,31 @@
                         "_token": "{{ csrf_token() }}",
                     },
                     success:function(result){
+                       $('#saveBtn').prop('disabled',false);
                        var res = result.data;
+                       //console.log(res[0][0]);
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
-                        //$('#first_athlete').css('display','block');
-                        //$('#second_athlete').css('display','block');
-                        //$('#third_athlete').css('display','block');
-                        //$('#first_select').css('display','block');
-                        //$('#first_select').addClass('col-4');
                         $('select').next(".select2-container").show();
-
-
-                        // $('select').select2({
-                        //    containerCss: function (element) {
-                        //    var style = $(element)[0].style;
-                        //    return {
-                        //      display: 'block'
-                        //    };
-                        //    });
-                        // });
+                        if($('#first_'))
 
                        if(res.length < 1 || res == undefined){
                         $('#saveBtn').prop('disabled',false);
-                        //makeDisabledToBeFalse();
                         $('#first_athlete').val(0);
                         $('#second_athlete').val(0);
                         $('#third_athlete').val(0);
                        }else{
                         $('#saveBtn').prop('disabled',false);
-                        //makeDisabledToBeFalse();
-                        //if(res[0][0])makeSelectToBeDisabled(res[0][0],'#first_athlete');
-                        //if(res[1][0])makeSelectToBeDisabled(res[1][0],'#second_athlete');
-                        //if(res[2][0])makeSelectToBeDisabled(res[2][0],'#third_athlete');
                         $('#first_athlete').val(res[0][0]);
                         $('#second_athlete').val(res[1][0]);
                         $('#third_athlete').val(res[2][0]);
-                        if($('#first_athlete').val()!= null && $('#second_athlete').val()!= null && $('#third_athlete').val() != null){
-                            //$('#saveBtn').prop('disabled','disabled');
-                        }
                        }
                        }
 
                     },
                     error:function(){
-                       console.log(error);
+                       //console.log(error);
                     }
                 })
             });

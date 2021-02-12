@@ -37,9 +37,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button class="btn btn-primary mt-2">
-                                        ذخیره
-                                    </button>
+                                    <button class="btn mt-2 display_none"  id="saveBtn"></button>
                                 </div>
                             </div>
                         </form>
@@ -99,7 +97,7 @@
                                             </div>
                                         </td>
                                         @elseif($user_slot[2] == 1 && $user_slot[0] == $j)
-                                        <td class="{{ $user_slot[1] == 0 ? 'cursor_pointer hoverable':''}}"
+                                        <td class="cursor_pointer hoverable"
                                             data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                             <div class="row justify-content-center">
                                                 <i class="fas fa-user accepted"></i>
@@ -117,7 +115,7 @@
                                             </div>
                                         </td>
                                         @elseif($user_slot[2] == 2 && $user_slot[0] == $j)
-                                        <td class="{{ $user_slot[1] == 0 ? 'cursor_pointer hoverable':''}}"
+                                        <td class="cursor_pointer hoverable"
                                         data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                         <div class="row justify-content-center">
                                                 <i class="fas fa-user accepted"></i>
@@ -126,7 +124,7 @@
                                         </div>
                                     </td>
                                         @elseif($user_slot[2] == 3 && $user_slot[0] == $j)
-                                        <td class=""
+                                        <td class="cursor_pointer hoverable"
                                         data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                         <div class="row justify-content-center">
                                              @for($k = 0;$k < 3; $k++)
@@ -194,6 +192,17 @@
         $(document).ready(function() {
             $('select.select2').select2();
             $('td').on('click', function() {
+                $('#saveBtn').removeClass('display_none');
+                if($(this).siblings().hasClass('table_inactive')){
+                    console.log('hello');
+                    $('#saveBtn').text('لغو');
+                    $('#saveBtn').removeClass('btn-primary');
+                    $('#saveBtn').addClass('btn-danger');
+                }else{
+                    $('#saveBtn').text('ذخیره');
+                    $('#saveBtn').addClass('btn-primary');
+                    $('#saveBtn').removeClass('btn-danger');
+                }
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
                 var date = $(this).data('date');

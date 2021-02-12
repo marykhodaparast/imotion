@@ -103,15 +103,11 @@ class AthleteController extends Controller
         $end = 0;
         $count = 1;
         $found = null;
-        //$user_slots = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
+        $cancel = '';
         $user_slots = Slot::all();
         $slotsOfTheUser = Slot::where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id)->get();
         if ($request->getMethod() == 'POST') {
-            if(count($slotsOfTheUser) >= 2){
-                $sw = 1;
-                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
-                return redirect()->back();
-            }
+
             if($request->input('time')){
                 $arr = explode('-', $request->input('time'));
                 $start = trim($arr[0]);
@@ -132,63 +128,101 @@ class AthleteController extends Controller
                 ->where('end', $end)
                 ->where('date', $from_date)
                 ->first();
+            $foundTheLoginUser = Slot::where('start', $start)
+            ->where('end', $end)
+            ->where('date', $from_date)->where(function($query)use($user){
+                 $query->where('athlete_id_1',$user->id)->orWhere('athlete_id_2',$user->id)->orWhere('athlete_id_3',$user->id);
+            })->first();
 
-
-            //if(!$sw){
+            if($foundTheLoginUser){
+                    $first = $foundTheLoginUser->athlete_id_1;
+                    $second = $foundTheLoginUser->athlete_id_2;
+                    $third = $foundTheLoginUser->athlete_id_3;
+                    if($first == $user->id){
+                        $foundTheLoginUser->athlete_id_1 = 0;
+                        $foundTheLoginUser->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    } else if($second == $user->id){
+                        $foundTheLoginUser->athlete_id_2 = 0;
+                        $foundTheLoginUser->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    } else if($third == $user->id){
+                        $foundTheLoginUser->athlete_id_3 = 0;
+                        $foundTheLoginUser->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    }
+            }
+            if(count($slotsOfTheUser) >= 2){
+                $sw = 1;
+                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
+                return redirect()->back();
+            }
             if ($found && !$sw) {
                 $firstAthlete = $found->athlete_id_1;
                 $secondAthlete = $found->athlete_id_2;
                 $thirdAthlete = $found->athlete_id_3;
-                if ($firstAthlete == null) {
+                $athletes = [$firstAthlete,$secondAthlete,$thirdAthlete];
+                if (empty(array_filter($athletes))) {
                     $slot = new Slot;
                     $slot->start = $start;
                     $slot->end = $end;
                     $slot->date = $from_date;
                     $slot->athlete_id_1 = Auth::user()->id;
                     try {
-                        //if(!$sw){
                         $slot->save();
                         $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                         return redirect()->back();
-                        //}
                     } catch (Exception $e) {
                         dd($e);
                     }
-                } else if ($firstAthlete != null && $secondAthlete == null) {
+                } else if(!empty(array_filter($athletes))){
+                     if(!$firstAthlete){
+                         $found->athlete_id_1 = $user->id;
+                         $found->save();
+                         $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                         return redirect()->back();
+                     }else{
+                        if(!$secondAthlete){
+                            $found->athlete_id_2 = $user->id;
+                            $found->save();
+                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                            return redirect()->back();
+                        }
+                        if(!$thirdAthlete){
+                            $found->athlete_id_3 = $user->id;
+                            $found->save();
+                            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
+                            return redirect()->back();
+                        }
+                     }
+                } else if ($firstAthlete != 0 && $secondAthlete == 0) {
                     $found->athlete_id_2 = Auth::user()->id;
                     try {
-                        //if(!$sw){
                             if ($firstAthlete != $found->athlete_id_2) {
                                 $found->save();
                                 $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                                 return redirect()->back();
-                            } else {
-                                $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
-                                return redirect()->back();
                             }
-                        //}
 
                     } catch (Exception $e) {
                         dd($e);
                     }
-                } else if ($firstAthlete != null && $secondAthlete != null && $thirdAthlete == null) {
+                } else if ($firstAthlete != 0 && $secondAthlete != 0 && $thirdAthlete == 0) {
                     $found->athlete_id_3 = Auth::user()->id;
                     try {
-                        //if(!$sw){
                             if ($firstAthlete != $found->athlete_id_3  && $secondAthlete !=  $found->athlete_id_3 ) {
                                 $found->save();
                                 $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                                 return redirect()->back();
-                            } else {
-                                $request->session()->flash("msg_error", "شما قبلا در این تایم ثبت نام کرده اید!");
-                                return redirect()->back();
                             }
-                        //}
 
                     } catch (Exception $e) {
                         dd($e);
                     }
-                } else if ($firstAthlete != null && $secondAthlete != null && $thirdAthlete != null) {
+                } else if ($firstAthlete != 0 && $secondAthlete != 0 && $thirdAthlete != 0) {
                     $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
                     return redirect()->back();
                 }
@@ -207,28 +241,12 @@ class AthleteController extends Controller
                     dd($e);
                 }
             }
-            //}
         }
-        // $foundSlot = Slot::where('start', $start)
-        // ->where('end', $end)
-        // ->where('date', $from_date)
-        // ->first();
-        // if($foundSlot){
-        //    $first_athlete = $foundSlot->athlete_id_1;
-        //    $second_athlete = $foundSlot->athlete_id_2;
-        //    $third_athlete = $foundSlot->athlete_id_3;
-        //    if($first_athlete != null && $second_athlete == null && $third_athlete == null){
-        //        $count = 1;
-        //    }elseif($first_athlete != null && $second_athlete != null && $third_athlete == null){
-        //        $count = 2;
-        //    }elseif($first_athlete!= null && $second_athlete != null && $third_athlete != null){
-        //        $count = 3;
-        //    }
-        // }
+
         foreach($user_slots as $slot){
-            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = strlen($slot->athlete_id_1.$slot->athlete_id_2.$slot->athlete_id_3);
+            $myArr = [$slot->athlete_id_1,$slot->athlete_id_2,$slot->athlete_id_3];
+            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = count(array_filter($myArr));
         }
-        //dd($countAthleteArr);
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
@@ -273,9 +291,9 @@ class AthleteController extends Controller
         }
         foreach($theUserSlots as $date => $slot){
             $Edate = $this->jalaliToGregorian($date);
-            $selfBanned = SLot::where('athlete_id_1','!=',null)
-                     ->where('athlete_id_2','!=',null)
-                     ->where('athlete_id_3','!=',null)
+            $selfBanned = SLot::where('athlete_id_1','!=',0)
+                     ->where('athlete_id_2','!=',0)
+                     ->where('athlete_id_3','!=',0)
                      ->where('date',$Edate)
                      ->where(function($query) use($user){
                         $query->where('athlete_id_1',$user->id)
@@ -283,9 +301,9 @@ class AthleteController extends Controller
                               ->orWhere('athlete_id_3',$user->id)
                               ->first();
                      })->first();
-           $otherBanned = SLot::where('athlete_id_1','!=',null)
-                              ->where('athlete_id_2','!=',null)
-                              ->where('athlete_id_3','!=',null)
+           $otherBanned = SLot::where('athlete_id_1','!=',0)
+                              ->where('athlete_id_2','!=',0)
+                              ->where('athlete_id_3','!=',0)
                               ->where('date',$Edate)
                               ->where('athlete_id_1','!=',$user->id)
                               ->where('athlete_id_2','!=',$user->id)
@@ -295,20 +313,14 @@ class AthleteController extends Controller
                $theUserSlots[$date] = $slotIndex[$selfBanned->start]."-selfBanned".'-'.$countAthleteArr[$date];
            }
            if($otherBanned != null){
-               //if($theUserSlots[$date] != ""){
                 $theUserSlots[$date] = $slotIndex[$otherBanned->start]."-otherBanned".'-'.$countAthleteArr[$date];
-               //}else{
-                //   $theUserSlots[$date] = $slotIndex[$otherBanned->start]."-otherBanned".'-'.$countAthleteArr[$date];
-               //}
            }
         }
         foreach($theUserSlots as $date => $slot){
-            //if(strpos($theUserSlots[$date],',')){
                 $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
-            //}
         }
 
-        //dd($theUserSlots);
+        $todayTime = jdate()->addDays(1)->format('H:i');
         return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
@@ -318,7 +330,9 @@ class AthleteController extends Controller
             'user_slots' => $theUserSlots,
             'i' => $i,
             'sw' => $sw,
-            'count' => $countAthleteArr
+            'todayTime' => $todayTime,
+            'count' => $countAthleteArr,
+            'cancel' => $cancel
         ]);
     }
 

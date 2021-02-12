@@ -103,6 +103,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
+        $s = 0;
         $i = 1;
         $countAthleteArr = [];
         $arr = [];
@@ -130,6 +131,7 @@ class AdminController extends Controller
         ];
         $start = 0;
         $end = 0;
+        //$d = 0;
         $athletes = [];
         $users = User::all();
         foreach ($users as $user) {
@@ -139,18 +141,18 @@ class AdminController extends Controller
         }
         $user_slots = Slot::where('athlete_id_1', '!=', null)->orWhere('athlete_id_2', '!=', null)->orWhere('athlete_id_3', '!=', null)->get();
         if ($request->getMethod() == 'POST') {
+            $theTime = $request->input('theTime');
+            $theDate = $request->input('theDate');
+            $theArray = $this->giveSlotsOfSpecificDateAndTime($theDate, $theTime);
+            return [
+                'data' => $theArray,
+                'error' => 'error'
+            ];
 
-            if ($request->input('time')) {
-                $arr = explode('-', $request->input('time'));
-                $start = trim($arr[0]);
-                $end = trim($arr[1]);
-            }
-            if ($request->input('date')) {
-                $from_date = $this->jalaliToGregorian($request->input('date'));
-            }
         }
         foreach($user_slots as $slot){
-            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = strlen($slot->athlete_id_1.$slot->athlete_id_2.$slot->athlete_id_3);
+            $myArr = [$slot->athlete_id_1,$slot->athlete_id_2,$slot->athlete_id_3];
+            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = count(array_filter($myArr));
         }
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
@@ -198,7 +200,6 @@ class AdminController extends Controller
         foreach($theUserSlots as $date => $slot){
                 $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
         }
-        //dd($theUserSlots);
 
         return view('Admin.dashboard')->with([
             'from_date' => $from_date,
@@ -242,6 +243,10 @@ class AdminController extends Controller
             $slot->athlete_id_1 = $firstAthlete ? $firstAthlete : $slot->athlete_id_1;
             $slot->athlete_id_2 = $secondAthlete ? $secondAthlete : $slot->athlete_id_2;
             $slot->athlete_id_3 = $thirdAthlete ? $thirdAthlete : $slot->athlete_id_3;
+            if($slot->athlete_id_3 == 'null'){
+                $slot->athlete_id_3 = 0;
+            }
+            //dd($slot->athlete_id_3);
             $slot->save();
             $request->session()->flash("msg_success", "با موفقیت ثبت شد.");
             return redirect()->back();
