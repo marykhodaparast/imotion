@@ -154,6 +154,7 @@ class AdminController extends Controller
             $myArr = [$slot->athlete_id_1,$slot->athlete_id_2,$slot->athlete_id_3];
             $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = count(array_filter($myArr));
         }
+        //dd($countAthleteArr);
         $theUserSlots = [];
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
@@ -188,9 +189,9 @@ class AdminController extends Controller
         }
         foreach($theUserSlots as $date => $slot){
             $Edate = $this->jalaliToGregorian($date);
-            $banned = SLot::where('athlete_id_1','!=',null)
-                     ->where('athlete_id_2','!=',null)
-                     ->where('athlete_id_3','!=',null)
+            $banned = SLot::where('athlete_id_1','!=',0)
+                     ->where('athlete_id_2','!=',0)
+                     ->where('athlete_id_3','!=',0)
                      ->where('date',$Edate)
                      ->first();
            if($banned != null){
@@ -200,6 +201,7 @@ class AdminController extends Controller
         foreach($theUserSlots as $date => $slot){
                 $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
         }
+        //dd($theUserSlots);
 
         return view('Admin.dashboard')->with([
             'from_date' => $from_date,
@@ -246,7 +248,6 @@ class AdminController extends Controller
             if($slot->athlete_id_3 == 'null'){
                 $slot->athlete_id_3 = 0;
             }
-            //dd($slot->athlete_id_3);
             $slot->save();
             $request->session()->flash("msg_success", "با موفقیت ثبت شد.");
             return redirect()->back();

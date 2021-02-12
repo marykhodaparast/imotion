@@ -199,7 +199,7 @@
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.c_' + column).data('time');
                 $.ajax({
-                    url:'{{ route('admin_dashboard') }}',
+                    url:'{{ route('admin_ajax') }}',
                     type:'POST',
                     data:{
                         'theTime':column,
@@ -209,7 +209,26 @@
                     success:function(result){
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
-                       //console.log(res[0][0]);
+                       $('#first_athlete > option').each(function(){
+                          if(this.value == res[0][0]){
+                            this.value = res[0][0];
+                            $('#first_athlete').select2().select2('val',this.value)
+
+                          }
+                       });
+                       $('#second_athlete > option').each(function(){
+                          if(this.value == res[1][0]){
+                            this.value = res[1][0];
+                            $('#second_athlete').select2().select2('val',this.value)
+
+                          }
+                       });
+                       $('#third_athlete > option').each(function(){
+                          if(this.value == res[2][0]){
+                            this.value = res[2][0];
+                            $('#third_athlete').select2().select2('val',this.value)
+                          }
+                       });
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
