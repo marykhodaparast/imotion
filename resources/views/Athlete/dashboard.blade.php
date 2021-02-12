@@ -124,7 +124,7 @@
                                         </div>
                                     </td>
                                         @elseif($user_slot[2] == 3 && $user_slot[0] == $j)
-                                        <td class="cursor_pointer hoverable"
+                                        <td class="{{ $user_slot[1] == 'selfBanned' ? 'cursor_pointer hoverable' : '' }}"
                                         data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
                                         <div class="row justify-content-center">
                                              @for($k = 0;$k < 3; $k++)
