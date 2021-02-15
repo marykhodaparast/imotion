@@ -97,16 +97,24 @@
                                         <i class="far fa-user"></i>
                                     </div>
                                 </td>
+                                {{-- @elseif($slots["slot-".$j]["seat_count"] == null)
+                                <td class="bg-maryam" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                    {{-- <div class="row justify-content-center">
+                                        <i class="fas fa-user accepted"></i>
+                                        <i class="far fa-user"></i>
+                                        <i class="far fa-user"></i>
+                                    </div> --}}
+                                {{-- </td> --}}
                                 @elseif($slots["slot-".$j]["seat_count"] == 2)
                                 <td class="cursor_pointer hoverable"
                                 data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
                                 data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                 <div class="row justify-content-center">
-                                    @for($k = 0;$k < 3; $k++)
+                                    {{-- @for($k = 0;$k < 3; $k++) --}}
                                     <i class="fas fa-user accepted"></i>
-                                    <i class="far fa-user accepted"></i>
+                                    <i class="fas fa-user accepted"></i>
                                     <i class="far fa-user"></i>
-                                        @endfor
+                                        {{-- @endfor --}}
                                 </div>
                                 </td>
                                   @elseif($slots["slot-".$j]["seat_count"] == 3)

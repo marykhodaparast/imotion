@@ -283,8 +283,9 @@ class AthleteController extends Controller
         foreach($slots as $item){
             $date = jdate($item->date)->format('Y-m-d');
             for($j =1; $j <= 20; $j++){
-                $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null,"date" => $date];
+                $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null];
             }
+            //$theUserSlots[$date]["s21"] = $date;
         }
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
@@ -301,7 +302,7 @@ class AthleteController extends Controller
                     })->first();
                 $theSelf = $theSwitch != null ? 1 : 0;
                 //if($countAthleteArr[$date][$i]){
-                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i],"date" => $date];
+                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
                 //}
             }
         }
