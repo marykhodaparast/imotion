@@ -255,9 +255,9 @@ class AthleteController extends Controller
             }
         }
         $theUserSlots = [];
-        // for ($i = 1; $i <= 30; $i++) {
-        //     $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
-        // }
+        for ($i = 1; $i <= 30; $i++) {
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
+        }
         $slotIndex = [
             "08:00:00" => 1,
             "08:30:00" => 2,
@@ -295,7 +295,7 @@ class AthleteController extends Controller
                     })->first();
                 $theSelf = $theSwitch != null ? 1 : 0;
                 //if($countAthleteArr[$date][$i]){
-                    $theUserSlots[$date]["slot-".$i] = ["slot_number" => $slotIndex[$s->start], "is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                    $theUserSlots[$date]["slot-".($i+1)] = ["slot_number" => $slotIndex[$s->start], "is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
                 //}
             }
         }
