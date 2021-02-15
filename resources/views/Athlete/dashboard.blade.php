@@ -64,7 +64,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 1; $i <= 30; $i++)
+                        @php $i = 1; @endphp
+                        @foreach ($user_slots as $date => $slots)
                         <tr>
                             <th scope="row">
                                 @if((jdate()->format('w') + $i ) % 7 == 0)
@@ -86,17 +87,51 @@
                             </th>
                             @for($j = 1; $j <= 20; $j++)
                               @if((jdate()->format('w') + $i) % 7)
-                                  {{-- @if($slots["slot-".$j]["seat_count"] == 1) --}}
+                                  @if(!empty($slots))
+                                  {{-- @if($slots["slot-".$j]["date"] == $date) --}}
+                                  @if($slots["slot-".$j]["seat_count"] == 1)
                                 <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                    <div class="row justify-content-center">
+                                        <i class="fas fa-user accepted"></i>
+                                        <i class="far fa-user"></i>
+                                        <i class="far fa-user"></i>
+                                    </div>
+                                </td>
+                                @elseif($slots["slot-".$j]["seat_count"] == 2)
+                                <td class="cursor_pointer hoverable"
+                                data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                <div class="row justify-content-center">
+                                    @for($k = 0;$k < 3; $k++)
+                                    <i class="fas fa-user accepted"></i>
+                                    <i class="far fa-user accepted"></i>
+                                    <i class="far fa-user"></i>
+                                        @endfor
+                                </div>
+                                </td>
+                                  @elseif($slots["slot-".$j]["seat_count"] == 3)
+                                  <td class="cursor_pointer hoverable"
+                                  data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                  data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                  <div class="row justify-content-center">
+                                      @for($k = 0;$k < 3; $k++) <i class="fas fa-user danger"></i>
+                                          @endfor
+                                  </div>
+                              </td>
+
+                                  @else
+                                  <td>hello</td>
+                                  @endif
+                                  {{-- @endif --}}
+                                  @else
+                                  <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                     <div class="row justify-content-center">
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
                                     </div>
                                 </td>
-                                  {{-- @else --}}
-                                  {{-- <td>hello</td> --}}
-                                  {{-- @endif --}}
+                                  @endif
 
                               @endif
                             @endfor
@@ -169,8 +204,8 @@
                                 {{-- @endif --}}
                                 {{-- @endfor --}}
                         </tr>
-                        {{-- @php $i++; @endphp --}}
-                        @endfor
+                        @php $i++; @endphp
+                        @endforeach
                     </tbody>
                 </table>
             </div>

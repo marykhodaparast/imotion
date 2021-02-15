@@ -51,11 +51,11 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-        $groups = Group::all();
+       // $groups = Group::all();
         $user = new User;
         if($request->getMethod()=='GET'){
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user
             ]);
         }
@@ -84,7 +84,7 @@ class UserController extends Controller
         if($find){
             $request->session()->flash("msg_error", "نام کاربری قبلا استفاده شده است!");
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user,
                 'msg_success' => request()->session()->get('msg_success'),
                 'msg_error' => request()->session()->get('msg_error')
@@ -95,7 +95,7 @@ class UserController extends Controller
         if($request->input('password')!=$request->input('repassword')){
             $request->session()->flash("msg_error", "رمز عبور و تکرار آن باید یکی باشند");
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user,
                 'msg_success' => request()->session()->get('msg_success'),
                 'msg_error' => request()->session()->get('msg_error')
@@ -110,7 +110,7 @@ class UserController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $groups = Group::all();
+        //$groups = Group::all();
         $user = User::where('id', $id)->where('is_deleted', false)->first();
         if($user==null){
             $request->session()->flash("msg_error", "کاربر مورد نظر پیدا نشد.");
@@ -118,7 +118,7 @@ class UserController extends Controller
         }
         if($request->getMethod()=='GET'){
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user
             ]);
         }
@@ -149,7 +149,7 @@ class UserController extends Controller
         if($find && $old_email!=$request->input('email')){
             $request->session()->flash("msg_error", "نام کاربری قبلا استفاده شده است!");
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user,
                 'msg_success' => request()->session()->get('msg_success'),
                 'msg_error' => request()->session()->get('msg_error')
@@ -160,7 +160,7 @@ class UserController extends Controller
         if($request->input('password')!=null && $request->input('password')!='' && $request->input('password')!=$request->input('repassword')){
             $request->session()->flash("msg_error", "رمز عبور و تکرار آن باید یکی باشند");
             return view('users.create', [
-                "groups"=>$groups,
+                //"groups"=>$groups,
                 "user"=>$user,
                 'msg_success' => request()->session()->get('msg_success'),
                 'msg_error' => request()->session()->get('msg_error')
@@ -175,7 +175,7 @@ class UserController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $groups = Group::all();
+        //$groups = Group::all();
         $user = User::where('id', $id)->where('is_deleted', false)->first();
         if($user==null){
             $request->session()->flash("msg_error", "کاربر مورد نظر پیدا نشد.");

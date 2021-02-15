@@ -280,7 +280,13 @@ class AthleteController extends Controller
             "17:00:00" => 19,
             "17:30:00" => 20,
         ];
-        foreach ($slots as $item) {
+        foreach($slots as $item){
+            $date = jdate($item->date)->format('Y-m-d');
+            for($j =1; $j <= 20; $j++){
+                $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null,"date" => $date];
+            }
+        }
+        foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
             $slotsFoundByDate = Slot::where('date', $item->date)->get();
             foreach ($slotsFoundByDate as $i => $s) {
@@ -295,11 +301,11 @@ class AthleteController extends Controller
                     })->first();
                 $theSelf = $theSwitch != null ? 1 : 0;
                 //if($countAthleteArr[$date][$i]){
-                    $theUserSlots[$date]["slot-".($i+1)] = ["slot_number" => $slotIndex[$s->start], "is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i],"date" => $date];
                 //}
             }
         }
-        dd($theUserSlots);
+        //dd($theUserSlots);
 
         $todayTime = jdate()->addDays(1)->format('H:i');
         return view('Athlete.dashboard')->with([
