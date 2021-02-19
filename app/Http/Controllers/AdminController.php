@@ -96,11 +96,7 @@ class AdminController extends Controller
                 [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name : null]
             ];
         }
-        return [
-            [0,null],
-            [0,null],
-            [0,null]
-        ];
+        return [];
     }
     public function dashboard(Request $request)
     {
@@ -154,7 +150,7 @@ class AdminController extends Controller
             ];
 
         }
-        
+
         foreach($slots as $slot){
             for($i = 0;$i < 20;$i++){
                 $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;

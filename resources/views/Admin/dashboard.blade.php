@@ -200,53 +200,30 @@
                     success:function(result){
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
-                       console.log(res);
-                       $('#first_athlete > option').each(function(){
-                          if(res.length != 0 ){
-                            if(this.value == res[0][0]){
-                            this.value = res[0][0];
-                            $('#first_athlete').select2().select2('val',this.value)
-                          }
-                          }
-
-                       });
-                       $('#second_athlete > option').each(function(){
-                           if(res.length != 0){
-                            if(this.value == res[1][0]){
-                            this.value = res[1][0];
-                            $('#second_athlete').select2().select2('val',this.value)
-
-                          }
-                           }
-
-                       });
-                       $('#third_athlete > option').each(function(){
-                           if(res.length != 0){
-                            if(this.value == res[2][0]){
-                            this.value = res[2][0];
-                            $('#third_athlete').select2().select2('val',this.value)
-                          }
-                           }
-
-                       });
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
                         $('select').next(".select2-container").show();
-                        if($('#first_'))
-
-                       if(res.length < 1 || res == undefined){
+                       }
+                       if(!res.length  || res == undefined){
                         $('#saveBtn').prop('disabled',false);
                         $('#first_athlete').val(0);
+                        $('#first_athlete').trigger('change');
                         $('#second_athlete').val(0);
+                        $('#second_athlete').trigger('change');
                         $('#third_athlete').val(0);
+                        $('#third_athlete').trigger('change');
                        }else{
                         $('#saveBtn').prop('disabled',false);
                         $('#first_athlete').val(res[0][0]);
+                        $('#first_athlete').trigger('change');
+                        console.log(res[1][0]);
                         $('#second_athlete').val(res[1][0]);
+                        $('#second_athlete').trigger('change');
                         $('#third_athlete').val(res[2][0]);
+                        $('#third_athlete').trigger('change');
                        }
-                       }
+
 
                     },
                     error:function(){
