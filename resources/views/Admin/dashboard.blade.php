@@ -90,7 +90,7 @@
                         </thead>
                         <tbody>
                             @php $i = 1; @endphp
-                            @foreach ($user_slots as $date=>$user_slot)
+                            @foreach ($user_slots as $date=>$slots)
                                 <tr>
                                     <th scope="row">
                                        @if((jdate()->format('w') + $i ) % 7 == 0)
@@ -110,69 +110,60 @@
                                        @endif
 
                                     </th>
-                                    @for ($j = 1; $j <= 20; $j++)
-                                        @if((jdate()->format('w') + $i) % 7)
-                                        @if(!$user_slot[2])
+                                    @for($j = 1; $j <= 20; $j++)
+                                    @if((jdate()->format('w') + $i) % 7)
+                                        @if(!empty($slots))
+                                        @if($slots["slot-".$j]["seat_count"] == 1)
+                                      <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                          <div class="row justify-content-center">
+                                              <i class="fas fa-user accepted"></i>
+                                              <i class="far fa-user"></i>
+                                              <i class="far fa-user"></i>
+                                          </div>
+                                      </td>
+                                      @elseif($slots["slot-".$j]["seat_count"] == null)
+                                      <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                          <div class="row justify-content-center">
+                                              <i class="far fa-user"></i>
+                                              <i class="far fa-user"></i>
+                                              <i class="far fa-user"></i>
+                                          </div>
+                                       </td>
+                                      @elseif($slots["slot-".$j]["seat_count"] == 2)
+                                      <td class="cursor_pointer hoverable"
+                                      data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                      data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                      <div class="row justify-content-center">
+                                          <i class="fas fa-user accepted"></i>
+                                          <i class="fas fa-user accepted"></i>
+                                          <i class="far fa-user"></i>
+                                      </div>
+                                      </td>
+                                        @elseif($slots["slot-".$j]["seat_count"] == 3)
                                         <td class="cursor_pointer hoverable"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                            <div class="row justify-content-center">
-                                                @for($k = 0;$k < 3; $k++)
-                                                <i class="far fa-user"></i>
-                                               @endfor
-                                            </div>
-                                        </td>
-                                        @elseif($user_slot[2] == 1 && $user_slot[0] == $j)
-                                        <td class="cursor_pointer hoverable"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                            <div class="row justify-content-center">
-                                                <i class="fas fa-user accepted"></i>
-                                                <i class="far fa-user"></i>
-                                                <i class="far fa-user"></i>
-                                            </div>
-                                        </td>
-                                        @elseif(($user_slot[2] == 1 || $user_slot[2] == 2)  && $user_slot[0] != $j)
-                                        <td class="cursor_pointer hoverable"
-                                            data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                            <div class="row justify-content-center">
-                                                @for($k = 0;$k < 3; $k++)
-                                                <i class="far fa-user"></i>
-                                               @endfor
-                                            </div>
-                                        </td>
-                                        @elseif($user_slot[2] == 2 && $user_slot[0] == $j)
-                                        <td class="cursor_pointer hoverable"
-                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
+                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                        data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                         <div class="row justify-content-center">
-                                                <i class="fas fa-user accepted"></i>
-                                                <i class="fas fa-user accepted"></i>
-                                                <i class="far fa-user"></i>
+                                            @for($k = 0;$k < 3; $k++) <i class="fas fa-user danger"></i>
+                                                @endfor
                                         </div>
-                                    </td>
-                                        @elseif($user_slot[2] == 3 && $user_slot[0] == $j)
-                                        <td class="cursor_pointer hoverable"
-                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        <div class="row justify-content-center">
-                                             @for($k = 0;$k < 3; $k++)
-                                                <i class="fas fa-user danger"></i>
-                                             @endfor
-                                        </div>
-                                    </td>
-                                        @elseif($user_slot[2] == 3 && $user_slot[0] != $j)
-                                        <td class="cursor_pointer hoverable"
-                                        data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay = "{{jdate()->addDays($i - 1)->format('l')}}">
-                                        <div class="row justify-content-center">
-                                             @for($k = 0;$k < 3; $k++)
-                                                <i class="far fa-user"></i>
-                                             @endfor
-                                        </div>
+                                      </td>
+                                    @endif
+                                        @else
+                                        <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                          <div class="row justify-content-center">
+                                              <i class="far fa-user"></i>
+                                              <i class="far fa-user"></i>
+                                              <i class="far fa-user"></i>
+                                          </div>
+                                      </td>
+                                        @endif
 
-                                    </td>
-                                        @endif
-                                        @endif
-                                    @endfor
-                                </tr>
-                                @php $i++; @endphp
-                            @endforeach
+                                    @endif
+                                  @endfor
+                              </tr>
+                              @php $i++; @endphp
+                              @endforeach
                         </tbody>
                     </table>
                 </div>

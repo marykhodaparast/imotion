@@ -139,7 +139,7 @@ class AdminController extends Controller
                 $athletes[] = $user;
             }
         }
-        $user_slots = Slot::where('athlete_id_1', '!=', null)->orWhere('athlete_id_2', '!=', null)->orWhere('athlete_id_3', '!=', null)->get();
+        $slots = Slot::where('athlete_id_1', '!=', null)->orWhere('athlete_id_2', '!=', null)->orWhere('athlete_id_3', '!=', null)->get();
         if ($request->getMethod() == 'POST') {
             $theTime = $request->input('theTime');
             $theDate = $request->input('theDate');
@@ -150,57 +150,110 @@ class AdminController extends Controller
             ];
 
         }
-        foreach($user_slots as $slot){
-            $myArr = [$slot->athlete_id_1,$slot->athlete_id_2,$slot->athlete_id_3];
-            $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = count(array_filter($myArr));
-        }
-        //dd($countAthleteArr);
-        $theUserSlots = [];
-        for ($i = 1; $i <= 30; $i++) {
-            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
-        }
-        $slotIndex = [
-            "08:00:00"=>1,
-            "08:30:00"=>2,
-            "09:00:00"=>3,
-            "09:30:00"=>4,
-            "10:00:00"=>5,
-            "10:30:00"=>6,
-            "11:00:00"=>7,
-            "11:30:00"=>8,
-            "12:00:00"=>9,
-            "12:30:00"=>10,
-            "13:00:00"=>11,
-            "13:30:00"=>12,
-            "14:00:00"=>13,
-            "14:30:00"=>14,
-            "15:00:00"=>15,
-            "15:30:00"=>16,
-            "16:00:00"=>17,
-            "16:30:00"=>18,
-            "17:00:00"=>19,
-            "17:30:00"=>20,
-        ];
-        foreach($user_slots as $user_slot) {
-            $date = jdate($user_slot->date)->format('Y-m-d');
-            if(isset($theUserSlots[$date])) {
-                $theUserSlots[$date] = $slotIndex[$user_slot->start].'--'.$countAthleteArr[$date];
+        // foreach($user_slots as $slot){
+        //     $myArr = [$slot->athlete_id_1,$slot->athlete_id_2,$slot->athlete_id_3];
+        //     $countAthleteArr[jdate($slot->date)->format('Y-m-d')] = count(array_filter($myArr));
+        // }
+        // //dd($countAthleteArr);
+        // $theUserSlots = [];
+        // for ($i = 1; $i <= 30; $i++) {
+        //     $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = "--";
+        // }
+        // $slotIndex = [
+        //     "08:00:00"=>1,
+        //     "08:30:00"=>2,
+        //     "09:00:00"=>3,
+        //     "09:30:00"=>4,
+        //     "10:00:00"=>5,
+        //     "10:30:00"=>6,
+        //     "11:00:00"=>7,
+        //     "11:30:00"=>8,
+        //     "12:00:00"=>9,
+        //     "12:30:00"=>10,
+        //     "13:00:00"=>11,
+        //     "13:30:00"=>12,
+        //     "14:00:00"=>13,
+        //     "14:30:00"=>14,
+        //     "15:00:00"=>15,
+        //     "15:30:00"=>16,
+        //     "16:00:00"=>17,
+        //     "16:30:00"=>18,
+        //     "17:00:00"=>19,
+        //     "17:30:00"=>20,
+        // ];
+        // foreach($user_slots as $user_slot) {
+        //     $date = jdate($user_slot->date)->format('Y-m-d');
+        //     if(isset($theUserSlots[$date])) {
+        //         $theUserSlots[$date] = $slotIndex[$user_slot->start].'--'.$countAthleteArr[$date];
+        //     }
+        // }
+        // foreach($theUserSlots as $date => $slot){
+        //     $Edate = $this->jalaliToGregorian($date);
+        //     $banned = SLot::where('athlete_id_1','!=',0)
+        //              ->where('athlete_id_2','!=',0)
+        //              ->where('athlete_id_3','!=',0)
+        //              ->where('date',$Edate)
+        //              ->first();
+        //    if($banned != null){
+        //        $theUserSlots[$date] = $slotIndex[$banned->start]."-banned".'-'.$countAthleteArr[$date];
+        //    }
+        // }
+        // foreach($theUserSlots as $date => $slot){
+        //         $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
+        // }
+        foreach($slots as $slot){
+            for($i = 0;$i < 20;$i++){
+                $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
             }
         }
-        foreach($theUserSlots as $date => $slot){
-            $Edate = $this->jalaliToGregorian($date);
-            $banned = SLot::where('athlete_id_1','!=',0)
-                     ->where('athlete_id_2','!=',0)
-                     ->where('athlete_id_3','!=',0)
-                     ->where('date',$Edate)
-                     ->first();
-           if($banned != null){
-               $theUserSlots[$date] = $slotIndex[$banned->start]."-banned".'-'.$countAthleteArr[$date];
-           }
+        foreach ($slots as $slot) {
+            $slotsFoundByDate = Slot::where('date', $slot->date)->get();
+            foreach ($slotsFoundByDate as $i => $item) {
+                //if (count(array_filter([$item->athlete_id_1, $item->athlete_id_2, $item->athlete_id_3]))) {
+                $countAthleteArr[jdate($item->date)->format('Y-m-d')][$i] = count(array_filter([$item->athlete_id_1, $item->athlete_id_2, $item->athlete_id_3]));
+                //}
+            }
         }
-        foreach($theUserSlots as $date => $slot){
-                $theUserSlots[$date] = explode('-',$theUserSlots[$date]);
+        $theUserSlots = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
         }
+        $slotIndex = [
+            "08:00:00" => 1,
+            "08:30:00" => 2,
+            "09:00:00" => 3,
+            "09:30:00" => 4,
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+            "16:00:00" => 17,
+            "16:30:00" => 18,
+            "17:00:00" => 19,
+            "17:30:00" => 20,
+        ];
+        foreach($slots as $item){
+            $date = jdate($item->date)->format('Y-m-d');
+            for($j =1; $j <= 20; $j++){
+                $theUserSlots[$date]["slot-".$j] = ["seat_count" => null];
+            }
+        }
+        foreach ($slots as $index => $item) {
+            $date = jdate($item->date)->format('Y-m-d');
+            $slotsFoundByDate = Slot::where('date', $item->date)->get();
+            foreach ($slotsFoundByDate as $i => $s) {
+                $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["seat_count" => $countAthleteArr[$date][$i]];
+            }
+        }
+
         //dd($theUserSlots);
 
         return view('Admin.dashboard')->with([
