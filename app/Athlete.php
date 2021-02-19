@@ -14,4 +14,7 @@ class Athlete extends Model
     public function user(){
         return $this->belongsTo('App\User','id','athlete_id');
     }
+    public function role(){
+        return $this->hasOne('App\Role','id','role_id');
+    }
 }

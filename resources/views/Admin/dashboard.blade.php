@@ -37,7 +37,7 @@
                                     <select name="first_athlete" id="first_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id}}">{{ $athlete->name }}</option>
+                                          <option value="{{ $athlete->id}}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -45,7 +45,7 @@
                                     <select name="second_athlete" id="second_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
+                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -53,7 +53,7 @@
                                     <select name="third_athlete" id="third_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
+                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -200,6 +200,7 @@
                     success:function(result){
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
+                       console.log(res);
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
@@ -217,7 +218,6 @@
                         $('#saveBtn').prop('disabled',false);
                         $('#first_athlete').val(res[0][0]);
                         $('#first_athlete').trigger('change');
-                        console.log(res[1][0]);
                         $('#second_athlete').val(res[1][0]);
                         $('#second_athlete').trigger('change');
                         $('#third_athlete').val(res[2][0]);
@@ -236,24 +236,27 @@
 
     </script>
     <script type="text/javascript">
-       function removeItem(first, second_option, third_option) {
-        $(first).on('change', function() {
-            var x = $(this).val();
-            $(second_option).each(function() {
-                if ($(this).val() == x) {
-                    this.remove(x);
-                }
-            });
-            $(third_option).each(function() {
-                if ($(this).val() == x) {
-                    this.remove(x);
-                }
-            });
-        })
+    function removeItem(first,second,third){
+        $(first).on('change',function(){
+         var theValue = $(this).val();
+         $(second).each(function(){
+            if(this.value == theValue){
+                this.value = 0;
+                $(this).trigger('change.select2');
+            }
+         });
+         $(third).each(function(){
+            if(this.value == theValue){
+                this.value = 0;
+                $(this).trigger('change.select2');
+            }
+         });
+        });
     }
-    removeItem('#first_athlete', '#second_athlete option', '#third_athlete option');
-    removeItem('#second_athlete', '#first_athlete option', '#third_athlete option');
-    removeItem('#third_athlete', '#first_athlete option', '#second_athlete option');
+
+    removeItem('#first_athlete', '#second_athlete', '#third_athlete');
+    removeItem('#second_athlete', '#first_athlete', '#third_athlete');
+    removeItem('#third_athlete', '#first_athlete', '#second_athlete');
     </script>
     <script type="text/javascript">
         function select2_load_remote_data_with_ajax(item) {

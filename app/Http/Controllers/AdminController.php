@@ -91,9 +91,9 @@ class AdminController extends Controller
         $slot = SLot::where('start', $start)->where('end', $end)->where('date', $this->jalaliToGregorian($date))->first();
         if ($slot) {
             return [
-                [$slot->first_athlete ? $slot->first_athlete->id : 0, $slot->first_athlete ? $slot->first_athlete->first_name . ' ' . $slot->first_athlete->last_name : null],
-                [$slot->second_athlete ? $slot->second_athlete->id : 0, $slot->second_athlete ? $slot->second_athlete->first_name . ' ' . $slot->second_athlete->last_name : null],
-                [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name : null]
+                [$slot->first_athlete ? $slot->first_athlete->id : 0, $slot->first_athlete ? $slot->first_athlete->first_name . ' ' . $slot->first_athlete->last_name.'-'.$slot->first_athlete->phone : null],
+                [$slot->second_athlete ? $slot->second_athlete->id : 0, $slot->second_athlete ? $slot->second_athlete->first_name . ' ' . $slot->second_athlete->last_name.'-'.$slot->second_athlete->phone : null],
+                [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name.'-'.$slot->second_athlete->phone : null]
             ];
         }
         return [];
@@ -133,10 +133,16 @@ class AdminController extends Controller
         $end = 0;
         //$d = 0;
         $athletes = [];
-        $users = User::all();
-        foreach ($users as $user) {
-            if ($user->role->type == 'athlete') {
-                $athletes[] = $user;
+        // $users = User::all();
+        // foreach ($users as $user) {
+        //     if ($user->role->type == 'athlete') {
+        //         $athletes[] = $user;
+        //     }
+        // }
+        $athletes = Athlete::all();
+        foreach($athletes as $athlete){
+            if($athlete->role->name == 'athlete'){
+              $athletes[] = $athlete;
             }
         }
         $slots = Slot::where('athlete_id_1', '!=', null)->orWhere('athlete_id_2', '!=', null)->orWhere('athlete_id_3', '!=', null)->get();
