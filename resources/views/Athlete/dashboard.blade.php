@@ -88,7 +88,6 @@
                             @for($j = 1; $j <= 20; $j++)
                               @if((jdate()->format('w') + $i) % 7)
                                   @if(!empty($slots))
-                                  {{-- @if($slots["slot-".$j]["date"] == $date) --}}
                                   @if($slots["slot-".$j]["seat_count"] == 1)
                                 <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                     <div class="row justify-content-center">
@@ -97,40 +96,34 @@
                                         <i class="far fa-user"></i>
                                     </div>
                                 </td>
-                                {{-- @elseif($slots["slot-".$j]["seat_count"] == null)
-                                <td class="bg-maryam" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                    {{-- <div class="row justify-content-center">
-                                        <i class="fas fa-user accepted"></i>
+                                @elseif($slots["slot-".$j]["seat_count"] == null && $slots["slot-".$j]["is_mine"] == null)
+                                <td class="{{ $slots["is_mine"] == 1 ? 'table_inactive' : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                    <div class="row justify-content-center">
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
-                                    </div> --}}
-                                {{-- </td> --}}
+                                        <i class="far fa-user"></i>
+                                    </div>
+                                 </td>
                                 @elseif($slots["slot-".$j]["seat_count"] == 2)
                                 <td class="cursor_pointer hoverable"
                                 data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
                                 data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                 <div class="row justify-content-center">
-                                    {{-- @for($k = 0;$k < 3; $k++) --}}
                                     <i class="fas fa-user accepted"></i>
                                     <i class="fas fa-user accepted"></i>
                                     <i class="far fa-user"></i>
-                                        {{-- @endfor --}}
                                 </div>
                                 </td>
                                   @elseif($slots["slot-".$j]["seat_count"] == 3)
-                                  <td class="cursor_pointer hoverable"
+                                  <td class="{{ $slots["slot-".$j]["is_mine"] == 1 ? 'cursor_pointer hoverable' : ''}}"
                                   data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
                                   data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                   <div class="row justify-content-center">
                                       @for($k = 0;$k < 3; $k++) <i class="fas fa-user danger"></i>
                                           @endfor
                                   </div>
-                              </td>
-
-                                  @else
-                                  <td>hello</td>
-                                  @endif
-                                  {{-- @endif --}}
+                                </td>
+                              @endif
                                   @else
                                   <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
                                     <div class="row justify-content-center">

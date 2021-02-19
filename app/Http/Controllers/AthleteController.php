@@ -285,7 +285,7 @@ class AthleteController extends Controller
             for($j =1; $j <= 20; $j++){
                 $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null];
             }
-            //$theUserSlots[$date]["s21"] = $date;
+            $theUserSlots[$date]["is_mine"] = null;
         }
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
@@ -301,12 +301,21 @@ class AthleteController extends Controller
                             ->first();
                     })->first();
                 $theSelf = $theSwitch != null ? 1 : 0;
-                //if($countAthleteArr[$date][$i]){
-                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
-                //}
+                $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+            }
+            $theUserSlots[$date]["is_mine"] = 0;
+        }
+        foreach($theUserSlots as $x => $item){
+            foreach($item as $y => $index){
+               if(!empty($theUserSlots)){
+                   if($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]!= 0){
+                        $theUserSlots[$x]["is_mine"] = $theUserSlots[$x][$y]["is_mine"];
+                   }elseif($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]== 0){
+                        $theUserSlots[$x]["is_mine"] = 0;
+                   }
+               }
             }
         }
-        //dd($theUserSlots);
 
         $todayTime = jdate()->addDays(1)->format('H:i');
         return view('Athlete.dashboard')->with([
