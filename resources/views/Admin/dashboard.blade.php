@@ -200,7 +200,6 @@
                     success:function(result){
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
-                       console.log(res);
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
@@ -223,8 +222,6 @@
                         $('#third_athlete').val(res[2][0]);
                         $('#third_athlete').trigger('change');
                        }
-
-
                     },
                     error:function(){
                        //console.log(error);

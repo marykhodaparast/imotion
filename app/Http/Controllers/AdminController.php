@@ -30,7 +30,8 @@ class AdminController extends Controller
         if (count($arr) != count(array_unique($arr))) {
             $sw = 0;
             $request->session()->flash("msg_error", "حداقل ۲ مورد شبیه هم انتخاب شده اند.");
-        } else if ((!$allRequests[0] && !$allRequests[1] && !$allRequests[2]) || (!$allRequests[1] && !$allRequests[2])) {
+        }
+        else if ((!$allRequests[0] && !$allRequests[1] && !$allRequests[2])) {
             $sw = 0;
             $request->session()->flash("msg_error", "فیلدها خالی است.");
         }
@@ -93,7 +94,7 @@ class AdminController extends Controller
             return [
                 [$slot->first_athlete ? $slot->first_athlete->id : 0, $slot->first_athlete ? $slot->first_athlete->first_name . ' ' . $slot->first_athlete->last_name.'-'.$slot->first_athlete->phone : null],
                 [$slot->second_athlete ? $slot->second_athlete->id : 0, $slot->second_athlete ? $slot->second_athlete->first_name . ' ' . $slot->second_athlete->last_name.'-'.$slot->second_athlete->phone : null],
-                [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name.'-'.$slot->second_athlete->phone : null]
+                [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name.'-'.$slot->third_athlete->phone : null]
             ];
         }
         return [];
