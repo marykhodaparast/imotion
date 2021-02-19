@@ -42,7 +42,7 @@
                                     </select>
                                 </div>
                                 <div class="col-4" id="second_select" >
-                                    <select name="second_athlete" id="second_athlete" class="form-control">
+                                    <select name="second_athlete" id="second_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
@@ -50,7 +50,7 @@
                                     </select>
                                 </div>
                                 <div class="col-4" id="third_select">
-                                    <select name="third_athlete" id="third_athlete" class="form-control">
+                                    <select name="third_athlete" id="third_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
                                           <option value="{{ $athlete->id }}">{{ $athlete->name }}</option>
@@ -200,25 +200,34 @@
                     success:function(result){
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
+                       console.log(res);
                        $('#first_athlete > option').each(function(){
-                          if(this.value == res[0][0]){
+                          if(res.length != 0 ){
+                            if(this.value == res[0][0]){
                             this.value = res[0][0];
                             $('#first_athlete').select2().select2('val',this.value)
-
                           }
+                          }
+
                        });
                        $('#second_athlete > option').each(function(){
-                          if(this.value == res[1][0]){
+                           if(res.length != 0){
+                            if(this.value == res[1][0]){
                             this.value = res[1][0];
                             $('#second_athlete').select2().select2('val',this.value)
 
                           }
+                           }
+
                        });
                        $('#third_athlete > option').each(function(){
-                          if(this.value == res[2][0]){
+                           if(res.length != 0){
+                            if(this.value == res[2][0]){
                             this.value = res[2][0];
                             $('#third_athlete').select2().select2('val',this.value)
                           }
+                           }
+
                        });
                        if(nameofday != 'جمعه'){
                         $('#hidden_day').val(date);
