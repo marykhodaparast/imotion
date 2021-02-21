@@ -77,7 +77,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive my_rounded">
-                    <table class="table table-bordered bg-white">
+                    <table class="table table-bordered bg-white" id="admin_table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -158,7 +158,8 @@
                                           </div>
                                       </td>
                                         @endif
-
+                                    @else
+                                        <td class="fridayClass"></td>
                                     @endif
                                   @endfor
                               </tr>

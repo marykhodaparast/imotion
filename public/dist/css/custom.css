@@ -110,3 +110,18 @@ td{
 li.select2-results__option:empty {
     display: none;
 }
+#admin_table tr td:nth-child(odd) {
+    background: #f2f2f2 !important;
+}
+
+#admin_table tr td:nth-child(odd):hover {
+    background: #e0f5e0 !important;
+}
+
+#admin_table tr .fridayClass:nth-child(odd):hover {
+    background: #f2f2f2 !important
+}
+
+#admin_table tr th:nth-child(odd) {
+    background-color: #f2f2f2 !important;
+}
