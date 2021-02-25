@@ -125,3 +125,7 @@ li.select2-results__option:empty {
 #admin_table tr th:nth-child(odd) {
     background-color: #f2f2f2 !important;
 }
+#loading{
+    height:60px;
+    display:none;
+}

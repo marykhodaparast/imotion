@@ -63,6 +63,7 @@
                                     <button class="btn btn-primary mt-2" id="saveBtn" disabled>
                                         ذخیره
                                     </button>
+                                    <img src="/dist/img/loading_2.gif" id="loading"/>
                                 </div>
                             </div>
                         </form>
@@ -185,6 +186,7 @@
         $(document).ready(function() {
             $('select').next(".select2-container").hide();
             $('td').on('click', function() {
+                $('#loading').css('display','inline');
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
                 var date = $(this).data('date');
@@ -199,6 +201,7 @@
                         "_token": "{{ csrf_token() }}",
                     },
                     success:function(result){
+                        $('#loading').css('display','none');
                        $('#saveBtn').prop('disabled',false);
                        var res = result.data;
                        if(nameofday != 'جمعه'){
