@@ -255,9 +255,12 @@ class AthleteController extends Controller
             }
         }
         $theUserSlots = [];
+        $arrOfDates = [];
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
+            $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
         }
+        //dd($arrOfDates);
         $slotIndex = [
             "08:00:00" => 1,
             "08:30:00" => 2,
@@ -282,28 +285,32 @@ class AthleteController extends Controller
         ];
         foreach($slots as $item){
             $date = jdate($item->date)->format('Y-m-d');
-            for($j =1; $j <= 20; $j++){
-                $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null];
+            if(in_array($date,$arrOfDates)){
+                for($j =1; $j <= 20; $j++){
+                    $theUserSlots[$date]["slot-".$j] = ["is_mine" => null, "seat_count" => null];
+                }
+                $theUserSlots[$date]["is_mine"] = null;
             }
-            $theUserSlots[$date]["is_mine"] = null;
         }
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
-            $slotsFoundByDate = Slot::where('date', $item->date)->get();
-            foreach ($slotsFoundByDate as $i => $s) {
-                $theSwitch = Slot::where('date', $s->date)
-                    ->where('start', $s->start)
-                    ->where('end', $s->end)
-                    ->where(function ($query) use ($user) {
-                        $query->where('athlete_id_1', $user->id)
-                            ->orWhere('athlete_id_2', $user->id)
-                            ->orWhere('athlete_id_3', $user->id)
-                            ->first();
-                    })->first();
-                $theSelf = $theSwitch != null ? 1 : 0;
-                $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+            if(in_array($date,$arrOfDates)){
+                $slotsFoundByDate = Slot::where('date', $item->date)->get();
+                foreach ($slotsFoundByDate as $i => $s) {
+                    $theSwitch = Slot::where('date', $s->date)
+                        ->where('start', $s->start)
+                        ->where('end', $s->end)
+                        ->where(function ($query) use ($user) {
+                            $query->where('athlete_id_1', $user->id)
+                                ->orWhere('athlete_id_2', $user->id)
+                                ->orWhere('athlete_id_3', $user->id)
+                                ->first();
+                        })->first();
+                    $theSelf = $theSwitch != null ? 1 : 0;
+                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                }
+                $theUserSlots[$date]["is_mine"] = 0;
             }
-            $theUserSlots[$date]["is_mine"] = 0;
         }
         foreach($theUserSlots as $x => $item){
             foreach($item as $y => $index){

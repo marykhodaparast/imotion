@@ -172,8 +172,10 @@ class AdminController extends Controller
             }
         }
         $theUserSlots = [];
+        $arrOfDates = [];
         for ($i = 1; $i <= 30; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
+            $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
         }
         $slotIndex = [
             "08:00:00" => 1,
@@ -199,19 +201,21 @@ class AdminController extends Controller
         ];
         foreach($slots as $item){
             $date = jdate($item->date)->format('Y-m-d');
-            for($j =1; $j <= 20; $j++){
-                $theUserSlots[$date]["slot-".$j] = ["seat_count" => null];
+            if(in_array($date,$arrOfDates)){
+                for($j =1; $j <= 20; $j++){
+                    $theUserSlots[$date]["slot-".$j] = ["seat_count" => null];
+                }
             }
         }
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
-            $slotsFoundByDate = Slot::where('date', $item->date)->get();
-            foreach ($slotsFoundByDate as $i => $s) {
-                $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["seat_count" => $countAthleteArr[$date][$i]];
+            if(in_array($date,$arrOfDates)){
+                $slotsFoundByDate = Slot::where('date', $item->date)->get();
+                foreach ($slotsFoundByDate as $i => $s) {
+                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["seat_count" => $countAthleteArr[$date][$i]];
+                }
             }
         }
-
-        //dd($theUserSlots);
 
         return view('Admin.dashboard')->with([
             'from_date' => $from_date,
