@@ -90,7 +90,7 @@
                                   @if(!empty($slots))
                                   @if($slots["slot-".$j]["seat_count"] == 1)
                                 <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                    <div class="row justify-content-center">
+                                    <div class="row width-50 mx-auto">
                                         <i class="fas fa-user accepted"></i>
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
@@ -98,7 +98,7 @@
                                 </td>
                                 @elseif($slots["slot-".$j]["seat_count"] == null && $slots["slot-".$j]["is_mine"] == null)
                                 <td class="{{ $slots["is_mine"] == 1 ? 'table_inactive' : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                    <div class="row justify-content-center">
+                                    <div class="row  width-50 mx-auto">
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
@@ -108,7 +108,7 @@
                                 <td class="cursor_pointer hoverable"
                                 data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
                                 data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                <div class="row justify-content-center">
+                                <div class="row width-50 mx-auto">
                                     <i class="fas fa-user accepted"></i>
                                     <i class="fas fa-user accepted"></i>
                                     <i class="far fa-user"></i>
@@ -118,7 +118,7 @@
                                   <td class="{{ $slots["slot-".$j]["is_mine"] == 1 ? 'cursor_pointer hoverable' : ''}}"
                                   data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
                                   data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                  <div class="row justify-content-center">
+                                  <div class="row width-50 mx-auto">
                                       @for($k = 0;$k < 3; $k++) <i class="fas fa-user danger"></i>
                                           @endfor
                                   </div>
@@ -126,11 +126,15 @@
                               @endif
                                   @else
                                   <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
-                                    <div class="row justify-content-center">
+                                    {{-- <div class="row justify-content-center width-50"> --}}
+                                    <div class="row width-50 mx-auto">
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
                                     </div>
+
+                                    {{-- </div> --}}
+                                    {{-- <div class="row">he</div> --}}
                                 </td>
                                   @endif
 

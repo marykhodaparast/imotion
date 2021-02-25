@@ -129,3 +129,6 @@ li.select2-results__option:empty {
     height:60px;
     display:none;
 }
+.width-50{
+    width:50px !important;;
+}
