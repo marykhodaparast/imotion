@@ -105,7 +105,7 @@
                     </div>
                     <input value="{{ old('password') }}" type="text" class="form-control" placeholder="تکرار رمز عبور" id="mobile" name="password">
                 </div>
-                <div class="col-12">
+                <div class="">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
                   </div>
             </form>
