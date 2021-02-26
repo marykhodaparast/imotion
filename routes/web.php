@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', 'UserController@login')->name('login');
 Route::post('/login', 'UserController@login')->name('dologin');
 Route::get('/register', 'RegisterController@index')->name('register');
-Route::post('/register', 'RegisterController@sendsms')->name('sendsms');
-Route::post('/register/checksms', 'RegisterController@checksms')->name('checksms');
-Route::post('/register/createuser', 'RegisterController@createuser')->name('createuser');
+// Route::post('/register', 'RegisterController@sendsms')->name('sendsms');
+// Route::post('/register/checksms', 'RegisterController@checksms')->name('checksms');
+// Route::post('/register/createuser', 'RegisterController@createuser')->name('createuser');
+Route::post('/register','RegisterController@createuser')->name('createuser');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard_admin');
 

@@ -54,8 +54,8 @@
         </div>
         @endif
         <div class="register-box-body card p-3">
-            <p class="login-box-msg">ثبت نام ورزشکار</p>
-            <form id="frm1" action="{{ route('sendsms') }}" method="post">
+            <p class="login-box-msg">ثبت نام </p>
+            <form id="frm1" action="{{ route('createuser') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
                     <div class="input-group-append">
@@ -105,9 +105,17 @@
                     </div>
                     <input value="{{ old('password') }}" type="text" class="form-control" placeholder="تکرار رمز عبور" id="mobile" name="password">
                 </div>
-                <div class="">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
+                    </div>
+                    <div class="col-md-8 col-sm-6 col-xs-12 mt-2">
+                        <a href="{{ route('login') }}">قبلا عضو شده ام.</a>
+                    </div>
+                </div>
+                {{-- <div class="">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
-                  </div>
+                  </div> --}}
             </form>
 
         </div><!-- /.form-box -->

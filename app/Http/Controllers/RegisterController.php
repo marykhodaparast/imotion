@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Athlete;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +28,18 @@ class RegisterController extends Controller
          'first_step'=>1 ]);
     }
     public function createuser(Request $request){
+
         if($request->getMethod()=='GET'){
             return view('layouts.register', [
                 "error" => "اطلاعات صحیح ارسال نشده است",
                 'provinces'=>[] ,
                 'first_step'=>1
+            ]);
+        }else{
+            $request->validate([
+                'first_name' => 'required|min:3|max:255',
+                'last_name' => 'required|min:3|max:255',
+                'phone' => 'required|numeric|size:11',
             ]);
         }
 
@@ -45,24 +53,26 @@ class RegisterController extends Controller
                 ]);
         }
         //$res = Sms_validation::where('mobile', $request->input('mobile'))->where('sms_code', $request->input('sms_code'))->first();
+        $athlete = new Athlete;
+        $athlete->first_name = $request->input('fname');
+        $athlete->last_name = $request->input('lname');
+        $athlete->phone = $request->input('mobile');
+        $athlete->role_id = 1;
+        try{
+            $athlete->save();
+        }catch(Exception $e){
+            dd($e);
+        }
         $user = new User;
         //$userInfo = json_decode($res->user_info);
-        //$user->email = $userInfo->mobile;
+        $user->email = $request->email;
         $user->password = Hash::make($request->input('password'));
-        //$user->first_name = $userInfo->fname;
+        $user->name = $request->fname.' '.$request->lname;
+        $user->role_id = 1;
         //$user->last_name = $userInfo->lname;
         //$group = Group::select('id')->where('name','Marketer')->first();
         //$user->groups_id = $group->id;
         $user->save();
-        // $marketer  = new Marketer;
-        // $marketer->users_id = $user->id;
-        // $marketer->first_name = $userInfo->fname;
-        // $marketer->last_name = $userInfo->lname;
-        // $marketer->cell_phone = $userInfo->mobile;
-        // $marketer->provinces_id = $userInfo->province;
-        // $marketer->city = $userInfo->city;
-        //$marketer->save();
-        //Sms_validation::where('mobile',$userInfo->mobile)->delete();
         return view(
             'layouts.register',
             [
