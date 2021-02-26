@@ -68,7 +68,7 @@
                 <div class="input-group mb-3">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                            <span class="fas fa-user"></span>
                         </div>
                     </div>
                     <input value="{{ old('lname') }}" type="text" class="form-control" placeholder="نام خانوادگی" id="lname" name="lname">
@@ -76,11 +76,38 @@
                 <div class="input-group mb-3">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                            <span class="fas fa-phone"></span>
                         </div>
                     </div>
                     <input value="{{ old('mobile') }}" type="text" class="form-control" placeholder="تلفن همراه" id="mobile" name="mobile">
                 </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                    <input value="{{ old('email') }}" type="text" class="form-control" placeholder="ایمیل" id="mobile" name="email">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    <input value="{{ old('password') }}" type="text" class="form-control" placeholder="رمز عبور" id="mobile" name="password">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    <input value="{{ old('password') }}" type="text" class="form-control" placeholder="تکرار رمز عبور" id="mobile" name="password">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
+                  </div>
             </form>
 
         </div><!-- /.form-box -->
