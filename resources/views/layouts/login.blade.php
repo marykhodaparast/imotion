@@ -59,10 +59,11 @@
               </a>
             </div>
           </div>
-          <!-- /.col -->
-          <div class="col-12">
+          <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block btn-flat">ورود</button>
           </div>
+          <!-- /.col -->
+
           <!-- /.col -->
         </div>
       </form>
