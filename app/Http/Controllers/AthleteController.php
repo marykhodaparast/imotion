@@ -324,7 +324,8 @@ class AthleteController extends Controller
             }
         }
 
-        $todayTime = jdate()->addDays(1)->format('H:i');
+        $todayDate = jdate()->format('Y-m-d');
+        $todayTime = jdate()->format('H:i');
         return view('Athlete.dashboard')->with([
             'from_date' => $from_date,
             'arrOfTimes' => $arrOfTimes,
@@ -335,6 +336,7 @@ class AthleteController extends Controller
             'i' => $i,
             'sw' => $sw,
             'todayTime' => $todayTime,
+            'todayDate' => $todayDate,
             'count' => $countAthleteArr,
             'cancel' => $cancel
         ]);

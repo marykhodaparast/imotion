@@ -89,7 +89,9 @@
                               @if((jdate()->format('w') + $i) % 7)
                                   @if(!empty($slots))
                                   @if($slots["slot-".$j]["seat_count"] == 1)
-                                <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                    data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}"
+                                >
                                     <div class="row width-50 mx-auto">
                                         <i class="fas fa-user accepted"></i>
                                         <i class="far fa-user"></i>
@@ -97,7 +99,10 @@
                                     </div>
                                 </td>
                                 @elseif($slots["slot-".$j]["seat_count"] == null && $slots["slot-".$j]["is_mine"] == null)
-                                <td class="{{ $slots["is_mine"] == 1 ? 'table_inactive' : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                <td class="{{ $slots["is_mine"] == 1 ? 'table_inactive' : 'cursor_pointer hoverable' }}"
+                                data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}"
+                               >
                                     <div class="row  width-50 mx-auto">
                                         <i class="far fa-user"></i>
                                         <i class="far fa-user"></i>
@@ -107,7 +112,8 @@
                                 @elseif($slots["slot-".$j]["seat_count"] == 2)
                                 <td class="cursor_pointer hoverable"
                                 data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
-                                data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}"
+                                >
                                 <div class="row width-50 mx-auto">
                                     <i class="fas fa-user accepted"></i>
                                     <i class="fas fa-user accepted"></i>
@@ -117,7 +123,8 @@
                                   @elseif($slots["slot-".$j]["seat_count"] == 3)
                                   <td class="{{ $slots["slot-".$j]["is_mine"] == 1 ? 'cursor_pointer hoverable' : ''}}"
                                   data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
-                                  data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                  data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}"
+                                 >
                                   <div class="row width-50 mx-auto">
                                       @for($k = 0;$k < 3; $k++) <i class="fas fa-user danger"></i>
                                           @endfor
@@ -125,7 +132,10 @@
                                 </td>
                               @endif
                                   @else
-                                  <td class="cursor_pointer hoverable" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}">
+                                  <td class="cursor_pointer hoverable"
+                                  data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}"
+                                  data-nameOfDay="{{jdate()->addDays($i - 1)->format('l')}}"
+                                  >
                                     {{-- <div class="row justify-content-center width-50"> --}}
                                     <div class="row width-50 mx-auto">
                                         <i class="far fa-user"></i>
@@ -159,6 +169,9 @@
 <!-- Select2 -->
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script>
+    var arrOfTimes = [];
+    var todayTime = null;
+    var todayDate = null;
     function toPersianNum( num, dontTrim ) {
 
           var i = 0,
@@ -183,13 +196,26 @@
 
         return res;
     }
-
         $(document).ready(function() {
             $('select.select2').select2();
+            todayTime = '{{ $todayTime }}';
+            todayDate = '{{ $todayDate }}';
+            $('td').each(function(){
+                var column = $(this).closest("td").index();
+                if($(this).data('date') == todayDate){
+                    column = $('tr').children('.c_' + column).data('time');
+                    arrOfTimes = column.split(' - ');
+                    if(todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])){
+                       $(this).addClass('table_inactive');
+                       $(this).removeClass('cursor_pointer hoverable');
+                    }
+                }
+            });
             $('td').on('click', function() {
-                $('#saveBtn').removeClass('display_none');
-                if($(this).siblings().hasClass('table_inactive')){
-                    console.log('hello');
+                if(!$(this).hasClass('table_inactive')){
+                    $('#saveBtn').removeClass('display_none');
+                }
+                if($(this).siblings().hasClass('table_inactive') && $(this).data('date') != todayDate){
                     $('#saveBtn').text('لغو');
                     $('#saveBtn').removeClass('btn-primary');
                     $('#saveBtn').addClass('btn-danger');
