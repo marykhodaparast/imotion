@@ -8,6 +8,7 @@ use App\Slot;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class AthleteController extends Controller
@@ -106,7 +107,15 @@ class AthleteController extends Controller
         $found = null;
         $cancel = '';
         $slots = Slot::all();
-        $slotsOfTheUser = Slot::where('athlete_id_1', $user->id)->orWhere('athlete_id_2', $user->id)->orWhere('athlete_id_3', $user->id)->get();
+        $englishDates = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
+        }
+        $slotsOfTheUser = Slot::where(function($query) use($user){
+           $query->where('athlete_id_1', $user->id)
+           ->orWhere('athlete_id_2', $user->id)
+           ->orWhere('athlete_id_3', $user->id);
+        })->whereIn('date',$englishDates)->get();
         if ($request->getMethod() == 'POST') {
 
             if ($request->input('time')) {
