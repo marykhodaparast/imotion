@@ -315,15 +315,17 @@ class AthleteController extends Controller
         foreach($theUserSlots as $x => $item){
             foreach($item as $y => $index){
                if(!empty($theUserSlots)){
-                   if($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]!= 0){
-                        $theUserSlots[$x]["is_mine"] = $theUserSlots[$x][$y]["is_mine"];
-                   }elseif($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]== 0){
-                        $theUserSlots[$x]["is_mine"] = 0;
-                   }
+                    if(is_array($theUserSlots[$x][$y])){
+                        if($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]!= 0){
+                            $theUserSlots[$x]["is_mine"] = $theUserSlots[$x][$y]["is_mine"];
+                       }elseif($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"]== 0){
+                            $theUserSlots[$x]["is_mine"] = 0;
+                       }
+                    }
+
                }
             }
         }
-
         $todayDate = jdate()->format('Y-m-d');
         $todayTime = jdate()->format('H:i');
         return view('Athlete.dashboard')->with([
