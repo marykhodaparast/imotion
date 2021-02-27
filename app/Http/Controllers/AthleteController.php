@@ -164,8 +164,7 @@ class AthleteController extends Controller
                     $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
                     return redirect()->back();
                 }
-            }
-            if (count($slotsOfTheUser) >= 2) {
+            }else if (count($slotsOfTheUser) >= 2) {
                 $sw = 1;
                 $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
                 return redirect()->back();
@@ -176,13 +175,14 @@ class AthleteController extends Controller
                 $thirdAthlete = $found->athlete_id_3;
                 $athletes = [$firstAthlete, $secondAthlete, $thirdAthlete];
                 if (empty(array_filter($athletes))) {
-                    $slot = new Slot;
-                    $slot->start = $start;
-                    $slot->end = $end;
-                    $slot->date = $from_date;
-                    $slot->athlete_id_1 = Auth::user()->id;
+                //if($athletes[0] == null && $athletes[1] == null && $athletes[2] == null){
+                    //$slot = new Slot;
+                    $found->start = $start;
+                    $found->end = $end;
+                    $found->date = $from_date;
+                    $found->athlete_id_1 = Auth::user()->id;
                     try {
-                        $slot->save();
+                        $found->save();
                         $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
                         return redirect()->back();
                     } catch (Exception $e) {
