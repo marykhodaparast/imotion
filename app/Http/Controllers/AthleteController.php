@@ -57,7 +57,7 @@ class AthleteController extends Controller
             }
             $y = (($y < 1000) ? $y + 1300 : $y);
             $gregorian = CalendarUtils::toGregorian($y, $m, $d);
-            $gregorian = $gregorian[0] . "-" . $gregorian[1] . "-" . $gregorian[2];
+            $gregorian = $gregorian[0] . "-" . ($gregorian[1] < 10 ? '0'.$gregorian[1]: $gregorian[1]) . "-" . ($gregorian[2] < 10 ? '0'.$gregorian[2]: $gregorian[2]);
         }
         return $gregorian;
     }
@@ -138,33 +138,31 @@ class AthleteController extends Controller
                 ->where('end', $end)
                 ->where('date', $from_date)
                 ->first();
-            $foundTheLoginUser = Slot::where('start', $start)
-                ->where('end', $end)
-                ->where('date', $from_date)->where(function ($query) use ($user) {
-                    $query->where('athlete_id_1', $user->id)->orWhere('athlete_id_2', $user->id)->orWhere('athlete_id_3', $user->id);
-                })->first();
-
-            if ($foundTheLoginUser) {
-                $first = $foundTheLoginUser->athlete_id_1;
-                $second = $foundTheLoginUser->athlete_id_2;
-                $third = $foundTheLoginUser->athlete_id_3;
-                if ($first == $user->id) {
-                    $foundTheLoginUser->athlete_id_1 = 0;
-                    $foundTheLoginUser->save();
-                    $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-                    return redirect()->back();
-                } else if ($second == $user->id) {
-                    $foundTheLoginUser->athlete_id_2 = 0;
-                    $foundTheLoginUser->save();
-                    $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-                    return redirect()->back();
-                } else if ($third == $user->id) {
-                    $foundTheLoginUser->athlete_id_3 = 0;
-                    $foundTheLoginUser->save();
-                    $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-                    return redirect()->back();
+            if($found){
+                if ($found->athlete_id_1 == $user->id || $found->athlete_id_2 == $user->id || $found->athlete_id_3 == $user->id) {
+                    $first = $found->athlete_id_1;
+                    $second = $found->athlete_id_2;
+                    $third = $found->athlete_id_3;
+                    if ($first == $user->id) {
+                        $found->athlete_id_1 = 0;
+                        $found->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    } else if ($second == $user->id) {
+                        $found->athlete_id_2 = 0;
+                        $found->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    } else if ($third == $user->id) {
+                        $found->athlete_id_3 = 0;
+                        $found->save();
+                        $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
+                        return redirect()->back();
+                    }
                 }
-            }else if (count($slotsOfTheUser) >= 2) {
+            }
+
+            if (count($slotsOfTheUser) >= 2) {
                 $sw = 1;
                 $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
                 return redirect()->back();
