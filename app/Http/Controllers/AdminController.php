@@ -80,7 +80,7 @@ class AdminController extends Controller
             }
             $y = (($y < 1000) ? $y + 1300 : $y);
             $gregorian = CalendarUtils::toGregorian($y, $m, $d);
-            $gregorian = $gregorian[0] . "-" . $gregorian[1] . "-" . $gregorian[2];
+            $gregorian = $gregorian[0] . "-" . ($gregorian[1] < 10 ? '0'.$gregorian[1]: $gregorian[1]) . "-" . ($gregorian[2] < 10 ? '0'.$gregorian[2]: $gregorian[2]);
         }
         return $gregorian;
     }
