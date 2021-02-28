@@ -17,6 +17,7 @@ class UserController extends Controller
         if($request->method()=='GET'){
             return view('layouts.login');
         }
+        //dd($request->all());
 
         if($request->input('email')==null || $request->input('password')==null){
             return view('layouts.login', [
