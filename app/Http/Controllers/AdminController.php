@@ -284,10 +284,10 @@ class AdminController extends Controller
     public function getAllSelects(Request $request){
         $search = trim($request->search);
         if ($search == '') {
-            $athletes = Athlete::orderby('id', 'desc')->select('id', 'first_name', 'last_name', 'phone')->where('role_id','!=',2)->get();
+            $athletes = User::orderby('id', 'desc')->select('id', 'name', 'email')->where('role_id','!=',2)->get();
         } else {
-            $athletes = Athlete::select('id', 'first_name', 'last_name', 'phone',DB::raw("CONCAT(first_name,' ',last_name)"))->where('role_id','!=',2)->where(function ($query) use ($search) {
-                $query->where(DB::raw("CONCAT(first_name,' ',last_name)"),'like','%'.$search.'%')->orWhere('phone','like','%'.$search.'%');
+            $athletes = User::select('id', 'name', 'email')->where('role_id','!=',2)->where(function ($query) use ($search) {
+                $query->where("name",'like','%'.$search.'%')->orWhere('email','like','%'.$search.'%');
             })->orderby('id','desc')->get();
         }
         $response = array();
