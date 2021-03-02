@@ -23,145 +23,74 @@
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="/dist/css/custom.css">
 </head>
-<body class="hold-transition register-page bg-image">
-    <div class="register-box">
-        <div class="register-logo">
-            <a> {{ env('APP_NAME') }}</a>
-        </div>
-        @auth
-        <div class="card p-3">
-            <div class="alert alert-danger">
-                قبلا ثبت نام انجام شده است
+<body class="hold-transition register-page">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>ثبت نام</h1>
             </div>
-            <a href="/" class="btn btn-block btn-success"> بازگشت</a>
-        </div>
-        @endauth
-        @isset($error)
-        <div class="alert alert-danger">
-            <ul>
-                <li>{{ $error }}</li>
-            </ul>
-        </div>
-        @endisset
-        @guest
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-        <div class="register-box-body card p-3">
-            <p class="login-box-msg">ثبت نام </p>
-            <form id="frm1" action="{{ route('createuser') }}" method="post">
+            <div class="col-sm-6">
+              <!--
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">DataTables</li>
+              </ol>
+              -->
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="first_name">نام</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="نام"  />
+                        </div>
+
+
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last_name">نام خانوادگی</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="نام خانوادگی"  />
                         </div>
                     </div>
-                    <input value="{{ old('fname') }}" type="text" class="form-control" placeholder="نام" id="fname" name="fname">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
-                        </div>
-                    </div>
-                    <input value="{{ old('lname') }}" type="text" class="form-control" placeholder="نام خانوادگی" id="lname" name="lname">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-phone"></span>
-                        </div>
-                    </div>
-                    <input value="{{ old('mobile') }}" type="text" class="form-control" placeholder="تلفن همراه" id="mobile" name="mobile">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
-                    <input value="{{ old('email') }}" type="text" class="form-control" placeholder="ایمیل" id="mobile" name="email">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                    <input value="{{ old('password') }}" type="text" class="form-control" placeholder="رمز عبور" id="mobile" name="password">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                    <input value="{{ old('password') }}" type="text" class="form-control" placeholder="تکرار رمز عبور" id="mobile" name="password">
                 </div>
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
-                    </div>
-                    <div class="col-md-8 col-sm-6 col-xs-12 mt-2">
-                        <a href="{{ route('login') }}">قبلا عضو شده ام.</a>
+                    <div class="col">
+                        <button class="btn btn-primary">
+                            ذخیره
+                        </button>
                     </div>
                 </div>
-                {{-- <div class="">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>
-                  </div> --}}
-            </form>
-
-        </div><!-- /.form-box -->
-        @endguest
-    </div><!-- /.register-box -->
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
     <!-- jQuery -->
     <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    @isset($first_step)
-    <script>
-        $(document).ready(() => {
-            $("#first_step").on('click', () => {
-                let ok = true;
-                $("#frm1 :input").each(function() {
-                    $(this).css("border", "1px solid rgb(206, 212, 218)");
-                    if ($(this).prop('id') != "") {
-                        if ($(this).val() == "") {
-                            $(this).css("border", "solid 1px red");
-                            ok = false;
-                        }
-                    }
-                });
-                if (!ok) {
-                    $("#msg").html('لطفا کلیه موارد را وارد کنید');
-                    $("#msg").addClass("alert").addClass("alert-danger");
-                    return;
-                }
-                $("#frm1").submit();
-            });
-        });
-
-    </script>
-    @endisset
-
-
-    @isset($final_step)
-    <script>
-        $(document).ready(() => {
-            setTimeout(() => {
-                window.location = "{{ route('login') }}";
-            }, 4000);
-        });
-
-    </script>
-    @endisset
 </body>
 </html>
