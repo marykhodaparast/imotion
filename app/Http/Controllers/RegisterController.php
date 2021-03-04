@@ -11,6 +11,7 @@ use App\Province;
 use App\User;
 use App\Marketer;
 use App\Group;
+use App\Role;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -30,56 +31,73 @@ class RegisterController extends Controller
     public function createuser(Request $request){
 
         if($request->getMethod()=='GET'){
-            return view('layouts.register', [
-                "error" => "اطلاعات صحیح ارسال نشده است",
-                'provinces'=>[] ,
-                'first_step'=>1
-            ]);
-        }else{
-            $request->validate([
-                'first_name' => 'required|min:3|max:255',
-                'last_name' => 'required|min:3|max:255',
-                'phone' => 'required|numeric|size:11',
-            ]);
+            return view('layouts.register');
         }
 
-        $userCount = User::where('email', $request->input('mobile'))->count();
+        $request->validate([
+            'first_name' => 'required|min:3|max:255',
+            'last_name' => 'required|min:3|max:255',
+            'cell' => 'required|numeric|min:11',
+        ]);
+
+        // dd($request->all());
+        $userCount = User::where('email', $request->input('cell'))->count();
         if ($userCount > 0) {
-            //$provinces = Province::pluck('name', 'id');
             return view('layouts.register', [
-                //'provinces'=>$provinces ,
-                "error" => "تلفن همراه {$request->input('mobile')} قبلا ثبت نام شده است" ,
-                'first_step'=>1
-                ]);
+                "custom_error" => "تلفن همراه {$request->input('cell')} قبلا ثبت نام شده است" 
+            ]);
         }
-        //$res = Sms_validation::where('mobile', $request->input('mobile'))->where('sms_code', $request->input('sms_code'))->first();
+        
+        $athleteRole = Role::where("type", "athlete")->first();
+        if($athleteRole)
+            $athleteRole = $athleteRole->id;
+        else 
+            $athleteRole = 1;
+
+        $user = new User;
+        $user->email = $request->input('cell');
+        $user->password = Hash::make($request->input('password'));
+        $user->name = $request->fname.' '.$request->lname;
+        $user->role_id = $athleteRole;
+        $user->save();
+        
+
         $athlete = new Athlete;
         $athlete->first_name = $request->input('fname');
         $athlete->last_name = $request->input('lname');
-        $athlete->phone = $request->input('mobile');
-        $athlete->role_id = 1;
-        try{
-            $athlete->save();
-        }catch(Exception $e){
-            dd($e);
-        }
-        $user = new User;
-        //$userInfo = json_decode($res->user_info);
-        $user->email = $request->email;
-        $user->password = Hash::make($request->input('password'));
-        $user->name = $request->fname.' '.$request->lname;
-        $user->role_id = 1;
-        //$user->last_name = $userInfo->lname;
-        //$group = Group::select('id')->where('name','Marketer')->first();
-        //$user->groups_id = $group->id;
-        $user->save();
-        return view(
-            'layouts.register',
-            [
-                'smsMessage' => 'ثبت نام با موفقیت انجام شد لطفا کمی صبر کنید',
-                'provinces'=>[],
-                'final_step' => 1
-            ]
-        );
+        $athlete->cell = $request->input('cell');
+        $athlete->users_id = $user->id;
+        $athlete->email = $request->input('email');
+        $athlete->father_name = $request->input('father_name');
+        $athlete->birthdate = $request->input('birthdate');
+        $athlete->address = $request->input('address');
+        $athlete->id_number = $request->input('id_number');
+        $athlete->education = $request->input('education');
+        $athlete->job = $request->input('job');
+        $athlete->position = $request->input('position');
+        $athlete->cell_telegram = $request->input('cell_telegram');
+        $athlete->emergency_phone = $request->input('emergency_phone');
+        $athlete->referrer = $request->input('referrer');
+        $athlete->ems_exp = $request->input('ems_exp');
+        $athlete->sport_exp = $request->input('sport_exp');
+        $athlete->diet_weekly_call = isset($request->all['diet_weekly_call']);
+        $athlete->before_session_call = isset($request->all['before_session_call']);
+        $athlete->goal_muscle = isset($request->all['goal_muscle']);
+        $athlete->goal_ass_nice = isset($request->all['goal_ass_nice']);
+        $athlete->goal_fat = isset($request->all['goal_fat']);
+        $athlete->goal_ass_small = isset($request->all['goal_ass_small']);
+        $athlete->goal_belly_small = isset($request->all['goal_belly_small']);
+        $athlete->goal_belly_nice = isset($request->all['goal_belly_nice']);
+        $athlete->goal_tit_small = isset($request->all['goal_tit_small']);
+        $athlete->goal_arm_muscle = isset($request->all['goal_arm_muscle']);
+        $athlete->goal_foot_nice = isset($request->all['goal_foot_nice']);
+        $athlete->goal_arm_small = isset($request->all['goal_arm_small']);
+        $athlete->goal_foot_small = isset($request->all['goal_foot_small']);
+        $athlete->goal_back_nice = isset($request->all['goal_back_nice']);
+        $athlete->goal_other = isset($request->all['goal_other']);
+        $athlete->description = isset($request->all['description']);
+        $athlete->save();
+
+        return redirect()->route('login');
     }
 }
