@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Athlete;
+use App\Http\Requests\AdminIndexRequest;
+use App\Slot;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\CalendarUtils;
-use Exception;
-use App\Slot;
-use App\User;
-use App\Athlete;
-use Illuminate\Support\Facades\DB;
 
-
-class AdminController extends Controller
+class Admin1Controller extends Controller
 {
     public function arrForComparingRepeatedItems($first, $second, $third)
     {
@@ -30,8 +28,7 @@ class AdminController extends Controller
         if (count($arr) != count(array_unique($arr))) {
             $sw = 0;
             $request->session()->flash("msg_error", "حداقل ۲ مورد شبیه هم انتخاب شده اند.");
-        }
-        else if ((!$allRequests[0] && !$allRequests[1] && !$allRequests[2])) {
+        } else if ((!$allRequests[0] && !$allRequests[1] && !$allRequests[2])) {
             $sw = 0;
             $request->session()->flash("msg_error", "فیلدها خالی است.");
         }
@@ -39,16 +36,16 @@ class AdminController extends Controller
     }
     public function toPersianNum($number)
     {
-        $number = str_replace("1","۱",$number);
-        $number = str_replace("2","۲",$number);
-        $number = str_replace("3","۳",$number);
-        $number = str_replace("4","۴",$number);
-        $number = str_replace("5","۵",$number);
-        $number = str_replace("6","۶",$number);
-        $number = str_replace("7","۷",$number);
-        $number = str_replace("8","۸",$number);
-        $number = str_replace("9","۹",$number);
-        $number = str_replace("0","۰",$number);
+        $number = str_replace("1", "۱", $number);
+        $number = str_replace("2", "۲", $number);
+        $number = str_replace("3", "۳", $number);
+        $number = str_replace("4", "۴", $number);
+        $number = str_replace("5", "۵", $number);
+        $number = str_replace("6", "۶", $number);
+        $number = str_replace("7", "۷", $number);
+        $number = str_replace("8", "۸", $number);
+        $number = str_replace("9", "۹", $number);
+        $number = str_replace("0", "۰", $number);
         return $number;
     }
     public static function persianToEnglishDigits($pnumber)
@@ -70,9 +67,9 @@ class AdminController extends Controller
         $pdate = explode('-', AthleteController::persianToEnglishDigits($pdate));
         $date = "";
         if (count($pdate) == 3) {
-            $y = (int)$pdate[0];
-            $m = (int)$pdate[1];
-            $d = (int)$pdate[2];
+            $y = (int) $pdate[0];
+            $m = (int) $pdate[1];
+            $d = (int) $pdate[2];
             if ($d > $y) {
                 $tmp = $d;
                 $d = $y;
@@ -80,7 +77,7 @@ class AdminController extends Controller
             }
             $y = (($y < 1000) ? $y + 1300 : $y);
             $gregorian = CalendarUtils::toGregorian($y, $m, $d);
-            $gregorian = $gregorian[0] . "-" . ($gregorian[1] < 10 ? '0'.$gregorian[1]: $gregorian[1]) . "-" . ($gregorian[2] < 10 ? '0'.$gregorian[2]: $gregorian[2]);
+            $gregorian = $gregorian[0] . "-" . ($gregorian[1] < 10 ? '0' . $gregorian[1] : $gregorian[1]) . "-" . ($gregorian[2] < 10 ? '0' . $gregorian[2] : $gregorian[2]);
         }
         return $gregorian;
     }
@@ -92,22 +89,27 @@ class AdminController extends Controller
         $slot = SLot::where('start', $start)->where('end', $end)->where('date', $this->jalaliToGregorian($date))->first();
         if ($slot) {
             return [
-                [$slot->first_athlete ? $slot->first_athlete->id : 0, $slot->first_athlete ? $slot->first_athlete->first_name . ' ' . $slot->first_athlete->last_name.'-'.$slot->first_athlete->phone : null],
-                [$slot->second_athlete ? $slot->second_athlete->id : 0, $slot->second_athlete ? $slot->second_athlete->first_name . ' ' . $slot->second_athlete->last_name.'-'.$slot->second_athlete->phone : null],
-                [$slot->third_athlete ? $slot->third_athlete->id : 0,  $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name.'-'.$slot->third_athlete->phone : null]
+                [$slot->first_athlete ? $slot->first_athlete->id : 0, $slot->first_athlete ? $slot->first_athlete->first_name . ' ' . $slot->first_athlete->last_name . '-' . $slot->first_athlete->phone : null],
+                [$slot->second_athlete ? $slot->second_athlete->id : 0, $slot->second_athlete ? $slot->second_athlete->first_name . ' ' . $slot->second_athlete->last_name . '-' . $slot->second_athlete->phone : null],
+                [$slot->third_athlete ? $slot->third_athlete->id : 0, $slot->third_athlete ? $slot->third_athlete->first_name . ' ' . $slot->third_athlete->last_name . '-' . $slot->third_athlete->phone : null],
             ];
         }
         return [];
     }
-    public function dashboard(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
+
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
         $s = 0;
         $i = 1;
         $countAthleteArr = [];
-        $arr = [];
         $arrOfTimes = [
             '08:00 - 08:30' => $this->toPersianNum('8'),
             '08:30 - 09:00' => $this->toPersianNum('8/5'),
@@ -128,38 +130,23 @@ class AdminController extends Controller
             '16:00 - 16:30' => $this->toPersianNum('16'),
             '16:30 - 17:00' => $this->toPersianNum('16/5'),
             '17:00 - 17:30' => $this->toPersianNum('17'),
-            '17:30 - 18:00' => $this->toPersianNum('17/5')
+            '17:30 - 18:00' => $this->toPersianNum('17/5'),
         ];
-        $start = 0;
-        $end = 0;
-        //$d = 0;
-        $athletes = [];
-        // $users = User::all();
-        // foreach ($users as $user) {
-        //     if ($user->role->type == 'athlete') {
-        //         $athletes[] = $user;
-        //     }
-        // }
-        $athletes = Athlete::all();
-        foreach($athletes as $athlete){
-            if($athlete->role->name == 'athlete'){
-              $athletes[] = $athlete;
-            }
-        }
+        $athletes = Athlete::where('is_deleted', false)->get();
         $slots = Slot::where('athlete_id_1', '!=', null)->orWhere('athlete_id_2', '!=', null)->orWhere('athlete_id_3', '!=', null)->get();
-        if ($request->getMethod() == 'POST') {
-            $theTime = $request->input('theTime');
-            $theDate = $request->input('theDate');
-            $theArray = $this->giveSlotsOfSpecificDateAndTime($theDate, $theTime);
-            return [
-                'data' => $theArray,
-                'error' => 'error'
-            ];
+        // if ($request->getMethod() == 'POST') {
+        //     $theTime = $request->input('theTime');
+        //     $theDate = $request->input('theDate');
+        //     $theArray = $this->giveSlotsOfSpecificDateAndTime($theDate, $theTime);
+        //     return [
+        //         'data' => $theArray,
+        //         'error' => 'error'
+        //     ];
 
-        }
+        // }
 
-        foreach($slots as $slot){
-            for($i = 0;$i < 20;$i++){
+        foreach ($slots as $slot) {
+            for ($i = 0; $i < 20; $i++) {
                 $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
             }
         }
@@ -199,20 +186,20 @@ class AdminController extends Controller
             "17:00:00" => 19,
             "17:30:00" => 20,
         ];
-        foreach($slots as $item){
+        foreach ($slots as $item) {
             $date = jdate($item->date)->format('Y-m-d');
-            if(in_array($date,$arrOfDates)){
-                for($j =1; $j <= 20; $j++){
-                    $theUserSlots[$date]["slot-".$j] = ["seat_count" => null];
+            if (in_array($date, $arrOfDates)) {
+                for ($j = 1; $j <= 20; $j++) {
+                    $theUserSlots[$date]["slot-" . $j] = ["seat_count" => null];
                 }
             }
         }
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
-            if(in_array($date,$arrOfDates)){
+            if (in_array($date, $arrOfDates)) {
                 $slotsFoundByDate = Slot::where('date', $item->date)->get();
                 foreach ($slotsFoundByDate as $i => $s) {
-                    $theUserSlots[$date]["slot-".($slotIndex[$s->start])] = ["seat_count" => $countAthleteArr[$date][$i]];
+                    $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["seat_count" => $countAthleteArr[$date][$i]];
                 }
             }
         }
@@ -225,83 +212,85 @@ class AdminController extends Controller
             'role' => $role->type,
             'user_slots' => $theUserSlots,
             'i' => $i,
-            'athletes' => $athletes
+            'athletes' => $athletes,
         ]);
     }
-    public function saveNewSlot(Request $request)
-    {
-        $date = $request->input('date');
-        $time = $request->input('time');
-        $firstAthlete = $request->input('first_athlete');
-        $secondAthlete = $request->input('second_athlete');
-        $thirdAthlete = $request->input('third_athlete');
-        $allRequests = [(int)$firstAthlete,(int)$secondAthlete,(int)$thirdAthlete];
-        $arr_without_zeros = $this->arrForComparingRepeatedItems($allRequests[0], $allRequests[1],$allRequests[2]);
-        $sw = $this->handleError($arr_without_zeros, $request, $allRequests);
 
-        $arr = explode('-', $request->input('time'));
-        $start = trim($arr[0]);
-        $end = trim($arr[1]);
-        $slot = Slot::where('date',$this->jalaliToGregorian($date))->where('start',$start)->where('end',$end)->first();
-        if($slot == null && $sw){
-            $s = new Slot;
-            $s->date = $this->jalaliToGregorian($date);
-            $s->start = $start;
-            $s->end = $end;
-            $s->athlete_id_1 = $firstAthlete;
-            $s->athlete_id_2 = $secondAthlete;
-            $s->athlete_id_3 = $thirdAthlete;
-            $s->save();
-            $request->session()->flash("msg_success", "با موفقیت ثبت شد.");
-            return redirect()->back();
-        }
-        if($sw){
-            $slot->athlete_id_1 = $firstAthlete ? $firstAthlete : $slot->athlete_id_1;
-            $slot->athlete_id_2 = $secondAthlete ? $secondAthlete : $slot->athlete_id_2;
-            $slot->athlete_id_3 = $thirdAthlete ? $thirdAthlete : $slot->athlete_id_3;
-            if($slot->athlete_id_3 == 'null'){
-                $slot->athlete_id_3 = 0;
-            }
-            $slot->save();
-            $request->session()->flash("msg_success", "با موفقیت ثبت شد.");
-            return redirect()->back();
-        }
-        return redirect()->back();
-
-    }
-    //-------------------------AJAX---------------------------//
-    public function ajaxCall(Request $request)
+    public function indexPost(AdminIndexRequest $request)
     {
+
         $theTime = $request->input('theTime');
         $theDate = $request->input('theDate');
-        $arr = $this->giveSlotsOfSpecificDateAndTime($theDate, $theTime);
+        $theArray = $this->giveSlotsOfSpecificDateAndTime($theDate, $theTime);
         return [
-            'data' => $arr,
+            'data' => $theArray,
             'error' => 'error'
         ];
     }
-    //-------------------------AJAX---------------------------//
-    public function getAllSelects(Request $request){
-        $search = trim($request->search);
-        if ($search == '') {
-            $athletes = User::orderby('id', 'desc')->select('id', 'name', 'email')->where('role_id','!=',2)->get();
-        } else {
-            $athletes = User::select('id', 'name', 'email')->where('role_id','!=',2)->where(function ($query) use ($search) {
-                $query->where("name",'like','%'.$search.'%')->orWhere('email','like','%'.$search.'%');
-            })->orderby('id','desc')->get();
-        }
-        $response = array();
-        foreach ($athletes as $athlete) {
-            $response[] = array(
-                "id" => $athlete->id,
-                "text" => $athlete->first_name . ' ' . $athlete->last_name . '-' . $athlete->phone
-            );
-        }
-        $response[] = [
-            "id" => 0,
-            "text" => "-"
-        ];
-        return $response;
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }

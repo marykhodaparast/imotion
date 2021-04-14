@@ -12,7 +12,7 @@ class Athlete extends Model
         'phone'
     ];
     public function user(){
-        return $this->belongsTo('App\User','id','athlete_id');
+        return $this->belongsTo('App\User','athlete_id','id');
     }
     public function role(){
         return $this->hasOne('App\Role','id','role_id');

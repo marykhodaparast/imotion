@@ -30,10 +30,10 @@ Route::group(['middleware' => ['auth']], function () {
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
     Route::group(['prefix' => '/admin'], function(){
-        Route::any('/','AdminController@dashboard')->name('admin_dashboard');
-        Route::post('/ajax','AdminController@ajaxCall')->name('admin_ajax');
-        Route::post('/save','AdminController@saveNewSlot')->name('admin_save_slot');
-        Route::post('/getSelects','AdminController@getAllSelects')->name('admin_get_selects');
+        Route::get('/','Admin1Controller@index')->name('admin_dashboard');
+        Route::post('/ajax','Admin1Controller@indexPost')->name('admin_ajax');
+        Route::post('/save','Admin1Controller@saveNewSlot')->name('admin_save_slot');
+        Route::post('/getSelects','Admin1Controller@getAllSelects')->name('admin_get_selects');
     });
 });
 
