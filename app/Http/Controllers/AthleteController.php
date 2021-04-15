@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Morilog\Jalali\CalendarUtils;
 use App\Slot;
+use App\Utils\PersianUtils;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,55 +14,6 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class AthleteController extends Controller
 {
-    public function toPersianNum($number)
-    {
-        $number = str_replace("1", "۱", $number);
-        $number = str_replace("2", "۲", $number);
-        $number = str_replace("3", "۳", $number);
-        $number = str_replace("4", "۴", $number);
-        $number = str_replace("5", "۵", $number);
-        $number = str_replace("6", "۶", $number);
-        $number = str_replace("7", "۷", $number);
-        $number = str_replace("8", "۸", $number);
-        $number = str_replace("9", "۹", $number);
-        $number = str_replace("0", "۰", $number);
-        return $number;
-    }
-
-    public static function persianToEnglishDigits($pnumber)
-    {
-        $number = str_replace('۰', '0', $pnumber);
-        $number = str_replace('۱', '1', $number);
-        $number = str_replace('۲', '2', $number);
-        $number = str_replace('۳', '3', $number);
-        $number = str_replace('۴', '4', $number);
-        $number = str_replace('۵', '5', $number);
-        $number = str_replace('۶', '6', $number);
-        $number = str_replace('۷', '7', $number);
-        $number = str_replace('۸', '8', $number);
-        $number = str_replace('۹', '9', $number);
-        return $number;
-    }
-    public static function jalaliToGregorian($pdate)
-    {
-        $pdate = explode('-', AthleteController::persianToEnglishDigits($pdate));
-        $date = "";
-        if (count($pdate) == 3) {
-            $y = (int)$pdate[0];
-            $m = (int)$pdate[1];
-            $d = (int)$pdate[2];
-            if ($d > $y) {
-                $tmp = $d;
-                $d = $y;
-                $y = $tmp;
-            }
-            $y = (($y < 1000) ? $y + 1300 : $y);
-            $gregorian = CalendarUtils::toGregorian($y, $m, $d);
-            $gregorian = $gregorian[0] . "-" . ($gregorian[1] < 10 ? '0'.$gregorian[1]: $gregorian[1]) . "-" . ($gregorian[2] < 10 ? '0'.$gregorian[2]: $gregorian[2]);
-        }
-        return $gregorian;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -69,33 +21,35 @@ class AthleteController extends Controller
      */
     public function index()
     {
+
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
         $i = 1;
         $sw = 0;
         $countAthleteArr = [];
+        $persianUtils = new PersianUtils;
         $arrOfTimes = [
-            '08:00 - 08:30' => $this->toPersianNum('8'),
-            '08:30 - 09:00' => $this->toPersianNum('8/5'),
-            '09:00 - 09:30' => $this->toPersianNum('9'),
-            '09:30 - 10:00' => $this->toPersianNum('9/5'),
-            '10:00 - 10:30' => $this->toPersianNum('10'),
-            '10:30 - 11:00' => $this->toPersianNum('10/5'),
-            '11:00 - 11:30' => $this->toPersianNum('11'),
-            '11:30 - 12:00' => $this->toPersianNum('11/5'),
-            '12:00 - 12:30' => $this->toPersianNum('12'),
-            '12:30 - 13:00' => $this->toPersianNum('12/5'),
-            '13:00 - 13:30' => $this->toPersianNum('13'),
-            '13:30 - 14:00' => $this->toPersianNum('13/5'),
-            '14:00 - 14:30' => $this->toPersianNum('14'),
-            '14:30 - 15:00' => $this->toPersianNum('14/5'),
-            '15:00 - 15:30' => $this->toPersianNum('15'),
-            '15:30 - 16:00' => $this->toPersianNum('15/5'),
-            '16:00 - 16:30' => $this->toPersianNum('16'),
-            '16:30 - 17:00' => $this->toPersianNum('16/5'),
-            '17:00 - 17:30' => $this->toPersianNum('17'),
-            '17:30 - 18:00' => $this->toPersianNum('17/5')
+            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
+            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
+            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
+            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
+            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
+            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
         $cancel = '';
         $slots = Slot::all();
@@ -257,7 +211,6 @@ class AthleteController extends Controller
            ->orWhere('athlete_id_3', $user->id);
         })->whereIn('date',$englishDates)->get();
         if ($request->getMethod() == 'POST') {
-            dd('create');
 
             if ($request->input('time')) {
                 $arr = explode('-', $request->input('time'));
@@ -269,7 +222,8 @@ class AthleteController extends Controller
             }
 
             if ($request->input('date')) {
-                $from_date = $this->jalaliToGregorian($request->input('date'));
+                $persianUtils = new PersianUtils;
+                $from_date = $persianUtils->jalaliToGregorian($request->input('date'));
             } else {
                 $request->session()->flash("msg_error", "لطفا تاریخ موردنظر خود را انتخاب کنید.");
                 return redirect()->back();
