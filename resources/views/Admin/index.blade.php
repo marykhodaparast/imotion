@@ -37,7 +37,7 @@
                                     <select name="first_athlete" id="first_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id}}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
+                                          <option value="{{ $athlete->id}}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->email }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -45,7 +45,7 @@
                                     <select name="second_athlete" id="second_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
+                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->email }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -53,7 +53,7 @@
                                     <select name="third_athlete" id="third_athlete" class="form-control select2">
                                         <option value="0">-</option>
                                         @foreach($athletes as $athlete)
-                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->phone }}</option>
+                                          <option value="{{ $athlete->id }}">{{ $athlete->first_name.' '.$athlete->last_name.'-'.$athlete->email }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -160,7 +160,7 @@
                                       </td>
                                         @endif
                                     @else
-                                        <td class="fridayClass"></td>
+                                        <td class="fridayClass" data-nameOfDay="جمعه"></td>
                                     @endif
                                   @endfor
                               </tr>
@@ -186,11 +186,13 @@
         $(document).ready(function() {
             $('select').next(".select2-container").hide();
             $('td').on('click', function() {
-                $('#loading').css('display','inline');
                 var row = $(this).closest("tr").index() + 1;
                 var column = $(this).closest("td").index();
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
+                if(nameofday != "جمعه"){
+                    $('#loading').css('display','inline');
+                }
                 column = $('tr').children('.c_' + column).data('time');
                 $.ajax({
                     url:'{{ route('admin_ajax') }}',
@@ -208,8 +210,7 @@
                         $('#hidden_day').val(date);
                         $('#hidden_time').val(column);
                         $('select').next(".select2-container").show();
-                       }
-                       if(!res.length  || res == undefined){
+                        if(!res.length  || res == undefined){
                         $('#saveBtn').prop('disabled',false);
                         $('#first_athlete').val(0);
                         $('#first_athlete').trigger('change');
@@ -225,7 +226,12 @@
                         $('#second_athlete').trigger('change');
                         $('#third_athlete').val(res[2][0]);
                         $('#third_athlete').trigger('change');
+                       
+                       }} else {
+                        $('#saveBtn').prop('disabled',true);
+                        $('select').next(".select2-container").hide();
                        }
+                       
                     },
                     error:function(){
                        //console.log(error);
