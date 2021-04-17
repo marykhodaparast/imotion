@@ -30,7 +30,8 @@
                     <form method="POST" action="{{ route('athletecreate') }}">
                         @csrf
                         <input type="hidden" id="hidden_day" name="date">
-                        <input type="hidden" id="hidden_time" name="time">
+                        <input type="hidden" id="hidden_time1" name="time1">
+                        <input type="hidden" id="hidden_time2" name="time2">
                         <div class="row">
                             <div class="col form-control display_none" id="day"> </div>
                             <div class="col form-control display_none" id="time"> </div>
@@ -229,13 +230,19 @@
                 var date = $(this).data('date');
                 var nameofday = $(this).data('nameofday');
                 column = $('tr').children('.c_' + column).data('time');
+                var res = column.split(" - ");
                 if(nameofday != 'جمعه' && !$(this).hasClass('table_inactive') && !$(this).hasClass('bg-danger')){
                     $('#day').css('display','flex');
                     $('#time').css('display','block');
+                    //$('#time1').css('display', 'block');
+                    //$('#time2').css('display', 'block');
                     $('#day').text(toPersianNum(date) + ' ' +  nameofday);
                     $('#time').text(column);
+                    //$('#time1').text('11:);
+                    //$('#time2').text('12:00');
                     $('#hidden_day').val(date);
-                    $('#hidden_time').val(column);
+                    $('#hidden_time1').val(res[0]);
+                    $('#hidden_time2').val(res[1]);
                 }
             });
 
