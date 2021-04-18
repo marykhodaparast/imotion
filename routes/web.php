@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => '/athlete'], function () {
         Route::any('profile','AthleteController@profile')->name('athleteprofile');
         Route::get('dashboard','AthleteController@index')->name('athletedashboard');
-        Route::any('/create','AthleteController@create')->name('athletecreate');
+        Route::post('/create','AthleteController@create')->name('athletecreate');
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
