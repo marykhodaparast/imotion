@@ -10,10 +10,17 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Log;
 
 class AthleteController extends Controller
 {
+    
+    protected $num_day;
+    public function __construct($num_day)
+    {
+        $this->num_day = $num_day;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -205,19 +212,21 @@ class AthleteController extends Controller
     public function create(AthleteCreateRequest $request)
     {
 
+        $num_day = Config::get('constants.options.num_day');
         $start = null;
         $end = null;
         $from_date = null;
         $user = Auth::user();
+        $user_id = $user->id;
         $englishDates = [];
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= $num_day; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
         // Todo : check month
-        $slotsOfTheUser = Slot::where('is_deleted', false)->where(function ($query) use ($user) {
-            $query->where('athlete_id_1', $user->id)
-                ->orWhere('athlete_id_2', $user->id)
-                ->orWhere('athlete_id_3', $user->id);
+        $slotsOfTheUser = Slot::where('is_deleted', false)->where(function ($query) use ($user_id) {
+            $query->where('athlete_id_1', $user_id)
+                ->orWhere('athlete_id_2', $user_id)
+                ->orWhere('athlete_id_3', $user_id);
         })->whereIn('date', $englishDates)->get();
         $time1 = $request->input('time1');
         $time2 = $request->input('time2');
@@ -231,22 +240,16 @@ class AthleteController extends Controller
             $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
             return redirect()->back();
         }
-       DB::enableQueryLog();
         $found = Slot::where('is_deleted', false)->where('start', $start)
             ->where('end', $end)
             ->where('date', $from_date)
-            // ->where('athlete_id_1', '!=', $user->id)
-            //->where('athlete_id_2', '!=', $user->id)
-            // ->where('athlete_id_3', '!=', $user->id)
-            // ->where(function ($query) use ($user) {
-            //     $query->where('athlete_id_1', '!=', $user->id)->orWhere('athlete_id_2','!=',$user->id)->orWhere('athlete_id_3', '!=', $user->id);
-            // })
+            ->where(function ($query) use ($user_id) {
+                $query->where('athlete_id_1', '!=', strval($user_id))->orWhere('athlete_id_2','!=',strval($user_id))->orWhere('athlete_id_3', '!=', strval($user_id));
+            })
             ->where(function ($query) {
-                $query->orWhere('athlete_id_1', 0)->orWhere('athlete_id_2', 0)->orWhere('athlete_id_3', 0);
+                $query->where('athlete_id_1', "0")->orWhere('athlete_id_2', "0")->orWhere('athlete_id_3', "0");
             })
         ->first();
-        dd(DB::getQueryLog());
-        //dd($found);
         $foundByStartAndDateAndEnd = Slot::where('is_deleted', false)->where('start', $start)
             ->where('end', $end)
             ->where('date', $from_date)
@@ -260,7 +263,7 @@ class AthleteController extends Controller
             $found->start = $start;
             $found->end = $end;
             $found->date = $from_date;
-            $found->athlete_id_1 = $user->id;
+            $found->athlete_id_1 = $user_id;
             $found->athlete_id_2 = 0;
             $found->athlete_id_3 = 0;
         } else {
@@ -268,7 +271,7 @@ class AthleteController extends Controller
             while ($found->{"athlete_id_" . $indx} != 0  && $indx <= 3) {
                 $indx++;
             }
-            $found->{"athlete_id_" . $indx} = $user->id;
+            $found->{"athlete_id_" . $indx} = $user_id;
         }
         try {
             $found->save();
