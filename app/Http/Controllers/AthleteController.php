@@ -5,21 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AthleteCreateRequest;
 use App\Slot;
 use App\Utils\PersianUtils;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Redirect;
 use Log;
 
 class AthleteController extends Controller
 {
-    
+
     protected $num_day;
-    public function __construct($num_day)
+    public function __construct()
     {
-        $this->num_day = $num_day;
+        $this->num_day = Config::get('constants.options.num_day');
     }
     /**
      * Display a listing of the resource.
@@ -107,7 +107,7 @@ class AthleteController extends Controller
         }
         $theUserSlots = [];
         $arrOfDates = [];
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= $this->num_day; $i++) {
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
             $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
         }
@@ -203,6 +203,24 @@ class AthleteController extends Controller
             Log::info('failed');
         }
     }
+    // public function checkSag($inp, $user_id)
+    // {
+    //     foreach ($inp as $item) {
+    //         if ($item == $user_id) {
+    //             return false;
+    //         }
+
+    //     }
+    //     return true;
+    // }
+    public function checkError($condition, $message, $request)
+    {
+
+        if ($condition) {
+            $request->session()->flash("msg_error", $message);
+            return redirect()->route('athletedashboard');
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -212,14 +230,14 @@ class AthleteController extends Controller
     public function create(AthleteCreateRequest $request)
     {
 
-        $num_day = Config::get('constants.options.num_day');
+        $sw = 0;
         $start = null;
         $end = null;
         $from_date = null;
         $user = Auth::user();
         $user_id = $user->id;
         $englishDates = [];
-        for ($i = 1; $i <= $num_day; $i++) {
+        for ($i = 1; $i <= $this->num_day; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
         // Todo : check month
@@ -236,28 +254,28 @@ class AthleteController extends Controller
         $persianUtils = new PersianUtils;
         //TODO : check digits are english and check out put of jalali is currect
         $from_date = $date ? $persianUtils->jalaliToGregorian($date) : null;
-        if (count($slotsOfTheUser) >= 2) {
-            $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
-            return redirect()->back();
-        }
+        // if (count($slotsOfTheUser) >= 2) {
+        //     $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
+        //     return redirect()->back();
+        // }
         $found = Slot::where('is_deleted', false)->where('start', $start)
             ->where('end', $end)
             ->where('date', $from_date)
             ->where(function ($query) use ($user_id) {
-                $query->where('athlete_id_1', '!=', strval($user_id))->orWhere('athlete_id_2','!=',strval($user_id))->orWhere('athlete_id_3', '!=', strval($user_id));
+                $query->where('athlete_id_1', '!=', strval($user_id))->orWhere('athlete_id_2', '!=', strval($user_id))->orWhere('athlete_id_3', '!=', strval($user_id));
             })
-            ->where(function ($query) {
-                $query->where('athlete_id_1', "0")->orWhere('athlete_id_2', "0")->orWhere('athlete_id_3', "0");
-            })
-        ->first();
+        // ->where(function ($query) {
+        //     $query->where('athlete_id_1', "0")->orWhere('athlete_id_2', "0")->orWhere('athlete_id_3', "0");
+        // })
+            ->first();
         $foundByStartAndDateAndEnd = Slot::where('is_deleted', false)->where('start', $start)
             ->where('end', $end)
             ->where('date', $from_date)
             ->first();
-        if ($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3) {
-            $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
-            return redirect()->back();
-        }
+        // if ($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3) {
+        //     $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
+        //     return redirect()->back();
+        // }
         if (!$found) {
             $found = new Slot;
             $found->start = $start;
@@ -268,18 +286,44 @@ class AthleteController extends Controller
             $found->athlete_id_3 = 0;
         } else {
             $indx = 1;
-            while ($found->{"athlete_id_" . $indx} != 0  && $indx <= 3) {
-                $indx++;
+            if ($found->athlete_id_1 == $user->id) {
+                $found->athlete_id_1 = 0;
+                $sw = 1;
+            } else if ($found->athlete_id_2 == $user->id) {
+                $found->athlete_id_2 = 0;
+                $sw = 1;
+            } else if ($found->athlete_id_3 == $user->id) {
+                $found->athlete_id_3 = 0;
+                $sw = 1;
+            } else {
+                while ($found->{"athlete_id_" . $indx} != 0 && $indx <= 3) {
+                    $indx++;
+                }
+                $found->{"athlete_id_" . $indx} = $user_id;
             }
-            $found->{"athlete_id_" . $indx} = $user_id;
         }
-        try {
-            $found->save();
-            $request->session()->flash("msg_success", "با موفقیت ثبت شدید.");
-            return redirect()->back();
-        } catch (Exception $e) {
-            $this->checkEnv($e);
+        if (!$sw) {
+            if (count($slotsOfTheUser) >= 2) {
+                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
+                return redirect()->back();
+            }
+           // $this->checkError(count($slotsOfTheUser) >= 2, "در ماه بیش تر از دو روز مجاز به وقت گرفتن نیستید!", $request);
+            if ($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3) {
+                $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
+                return redirect()->back();
+            }
+        } else {
+            $message = $sw ? "با موفقیت حذف شدید" : "با موفقیت ثبت شدید";
+            try {
+                $found->save();
+                $request->session()->flash("msg_success", $message);
+                return redirect()->back();
+            } catch (Exception $e) {
+                $this->checkEnv($e);
+            }
         }
+       
+        
 
         // $x = 0;
         // if($firstAthlete){

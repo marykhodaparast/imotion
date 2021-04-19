@@ -234,12 +234,8 @@
                 if(nameofday != 'جمعه' && !$(this).hasClass('table_inactive') && !$(this).hasClass('bg-danger')){
                     $('#day').css('display','flex');
                     $('#time').css('display','block');
-                    //$('#time1').css('display', 'block');
-                    //$('#time2').css('display', 'block');
                     $('#day').text(toPersianNum(date) + ' ' +  nameofday);
                     $('#time').text(column);
-                    //$('#time1').text('11:);
-                    //$('#time2').text('12:00');
                     $('#hidden_day').val(date);
                     $('#hidden_time1').val(res[0]);
                     $('#hidden_time2').val(res[1]);
