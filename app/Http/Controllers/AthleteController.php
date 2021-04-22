@@ -64,36 +64,6 @@ class AthleteController extends Controller
         for ($i = 1; $i <= 30; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
-        //if ($request->getMethod() == 'POST') {
-
-        // $found = Slot::where('start', $start)
-        //     ->where('end', $end)
-        //     ->where('date', $from_date)
-        //     ->first();
-        // if($found){
-        //     if ($found->athlete_id_1 == $user->id || $found->athlete_id_2 == $user->id || $found->athlete_id_3 == $user->id) {
-        //         $first = $found->athlete_id_1;
-        //         $second = $found->athlete_id_2;
-        //         $third = $found->athlete_id_3;
-        //         if ($first == $user->id) {
-        //             $found->athlete_id_1 = 0;
-        //             $found->save();
-        //             $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-        //             return redirect()->back();
-        //         } else if ($second == $user->id) {
-        //             $found->athlete_id_2 = 0;
-        //             $found->save();
-        //             $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-        //             return redirect()->back();
-        //         } else if ($third == $user->id) {
-        //             $found->athlete_id_3 = 0;
-        //             $found->save();
-        //             $request->session()->flash("msg_success", "با موفقیت حذف شدید.");
-        //             return redirect()->back();
-        //         }
-        //     }
-        // }
-        // }
         foreach ($slots as $slot) {
             for ($i = 0; $i < 20; $i++) {
                 $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
@@ -111,7 +81,6 @@ class AthleteController extends Controller
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
             $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
         }
-        //dd($arrOfDates);
         $slotIndex = [
             "08:00:00" => 1,
             "08:30:00" => 2,
@@ -202,23 +171,15 @@ class AthleteController extends Controller
             Log::info('failed');
         }
     }
-    // public function checkSag($inp, $user_id)
-    // {
-    //     foreach ($inp as $item) {
-    //         if ($item == $user_id) {
-    //             return false;
-    //         }
-
-    //     }
-    //     return true;
-    // }
     public function checkError($condition, $message, $request)
     {
 
+        $output = 0;
         if ($condition) {
+            $output = 1;
             $request->session()->flash("msg_error", $message);
-            return redirect()->route('athletedashboard');
         }
+        return $output;
     }
     /**
      * Show the form for creating a new resource.
@@ -239,7 +200,7 @@ class AthleteController extends Controller
         for ($i = 1; $i <= $this->num_day; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
-        // Todo : check month
+        //TODO: check month
         $slotsOfTheUser = Slot::where('is_deleted', false)->where(function ($query) use ($user_id) {
             $query->where('athlete_id_1', $user_id)
                 ->orWhere('athlete_id_2', $user_id)
@@ -251,7 +212,7 @@ class AthleteController extends Controller
         $start = $time1;
         $end = $time2;
         $persianUtils = new PersianUtils;
-        //TODO : check digits are english and check out put of jalali is currect
+        //TODO: check digits are english and check out put of jalali is currect
         $from_date = $date ? $persianUtils->jalaliToGregorian($date) : null;
         $found = Slot::where('is_deleted', false)->where('start', $start)
             ->where('end', $end)
@@ -287,13 +248,9 @@ class AthleteController extends Controller
             }
         }
         if (!$sw && $found) {
-            if (count($slotsOfTheUser) >= 2) {
-                $request->session()->flash("msg_error", "در ماه بیش تر از ۲ روز مجاز به وقت گرفتن نیستید!");
-                return redirect()->back();
-            }
-            //$this->checkError(count($slotsOfTheUser) >= 2, "در ماه بیش تر از دو روز مجاز به وقت گرفتن نیستید!", $request);
-            if ($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3) {
-                $request->session()->flash("msg_error", "در این تایم نوبت ها پر شده است.");
+            $out1 = $this->checkError(count($slotsOfTheUser) >= 2, "در ماه بیش تر از دو روز مجاز به وقت گرفتن نیستید!", $request);
+            $out2 = $this->checkError($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3,"در این تایم نوبت ها پر شده است.", $request);
+            if($out1 || $out2) {
                 return redirect()->back();
             }
         }
