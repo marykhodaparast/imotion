@@ -36,6 +36,15 @@ class AthleteController extends Controller
         $sw = 0;
         $countAthleteArr = [];
         $persianUtils = new PersianUtils;
+        $arrOfDays = [
+            0 => 'ج',
+            1 => 'ش',
+            2 => 'ی',
+            3 => 'د',
+            4 => 'س',
+            5 => 'چ',
+            6 => 'پ'
+        ];
         $arrOfTimes = [
             '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
             '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
@@ -61,7 +70,7 @@ class AthleteController extends Controller
         $cancel = '';
         $slots = Slot::where('is_deleted', false)->get();
         $englishDates = [];
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= $this->num_day; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
         foreach ($slots as $slot) {
@@ -160,6 +169,7 @@ class AthleteController extends Controller
             'todayDate' => $todayDate,
             'count' => $countAthleteArr,
             'cancel' => $cancel,
+            'arrOfDays' => $arrOfDays
         ]);
     }
     public function checkEnv($e)
