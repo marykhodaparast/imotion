@@ -140,8 +140,7 @@
             if ($(this).data('date') == todayDate) {
                 column = $('tr').children('.c_' + column).data('time');
                 arrOfTimes = column.split(' - ');
-                if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[
-                        1])) {
+                if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
                     $(this).addClass('table_inactive');
                     $(this).removeClass('cursor_pointer hoverable');
                 }

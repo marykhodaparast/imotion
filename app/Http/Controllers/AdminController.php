@@ -58,6 +58,21 @@ class AdminController extends Controller
         $from_date = null;
         $s = 0;
         $i = 1;
+        $arrOfDays = [
+            0 => 'ج',
+            1 => 'ش',
+            2 => 'ی',
+            3 => 'د',
+            4 => 'س',
+            5 => 'چ',
+            6 => 'پ'
+        ];
+        $showUsersInView = [
+            1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
+            2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
+            3 => '<i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>'
+        ];
+        $noUser = ' <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>';
         $countAthleteArr = [];
         $arr = [];
         $persian_utils = new PersianUtils;
@@ -178,6 +193,9 @@ class AdminController extends Controller
             'user_slots' => $theUserSlots,
             'i' => $i,
             'athletes' => $athletes,
+            'arrOfDays' => $arrOfDays,
+            'showUsersInView' => $showUsersInView,
+            'noUser' => $noUser
         ]);
     }
     public function saveNewSlot(Request $request)
