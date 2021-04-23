@@ -21,6 +21,16 @@ class AthleteController extends Controller
     {
         $this->num_day = Config::get('constants.options.num_day');
     }
+    public static function showCssClass($slot_seat_count, $slot_is_mine, $is_mine)
+    {
+        $output = 'cursor_pointer hoverable';
+        if ($slot_seat_count == null && $slot_is_mine == null && $is_mine == 1) {
+            $output = 'table_inactive';
+        } else if ($slot_seat_count == 3 && $slot_is_mine != 1) {
+            $output = '';
+        }
+        return $output;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,6 +46,12 @@ class AthleteController extends Controller
         $sw = 0;
         $countAthleteArr = [];
         $persianUtils = new PersianUtils;
+        $showUsersInView = [
+            1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
+            2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
+            3 => '<i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>'
+        ];
+        $noUser = ' <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>';
         $arrOfDays = [
             0 => 'ج',
             1 => 'ش',
@@ -169,7 +185,9 @@ class AthleteController extends Controller
             'todayDate' => $todayDate,
             'count' => $countAthleteArr,
             'cancel' => $cancel,
-            'arrOfDays' => $arrOfDays
+            'arrOfDays' => $arrOfDays,
+            'showUsersInView' => $showUsersInView,
+            'noUser' => $noUser
         ]);
     }
     public function checkEnv($e)
@@ -259,8 +277,8 @@ class AthleteController extends Controller
         }
         if (!$sw && $found) {
             $out1 = $this->checkError(count($slotsOfTheUser) >= 2, "در ماه بیش تر از دو روز مجاز به وقت گرفتن نیستید!", $request);
-            $out2 = $this->checkError($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3,"در این تایم نوبت ها پر شده است.", $request);
-            if($out1 || $out2) {
+            $out2 = $this->checkError($foundByStartAndDateAndEnd && $foundByStartAndDateAndEnd->athlete_id_1 && $foundByStartAndDateAndEnd->athlete_id_2 && $foundByStartAndDateAndEnd->athlete_id_3, "در این تایم نوبت ها پر شده است.", $request);
+            if ($out1 || $out2) {
                 return redirect()->back();
             }
         }
