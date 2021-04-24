@@ -71,8 +71,11 @@
     cursor: pointer;
 }
 
-.table_inactive {
+/* .table_inactive {
     background-color: #e4e9ec !important;
+} */
+.table-inactive{
+    background-color:white !important;
 }
 .bg-maryam{
     background-color: #b7efcd;
@@ -131,4 +134,10 @@ li.select2-results__option:empty {
 }
 .width-50{
     width:50px !important;
+}
+table td,th{
+    border:none !important;
+}
+.text-lightgray{
+    color:#e4e9ec !important;
 }

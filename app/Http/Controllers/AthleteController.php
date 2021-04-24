@@ -25,7 +25,7 @@ class AthleteController extends Controller
     {
         $output = 'cursor_pointer hoverable';
         if ($slot_seat_count == null && $slot_is_mine == null && $is_mine == 1) {
-            $output = 'table_inactive';
+            $output = 'text-lightgray';
         } else if ($slot_seat_count == 3 && $slot_is_mine != 1) {
             $output = '';
         }
