@@ -137,5 +137,40 @@ table td,th{
     border:none !important;
 }
 .text-lightgray{
-    color:#e4e9ec !important;
+    color:#ccc !important;
+}
+.arrow-up{
+    transform:rotate(270deg);
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+.div-arrow-up-img{
+    text-align:center;
+}
+.arrow-bottom{
+    transform:rotate(90deg);
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+.div-arrow-bottom-img{
+    text-align:center;
+}
+.arrow-right{
+    width:100px;
+    height:100px;
+    position:absolute;
+    top:260px;
+    cursor:pointer;
+}
+.div-arrow-right-img{
+    text-align:center;
+    /* z-index:10; */
+}
+#athlete_table{
+  margin-right:100px;
+  margin-left:100px;
+  position:relative;
+  width:20px;
 }

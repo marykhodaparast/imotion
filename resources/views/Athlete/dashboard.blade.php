@@ -55,7 +55,13 @@
     <div class="row">
         <div class="col">
             <div class="table-responsive my_rounded">
-                <table class="table bg-white">
+                <table class="table bg-white" id="athlete_table">
+                    <div class="div-arrow-up-img">
+                        <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-up">
+                    </div>
+                    <div id="div-arrow-right-img">
+                        <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-right">
+                      </div>
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -77,19 +83,25 @@
                                 @endif
                                 @endforeach
                             </th>
-                            @for ($j = 1; $j <= 20; $j++) @if ((jdate()->format('w') + $i) % 7)
+                            @for ($j = 1; $j <= 10; $j++) @if ((jdate()->format('w') + $i) % 7)
                                 <td class="{{ isset($slots["slot-".$j]) ? $athlete::showCssClass($slots["slot-".$j]["seat_count"],$slots["slot-".$j]["is_mine"],$slots['is_mine']) : 'cursor_pointer hoverable'}}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
                                     <div class="row width-50 mx-auto">
                                         {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
                                     </div>
+                                    
                                 </td>
                                 @endif
                                 @endfor
+                                
                         </tr>
                         @php $i++; @endphp
                         @endforeach
                     </tbody>
+                   
                 </table>
+                <div class="div-arrow-bottom-img">
+                    <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-bottom">
+                </div>
             </div>
             <!-- /.card -->
         </div>
@@ -145,7 +157,8 @@
                 column = $('tr').children('.c_' + column).data('time');
                 arrOfTimes = column.split(' - ');
                 if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
-                    //$(this).addClass('table_inactive');
+                    $(this).find("div").find("i").removeClass('far fa-user');
+                    $(this).find("div").find("i").addClass('fas fa-user');
                     $(this).addClass('text-lightgray');
                     $(this).removeClass('cursor_pointer hoverable');
                 }
