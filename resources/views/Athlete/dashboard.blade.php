@@ -3,6 +3,7 @@
 @section('css')
 <link href="/plugins/select2/css/select2.min.css" rel="stylesheet" />
 <link href="/dist/css/custom.css" rel="stylesheet">
+<link href="/dist/css/responsive.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -83,21 +84,21 @@
                                 @endif
                                 @endforeach
                             </th>
-                            @for ($j = 1; $j <= 10; $j++) @if ((jdate()->format('w') + $i) % 7)
+                            @for ($j = 1; $j <= 20; $j++) @if ((jdate()->format('w') + $i) % 7)
                                 <td class="{{ isset($slots["slot-".$j]) ? $athlete::showCssClass($slots["slot-".$j]["seat_count"],$slots["slot-".$j]["is_mine"],$slots['is_mine']) : 'cursor_pointer hoverable'}}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
                                     <div class="row width-50 mx-auto">
                                         {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
                                     </div>
-                                    
+
                                 </td>
                                 @endif
                                 @endfor
-                                
+
                         </tr>
                         @php $i++; @endphp
                         @endforeach
                     </tbody>
-                   
+
                 </table>
                 <div class="div-arrow-bottom-img">
                     <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-bottom">

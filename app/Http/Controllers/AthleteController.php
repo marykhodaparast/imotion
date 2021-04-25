@@ -8,6 +8,7 @@ use App\Utils\PersianUtils;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
@@ -40,6 +41,11 @@ class AthleteController extends Controller
     {
 
         $user = Auth::user();
+        // $screen_size = 0;
+        // $screen = Cookie::get('screen');
+        // $screen = explode("x", $screen);
+        // $width = $screen[0];
+        // dd($screen);
         $role = $user->role;
         $from_date = null;
         $i = 1;
@@ -72,16 +78,16 @@ class AthleteController extends Controller
             '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
             '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
             '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
-            // '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            // '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            // '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            // '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            // '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            // '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
-            // '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
-            // '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
-            // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
-            // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
         // $arrOfTimesInView = [
         //     '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
@@ -102,7 +108,7 @@ class AthleteController extends Controller
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
         foreach ($slots as $slot) {
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < 20; $i++) {
                 $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
             }
         }
@@ -128,22 +134,22 @@ class AthleteController extends Controller
             "11:00:00" => 7,
             "11:30:00" => 8,
             "12:00:00" => 9,
-            "12:30:00" => 10
-            // "13:00:00" => 11,
-            // "13:30:00" => 12,
-            // "14:00:00" => 13,
-            // "14:30:00" => 14,
-            // "15:00:00" => 15,
-            // "15:30:00" => 16,
-            // "16:00:00" => 17,
-            // "16:30:00" => 18,
-            // "17:00:00" => 19,
-            // "17:30:00" => 20,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+            "16:00:00" => 17,
+            "16:30:00" => 18,
+            "17:00:00" => 19,
+            "17:30:00" => 20,
         ];
         foreach ($slots as $item) {
             $date = jdate($item->date)->format('Y-m-d');
             if (in_array($date, $arrOfDates)) {
-                for ($j = 1; $j <= 10; $j++) {
+                for ($j = 1; $j <= 20; $j++) {
                     $theUserSlots[$date]["slot-" . $j] = ["is_mine" => null, "seat_count" => null];
                 }
                 $theUserSlots[$date]["is_mine"] = null;
