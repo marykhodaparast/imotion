@@ -55,7 +55,7 @@
     <div class="row">
         <div class="col">
             <div class="table-responsive my_rounded">
-                <table class="table table-bordered bg-white">
+                <table class="table bg-white">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -136,21 +136,26 @@
         todayTime = '{{ $todayTime }}';
         todayDate = '{{ $todayDate }}';
         $('td').each(function() {
+            if ($(this).hasClass('text-lightgray')) {
+                $(this).find("div").find("i").removeClass('far fa-user');
+                $(this).find("div").find("i").addClass('fas fa-user');
+            }
             var column = $(this).closest("td").index();
             if ($(this).data('date') == todayDate) {
                 column = $('tr').children('.c_' + column).data('time');
                 arrOfTimes = column.split(' - ');
                 if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
-                    $(this).addClass('table_inactive');
+                    //$(this).addClass('table_inactive');
+                    $(this).addClass('text-lightgray');
                     $(this).removeClass('cursor_pointer hoverable');
                 }
             }
         });
         $('td').on('click', function() {
-            if (!$(this).hasClass('table_inactive')) {
+            if (!$(this).hasClass('text-lightgray')) {
                 $('#saveBtn').removeClass('display_none');
             }
-            if ($(this).siblings().hasClass('table_inactive') && $(this).data('date') != todayDate) {
+            if ($(this).siblings().hasClass('text-lightgray') && $(this).data('date') != todayDate) {
                 $('#saveBtn').text('لغو');
                 $('#saveBtn').removeClass('btn-primary');
                 $('#saveBtn').addClass('btn-danger');
@@ -165,7 +170,7 @@
             var nameofday = $(this).data('nameofday');
             column = $('tr').children('.c_' + column).data('time');
             var res = column.split(" - ");
-            if (nameofday != 'جمعه' && !$(this).hasClass('table_inactive') && !$(this).hasClass('bg-danger')) {
+            if (nameofday != 'جمعه' && !$(this).hasClass('text-lightgray') && !$(this).hasClass('bg-danger')) {
                 $('#day').css('display', 'flex');
                 $('#time').css('display', 'block');
                 $('#day').text(toPersianNum(date) + ' ' + nameofday);
