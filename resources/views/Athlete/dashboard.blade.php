@@ -63,6 +63,9 @@
                     <div id="div-arrow-right-img">
                         <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-right">
                       </div>
+                      <div id="div-arrow-left-img">
+                        <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-left">
+                      </div>
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -71,6 +74,7 @@
                             <th scope="col" class="c_{{ $k + 1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
                             @php $k++ @endphp
                             @endforeach
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +88,7 @@
                                 @endif
                                 @endforeach
                             </th>
-                            @for ($j = 1; $j <= 20; $j++) @if ((jdate()->format('w') + $i) % 7)
+                            @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7)
                                 <td class="{{ isset($slots["slot-".$j]) ? $athlete::showCssClass($slots["slot-".$j]["seat_count"],$slots["slot-".$j]["is_mine"],$slots['is_mine']) : 'cursor_pointer hoverable'}}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
                                     <div class="row width-50 mx-auto">
                                         {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
@@ -97,6 +101,7 @@
                         </tr>
                         @php $i++; @endphp
                         @endforeach
+                        <tr class="trForBottomArrow"></tr>
                     </tbody>
 
                 </table>

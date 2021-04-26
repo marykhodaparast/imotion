@@ -83,11 +83,11 @@ class AthleteController extends Controller
             '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
             '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
             '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
-            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
-            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
-            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
-            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5')
+            // '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            // '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
         // $arrOfTimesInView = [
         //     '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
@@ -108,7 +108,7 @@ class AthleteController extends Controller
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
         foreach ($slots as $slot) {
-            for ($i = 0; $i < 20; $i++) {
+            for ($i = 0; $i < 16; $i++) {
                 $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
             }
         }
@@ -149,7 +149,7 @@ class AthleteController extends Controller
         foreach ($slots as $item) {
             $date = jdate($item->date)->format('Y-m-d');
             if (in_array($date, $arrOfDates)) {
-                for ($j = 1; $j <= 20; $j++) {
+                for ($j = 1; $j <= 16; $j++) {
                     $theUserSlots[$date]["slot-" . $j] = ["is_mine" => null, "seat_count" => null];
                 }
                 $theUserSlots[$date]["is_mine"] = null;

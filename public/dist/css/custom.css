@@ -101,6 +101,12 @@ td.bordered{
 td{
     width:5% !important;
 }
+th{
+    width:5% !important;
+}
+.trForBottomArrow{
+    height: 40px;
+}
 .my_rounded{
     border: solid 1px #a9a9a94d;
     border-radius:1.25rem !important;
