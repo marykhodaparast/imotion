@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('dashboard','AthleteController@index')->name('athletedashboard');
         Route::any('/create','AthleteController@create')->name('athletecreate');
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
+        Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
     Route::group(['prefix' => '/admin'], function(){

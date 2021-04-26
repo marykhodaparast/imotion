@@ -153,6 +153,20 @@
         $('select.select2').select2();
         todayTime = '{{ $todayTime }}';
         todayDate = '{{ $todayDate }}';
+        $('.arrow-left').on('click', function(){
+            $.ajax({
+                url: '{{ route('ajaxarrowtable') }}'
+                ,type: 'POST'
+                ,data: {
+                    "_token": "{{ csrf_token() }}"
+                ,}
+                ,success: function(result) {
+                }
+                ,error: function() {
+                    //console.log(error);
+                }
+            })
+        });
         $('td').each(function() {
             if ($(this).hasClass('text-lightgray')) {
                 $(this).find("div").find("i").removeClass('far fa-user');

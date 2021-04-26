@@ -33,6 +33,15 @@ class AthleteController extends Controller
         return $output;
     }
     /**
+     * ajax for getting the other columns
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxArrowLeftTable()
+    {
+        dd('1');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -141,10 +150,10 @@ class AthleteController extends Controller
             "14:30:00" => 14,
             "15:00:00" => 15,
             "15:30:00" => 16,
-            "16:00:00" => 17,
-            "16:30:00" => 18,
-            "17:00:00" => 19,
-            "17:30:00" => 20,
+            // "16:00:00" => 17,
+            // "16:30:00" => 18,
+            // "17:00:00" => 19,
+            // "17:30:00" => 20,
         ];
         foreach ($slots as $item) {
             $date = jdate($item->date)->format('Y-m-d');
