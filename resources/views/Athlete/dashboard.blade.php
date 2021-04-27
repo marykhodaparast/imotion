@@ -79,28 +79,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php $i = 1; @endphp
-                            @foreach ($user_slots as $date => $slots)
-                                <tr>
-                                    <th scope="row">
-                                        @foreach ($arrOfDays as $index => $day)
-                                            @if ((jdate()->format('w') + $i) % 7 == $index)
-                                                {{ $day }}
-                        @endif
-                        @endforeach
-                        </th>
-                        @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7) <td class="{{ isset($slots['slot-' . $j]) ? $athlete::showCssClass($slots['slot-' . $j]['seat_count'], $slots['slot-' . $j]['is_mine'], $slots['is_mine']) : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
-                                <div class="row width-50 mx-auto">
-                                    {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
-                                </div>
+                        <tr></tr>
+                        {{-- <tr>
+                            <th scope="row"></th>
+                        </tr> --}}
+                        {{-- @php $i = 1; @endphp
+                        @foreach ($user_slots as $date => $slots)
+                        <tr>
+                            <th scope="row">
+                                @foreach ($arrOfDays as $index => $day)
+                                @if ((jdate()->format('w') + $i) % 7 == $index)
+                                {{ $day }}
+                                @endif
+                                @endforeach
+                            </th>
+                            @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7) <td class="{{ isset($slots['slot-' . $j]) ? $athlete::showCssClass($slots['slot-' . $j]['seat_count'], $slots['slot-' . $j]['is_mine'], $slots['is_mine']) : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
+                                    <div class="row width-50 mx-auto">
+                                        {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
+                                    </div>
 
-                            </td> @endif
-                            @endfor
+                                </td> @endif
+                                @endfor
 
-                            </tr>
-                            @php $i++; @endphp
-                            @endforeach
-                            {{-- <tr class="trForBottomArrow"></tr> --}}
+                        </tr>
+                        @php $i++; @endphp
+                        @endforeach --}}
+                        {{-- <tr class="trForBottomArrow"></tr> --}}
                     </tbody>
 
                 </table>
@@ -120,30 +124,48 @@
 @section('js')
 <!-- Select2 -->
 <script src="/plugins/select2/js/select2.full.min.js"></script>
+<script src="/js/persian-date.js" type="text/javascript"></script>
+{{-- <script type="text/javascript">
+    new persianDate().format(); // "۱۳۹۶-۰۱-۱۱ ۲۳:۳۳:۲۷ ب ظ" (when i run in my console)
+</script> --}}
 <script>
-    function ObjectLength( object ) {
-    var length = 0;
-    for( var key in object ) {
-        if( object.hasOwnProperty(key) ) {
-            ++length;
+    console.log(new persianDate().format('d'));
+    // let arrOfTimes = [];
+    let user_slots = [];
+    let arrOfDays = [];
+    function ObjectLength(object) {
+        var length = 0;
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                ++length;
+            }
         }
-    }
-    return length;
+        return length;
     };
     $.ajax({
         url: '{{ route('ajaxtable') }}'
-        ,type: 'POST'
-        ,data: {
+        , type: 'POST'
+        , data: {
             "_token": "{{ csrf_token() }}"
         }
-        ,success: function(result) {
+        , success: function(result) {
             var i = 0;
-            $.each( result, function( key, value ) {
-               $('table > thead > tr').append(`<th scope="col" class="c_${ i + 1} text-center" data-time="${key}">` + value + '</th>');
-               i++; 
+            var k = 1;
+            arrOfTimes = result[0];
+            user_slots = result[1];
+            arrOfDays = result[2];
+            $.each(arrOfTimes, function(key, value) {
+                $('table > thead > tr').append(`<th scope="col" class="c_${ i + 1} text-center" data-time="${key}">` + value + '</th>');
+                i++;
+            });
+            $.each(user_slots, function(key, value) {
+                $('table > tbody').append(`<tr><th scope="row">${arrOfDays[k]}</th><td><div class="row width-50 mx-auto">
+                <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>
+                </div></td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td></tr>`);
+                k++;
             });
         }
-        ,error: function() {
+        , error: function() {
             console.log('error');
         }
     });

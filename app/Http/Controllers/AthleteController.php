@@ -48,7 +48,29 @@ class AthleteController extends Controller
      */
     public function ajaxTable(Request $request)
     {
-       
+
+        $user = Auth::user();
+        $role = $user->role;
+        $from_date = null;
+        $i = 1;
+        $sw = 0;
+        $countAthleteArr = [];
+        $persianUtils = new PersianUtils;
+        $showUsersInView = [
+            1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
+            2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
+            3 => '<i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>'
+        ];
+        $noUser = ' <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>';
+        $arrOfDays = [
+            1 => 'ج',
+            2 => 'ش',
+            3 => 'ی',
+            4 => 'د',
+            5 => 'س',
+            6 => 'چ',
+            7 => 'پ'
+        ];
         $persianUtils = new PersianUtils;
         $arrOfTimes = [
             '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
@@ -72,8 +94,97 @@ class AthleteController extends Controller
             // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
             // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
-        return $arrOfTimes;
-        
+        $cancel = '';
+        $slots = Slot::where('is_deleted', false)->get();
+        $englishDates = [];
+        for ($i = 1; $i <= $this->num_day; $i++) {
+            $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
+        }
+        foreach ($slots as $slot) {
+            for ($i = 0; $i < 16; $i++) {
+                $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
+            }
+        }
+        foreach ($slots as $slot) {
+            $slotsFoundByDate = Slot::where('is_deleted', false)->where('date', $slot->date)->get();
+            foreach ($slotsFoundByDate as $i => $item) {
+                $countAthleteArr[jdate($item->date)->format('Y-m-d')][$i] = count(array_filter([$item->athlete_id_1, $item->athlete_id_2, $item->athlete_id_3]));
+            }
+        }
+        $theUserSlots = [];
+        $arrOfDates = [];
+        for ($i = 1; $i <= $this->num_day; $i++) {
+            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
+            $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
+        }
+        $slotIndex = [
+            "08:00:00" => 1,
+            "08:30:00" => 2,
+            "09:00:00" => 3,
+            "09:30:00" => 4,
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+            // "16:00:00" => 17,
+            // "16:30:00" => 18,
+            // "17:00:00" => 19,
+            // "17:30:00" => 20,
+        ];
+        foreach ($slots as $item) {
+            $date = jdate($item->date)->format('Y-m-d');
+            if (in_array($date, $arrOfDates)) {
+                for ($j = 1; $j <= 16; $j++) {
+                    $theUserSlots[$date]["slot-" . $j] = ["is_mine" => null, "seat_count" => null];
+                }
+                $theUserSlots[$date]["is_mine"] = null;
+            }
+        }
+        foreach ($slots as $index => $item) {
+            $date = jdate($item->date)->format('Y-m-d');
+            if (in_array($date, $arrOfDates)) {
+                $slotsFoundByDate = Slot::where('is_deleted', false)->where('date', $item->date)->get();
+                foreach ($slotsFoundByDate as $i => $s) {
+                    $theSwitch = Slot::where('is_deleted', false)->where('is_deleted', false)->where('date', $s->date)
+                        ->where('start', $s->start)
+                        ->where('end', $s->end)
+                        ->where(function ($query) use ($user) {
+                            $query->where('athlete_id_1', $user->id)
+                                ->orWhere('athlete_id_2', $user->id)
+                                ->orWhere('athlete_id_3', $user->id)
+                                ->first();
+                        })->first();
+                    $theSelf = $theSwitch != null ? 1 : 0;
+                    $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                }
+                $theUserSlots[$date]["is_mine"] = 0;
+            }
+        }
+        foreach ($theUserSlots as $x => $item) {
+            foreach ($item as $y => $index) {
+                if (!empty($theUserSlots)) {
+                    if (is_array($theUserSlots[$x][$y])) {
+                        if ($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"] != 0) {
+                            $theUserSlots[$x]["is_mine"] = $theUserSlots[$x][$y]["is_mine"];
+                        } elseif ($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"] == 0) {
+                            $theUserSlots[$x]["is_mine"] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        $todayDate = jdate()->format('Y-m-d');
+        $todayTime = jdate()->format('H:i');
+        return [$arrOfTimes,$theUserSlots, $arrOfDays];
+
     }
     /**
      * Display a listing of the resource.
@@ -84,11 +195,6 @@ class AthleteController extends Controller
     {
 
         $user = Auth::user();
-        // $screen_size = 0;
-        // $screen = Cookie::get('screen');
-        // $screen = explode("x", $screen);
-        // $width = $screen[0];
-        // dd($screen);
         $role = $user->role;
         $from_date = null;
         $i = 1;
@@ -132,18 +238,6 @@ class AthleteController extends Controller
             // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
             // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
-        // $arrOfTimesInView = [
-        //     '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
-        //     '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
-        //     '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
-        //     '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
-        //     '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
-        //     '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
-        //     '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
-        //     '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
-        //     '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-        //     '12:30 - 13:00' => $persianUtils->toPersianNum('12/5')
-        // ];
         $cancel = '';
         $slots = Slot::where('is_deleted', false)->get();
         $englishDates = [];
