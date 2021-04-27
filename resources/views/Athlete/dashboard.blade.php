@@ -57,57 +57,56 @@
         <div class="col">
             <div class="table-responsive my_rounded">
                 <table class="table bg-white" id="athlete_table">
-                    <div class="div-arrow-up-img">
-                        <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-up">
-                    </div>
+                    {{-- <div class="div-arrow-up-img">
+                            <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-up">
+                        </div> --}}
                     <div id="div-arrow-right-img">
                         <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-right">
-                      </div>
-                      <div id="div-arrow-left-img">
+                    </div>
+                    <div id="div-arrow-left-img">
                         <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-left">
-                      </div>
+                    </div>
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            @php $k = 0; @endphp
-                            @foreach ($arrOfTimes as $key => $item)
-                            <th scope="col" class="c_{{ $k + 1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
+                            {{-- @php $k = 0; @endphp
+                                @foreach ($arrOfTimes as $key => $item)
+                                    <th scope="col" class="c_{{ $k + 1 }} text-center"
+                            data-time="{{ $key }}">{{ $item }}</th>
                             @php $k++ @endphp
                             @endforeach
-                            <th></th>
+                            <th></th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach ($user_slots as $date => $slots)
-                        <tr>
-                            <th scope="row">
-                                @foreach ($arrOfDays as $index => $day)
-                                @if ((jdate()->format('w') + $i) % 7 == $index)
-                                {{ $day }}
-                                @endif
-                                @endforeach
-                            </th>
-                            @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7)
-                                <td class="{{ isset($slots["slot-".$j]) ? $athlete::showCssClass($slots["slot-".$j]["seat_count"],$slots["slot-".$j]["is_mine"],$slots['is_mine']) : 'cursor_pointer hoverable'}}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
-                                    <div class="row width-50 mx-auto">
-                                        {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
-                                    </div>
-
-                                </td>
-                                @endif
-                                @endfor
-
-                        </tr>
-                        @php $i++; @endphp
+                            @foreach ($user_slots as $date => $slots)
+                                <tr>
+                                    <th scope="row">
+                                        @foreach ($arrOfDays as $index => $day)
+                                            @if ((jdate()->format('w') + $i) % 7 == $index)
+                                                {{ $day }}
+                        @endif
                         @endforeach
-                        <tr class="trForBottomArrow"></tr>
+                        </th>
+                        @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7) <td class="{{ isset($slots['slot-' . $j]) ? $athlete::showCssClass($slots['slot-' . $j]['seat_count'], $slots['slot-' . $j]['is_mine'], $slots['is_mine']) : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
+                                <div class="row width-50 mx-auto">
+                                    {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
+                                </div>
+
+                            </td> @endif
+                            @endfor
+
+                            </tr>
+                            @php $i++; @endphp
+                            @endforeach
+                            {{-- <tr class="trForBottomArrow"></tr> --}}
                     </tbody>
 
                 </table>
-                <div class="div-arrow-bottom-img">
-                    <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-bottom">
-                </div>
+                {{-- <div class="div-arrow-bottom-img">
+                        <img src="/dist/img/arrow-right.png" alt="arrow" class="arrow-bottom">
+                    </div> --}}
             </div>
             <!-- /.card -->
         </div>
@@ -122,6 +121,32 @@
 <!-- Select2 -->
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script>
+    function ObjectLength( object ) {
+    var length = 0;
+    for( var key in object ) {
+        if( object.hasOwnProperty(key) ) {
+            ++length;
+        }
+    }
+    return length;
+    };
+    $.ajax({
+        url: '{{ route('ajaxtable') }}'
+        ,type: 'POST'
+        ,data: {
+            "_token": "{{ csrf_token() }}"
+        }
+        ,success: function(result) {
+            var i = 0;
+            $.each( result, function( key, value ) {
+               $('table > thead > tr').append(`<th scope="col" class="c_${ i + 1} text-center" data-time="${key}">` + value + '</th>');
+               i++; 
+            });
+        }
+        ,error: function() {
+            console.log('error');
+        }
+    });
     var arrOfTimes = [];
     var todayTime = null;
     var todayDate = null;
@@ -153,20 +178,19 @@
         $('select.select2').select2();
         todayTime = '{{ $todayTime }}';
         todayDate = '{{ $todayDate }}';
-        $('.arrow-left').on('click', function(){
-            $.ajax({
-                url: '{{ route('ajaxarrowtable') }}'
-                ,type: 'POST'
-                ,data: {
-                    "_token": "{{ csrf_token() }}"
-                ,}
-                ,success: function(result) {
-                }
-                ,error: function() {
-                    //console.log(error);
-                }
-            })
-        });
+        // $('.arrow-left').on('click', function() {
+        //     $.ajax({
+        //         url: '{{ route('ajaxarrowtable') }}'
+        //         , type: 'POST'
+        //         , data: {
+        //             "_token": "{{ csrf_token() }}"
+        //         , }
+        //         , success: function(result) {}
+        //         , error: function() {
+        //             //console.log(error);
+        //         }
+        //     })
+        // });
         $('td').each(function() {
             if ($(this).hasClass('text-lightgray')) {
                 $(this).find("div").find("i").removeClass('far fa-user');
@@ -203,7 +227,8 @@
             var nameofday = $(this).data('nameofday');
             column = $('tr').children('.c_' + column).data('time');
             var res = column.split(" - ");
-            if (nameofday != 'جمعه' && !$(this).hasClass('text-lightgray') && !$(this).hasClass('bg-danger')) {
+            if (nameofday != 'جمعه' && !$(this).hasClass('text-lightgray') && !$(this).hasClass(
+                    'bg-danger')) {
                 $('#day').css('display', 'flex');
                 $('#time').css('display', 'block');
                 $('#day').text(toPersianNum(date) + ' ' + nameofday);

@@ -42,6 +42,40 @@ class AthleteController extends Controller
         dd('1');
     }
     /**
+     * ajax for loading table first
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxTable(Request $request)
+    {
+       
+        $persianUtils = new PersianUtils;
+        $arrOfTimes = [
+            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
+            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
+            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
+            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
+            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
+            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5')
+            // '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            // '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
+        ];
+        return $arrOfTimes;
+        
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

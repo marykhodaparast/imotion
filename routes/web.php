@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::any('/create','AthleteController@create')->name('athletecreate');
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
         Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
+        Route::post('/ajax/load-data-of-table','AthleteController@ajaxTable')->name('ajaxtable');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
     Route::group(['prefix' => '/admin'], function(){
