@@ -73,10 +73,10 @@ class AthleteController extends Controller
         ];
         $persianUtils = new PersianUtils;
         $arrOfTimes = [
-            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
-            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
-            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
-            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
+            // '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+            // '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+            // '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+            // '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
             '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
             '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
             '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
@@ -88,11 +88,11 @@ class AthleteController extends Controller
             '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
             '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
             '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5')
-            // '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
-            // '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
-            // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
-            // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
         $cancel = '';
         $slots = Slot::where('is_deleted', false)->get();
