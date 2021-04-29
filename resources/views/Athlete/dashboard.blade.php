@@ -71,7 +71,7 @@
                             <th scope="col" class="firstTh">#</th>
                             @php $k = 0; @endphp
                                 @foreach ($arrOfTimes as $key => $item)
-                                    <th scope="col" class="c_{{ $k + 1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
+                                    <th scope="col" id="id_{{$k}}" class="c_{{ $k + 1 }} text-center" data-time="{{ $key }}">{{ $item }}</th>
                             @php $k++ @endphp
                                 @endforeach
                         </tr>
@@ -171,14 +171,10 @@
         }
         ,success: function(result) {
             arrayOfTimes = result[0];
-            $.each(arrayOfTimes, function(key, value) {
-                var rows = $('table > thead > tr > th:not(.firstTh)');
-                
-                
-                //$('table > thead > tr').append(`<th scope="col" class="c_${ i + 1} text-center" data-time="${key}">` + value + '</th>');
-                //i++;
-                //$('table > thead > tr > th:not(.firstTh)').text(value);
-                 
+            var i = 0;
+            $.each(arrayOfTimes, function(key, value) {                
+                $("#id_"+ i).text(value);
+                i++;
             });
            
             // $.each(user_slots, function(key, value) {
