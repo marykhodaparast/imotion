@@ -118,77 +118,52 @@
 <!-- Select2 -->
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script src="/js/persian-date.js" type="text/javascript"></script>
-{{-- <script type="text/javascript">
-    new persianDate().format(); // "۱۳۹۶-۰۱-۱۱ ۲۳:۳۳:۲۷ ب ظ" (when i run in my console)
-</script> --}}
 <script>
-    //console.log(new persianDate().format('d'));
     let arrayOfTimes = [];
-    // let user_slots = [];
-    // let arrOfDays = [];
-    // function ObjectLength(object) {
-    //     var length = 0;
-    //     for (var key in object) {
-    //         if (object.hasOwnProperty(key)) {
-    //             ++length;
-    //         }
-    //     }
-    //     return length;
-    // };
-    // $.ajax({
-    //     url: '{{ route('ajaxtable') }}'
-    //     , type: 'POST'
-    //     , data: {
-    //         "_token": "{{ csrf_token() }}"
-    //     }
-    //     , success: function(result) {
-    //         var i = 0;
-    //         var k = 1;
-    //         arrOfTimes = result[0];
-    //         user_slots = result[1];
-    //         arrOfDays = result[2];
-    //         // $.each(arrOfTimes, function(key, value) {
-    //         //     $('table > thead > tr').append(`<th scope="col" class="c_${ i + 1} text-center" data-time="${key}">` + value + '</th>');
-    //         //     i++;
-    //         // });
-    //         // $.each(user_slots, function(key, value) {
-    //         //     $('table > tbody').append(`<tr><th scope="row">${arrOfDays[k]}</th><td><div class="row width-50 mx-auto">
-    //         //     <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>
-    //         //     </div></td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td></tr>`);
-    //         //     k++;
-    //         // });
-    //     }
-    //     , error: function() {
-    //         console.log('error');
-    //     }
-    // });
     $('.arrow-left').on('click', function(){
+        $('.arrow-right').css('display', 'block');
         $.ajax({
-         url: '{{ route('ajaxtable') }}'
+         url: '{{ route('ajaxtableleft') }}'
         ,type: 'POST'
         ,data: {
             "_token": "{{ csrf_token() }}"
         }
         ,success: function(result) {
-            arrayOfTimes = result[0];
+            arrayOfTimes = result;
             var i = 0;
-            $.each(arrayOfTimes, function(key, value) {                
+            $.each(arrayOfTimes, function(key, value) {
                 $("#id_"+ i).text(value);
+                $('#id_'+ i).attr('data-time', key);
                 i++;
             });
-           
-            // $.each(user_slots, function(key, value) {
-            //     $('table > tbody').append(`<tr><th scope="row">${arrOfDays[k]}</th><td><div class="row width-50 mx-auto">
-            //     <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>
-            //     </div></td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td><td>sa</td></tr>`);
-            //     k++;
-            // });
         }
         ,error: function() {
             console.log('error');
         }
         });
     });
+    $('.arrow-right').on('click', function(){
+        $('.arrow-right').css('display', 'none');
+        $.ajax({
+         url: '{{ route('ajaxtableright') }}'
+        ,type: 'POST'
+        ,data: {
+            "_token": "{{ csrf_token() }}"
+        }
+        ,success: function(result) {
+            arrayOfTimes = result;
+            var i = 0;
+            $.each(arrayOfTimes, function(key, value) {
+                $("#id_"+ i).text(value);
+                $('#id_'+ i).attr('data-time', key);
+                i++;
+            });
+        }
+        ,error: function() {
+            console.log('error');
+        }
+        });
+    })
     var arrOfTimes = [];
     var todayTime = null;
     var todayDate = null;
@@ -220,19 +195,6 @@
         $('select.select2').select2();
         todayTime = '{{ $todayTime }}';
         todayDate = '{{ $todayDate }}';
-        // $('.arrow-left').on('click', function() {
-        //     $.ajax({
-        //         url: '{{ route('ajaxarrowtable') }}'
-        //         , type: 'POST'
-        //         , data: {
-        //             "_token": "{{ csrf_token() }}"
-        //         , }
-        //         , success: function(result) {}
-        //         , error: function() {
-        //             //console.log(error);
-        //         }
-        //     })
-        // });
         $('td').each(function() {
             if ($(this).hasClass('text-lightgray')) {
                 $(this).find("div").find("i").removeClass('far fa-user');
@@ -264,13 +226,13 @@
                 $('#saveBtn').removeClass('btn-danger');
             }
             var row = $(this).closest("tr").index() + 1;
+            console.log(row);
             var column = $(this).closest("td").index();
             var date = $(this).data('date');
             var nameofday = $(this).data('nameofday');
             column = $('tr').children('.c_' + column).data('time');
             var res = column.split(" - ");
-            if (nameofday != 'جمعه' && !$(this).hasClass('text-lightgray') && !$(this).hasClass(
-                    'bg-danger')) {
+            if (nameofday != 'جمعه' && !$(this).hasClass('text-lightgray') && !$(this).hasClass('bg-danger')) {
                 $('#day').css('display', 'flex');
                 $('#time').css('display', 'block');
                 $('#day').text(toPersianNum(date) + ' ' + nameofday);

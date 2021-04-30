@@ -67,6 +67,7 @@
         top:180px;
         cursor:pointer;
         opacity: 0.3;
+        display:none;
     }
     .div-arrow-right-img{
         text-align:center;
