@@ -131,11 +131,34 @@
         ,success: function(result) {
             arrayOfTimes = result;
             var i = 0;
+            var todayTime = '{{ $todayTime }}';
+            var todayDate = '{{ $todayDate }}';
             $.each(arrayOfTimes, function(key, value) {
                 $("#id_"+ i).text(value);
                 $('#id_'+ i).attr('data-time', key);
                 i++;
             });
+            var todayTime = '{{ $todayTime }}';
+            var todayDate = '{{ $todayDate }}';
+            $('td').each(function() {
+            if ($(this).hasClass('text-lightgray')) {
+                $(this).find("div").find("i").removeClass('far fa-user');
+                $(this).find("div").find("i").addClass('fas fa-user');
+            }
+            var column = $(this).closest("td").index();
+            console.log(column);
+            if ($(this).data('date') == todayDate) {
+                column = $('tr').children('.c_' + column).data('time');
+                arrOfTimes = column.split(' - ');
+                //console.log(arrOfTimes);
+                if ("10:30" > arrOfTimes[1] || ("10:30" > arrOfTimes[0] && "10:30" < arrOfTimes[1])) {
+                    $(this).find("div").find("i").removeClass('far fa-user');
+                    $(this).find("div").find("i").addClass('fas fa-user');
+                    $(this).addClass('text-lightgray');
+                    $(this).removeClass('cursor_pointer hoverable');
+                }
+            }
+        });
         }
         ,error: function() {
             console.log('error');
@@ -158,6 +181,7 @@
                 $('#id_'+ i).attr('data-time', key);
                 i++;
             });
+           
         }
         ,error: function() {
             console.log('error');

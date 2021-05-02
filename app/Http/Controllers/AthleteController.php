@@ -68,6 +68,10 @@ class AthleteController extends Controller
             '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
             '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
         ];
+        $arrOfTimeInView = [];
+        foreach($arrOfTimes as $key => $item) {
+           $arrOfTimeInView[] = explode(' - ', $key); 
+        }
         return $arrOfTimes;
 
     }
