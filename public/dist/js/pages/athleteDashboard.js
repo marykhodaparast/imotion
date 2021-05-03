@@ -1,17 +1,38 @@
-let arrayOfTimes = [];
-$(".arrow-left").click(function () {
-    $(this).data("clicked", true);
-});
-$(".arrow-right").click(function () {
-    $(this).data("clicked", true);
-});
-$(".arrow-left").on("click", function () {
+function emptyTds(){
     $("td").each(function () {
         $(this).find("div").find("i").removeClass("fas fa-user");
         $(this).find("div").find("i").addClass("far fa-user");
         $(this).removeClass("text-lightgray");
         $(this).addClass("cursor_pointer hoverable");
+    }); 
+}
+function addDisabledToSomeDateOfTodays(){
+    $("td").each(function () {
+        if ($(this).hasClass("text-lightgray")) {
+            $(this).find("div").find("i").removeClass("far fa-user");
+            $(this).find("div").find("i").addClass("fas fa-user");
+        }
+        var column = $(this).closest("td").index();
+        if ($(this).data("date") == todayDate) {
+            column = $("tr")
+                .children(".c_" + column)
+                .data("time");
+            arrOfTimes = column.split(" - ");
+            if (
+                todayTime > arrOfTimes[1] ||
+                (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])
+            ) {
+                $(this).find("div").find("i").removeClass("far fa-user");
+                $(this).find("div").find("i").addClass("fas fa-user");
+                $(this).addClass("text-lightgray");
+                $(this).removeClass("cursor_pointer hoverable");
+            }
+        }
     });
+}
+let arrayOfTimes = [];
+$(".arrow-left").on("click", function () {
+    emptyTds();
     $(".arrow-right").css("display", "block");
     $.ajax({
         url: route_ajaxtableleft,
@@ -28,31 +49,7 @@ $(".arrow-left").on("click", function () {
                 $("#id_" + i).attr("data-time", key);
                 i++;
             });
-            $("td").each(function () {
-                if ($(this).hasClass("text-lightgray")) {
-                    $(this).find("div").find("i").removeClass("far fa-user");
-                    $(this).find("div").find("i").addClass("fas fa-user");
-                }
-                var column = $(this).closest("td").index();
-                if ($(this).data("date") == todayDate) {
-                    column = $("tr")
-                        .children(".c_" + column)
-                        .data("time");
-                    arrOfTimes = column.split(" - ");
-                    if (
-                        todayTime > arrOfTimes[1] ||
-                        (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])
-                    ) {
-                        $(this)
-                            .find("div")
-                            .find("i")
-                            .removeClass("far fa-user");
-                        $(this).find("div").find("i").addClass("fas fa-user");
-                        $(this).addClass("text-lightgray");
-                        $(this).removeClass("cursor_pointer hoverable");
-                    }
-                }
-            });
+            addDisabledToSomeDateOfTodays();
         },
         error: function () {
             console.log("error");
@@ -60,12 +57,7 @@ $(".arrow-left").on("click", function () {
     });
 });
 $(".arrow-right").on("click", function () {
-    $("td").each(function () {
-        $(this).find("div").find("i").removeClass("fas fa-user");
-        $(this).find("div").find("i").addClass("far fa-user");
-        $(this).removeClass("text-lightgray");
-        $(this).addClass("cursor_pointer hoverable");
-    });
+    emptyTds();
     $(".arrow-right").css("display", "none");
     $.ajax({
         url: route_ajaxtableright,
@@ -82,32 +74,7 @@ $(".arrow-right").on("click", function () {
                 $("#id_" + i).attr("data-time", key);
                 i++;
             });
-            $("td").each(function () {
-                if ($(this).hasClass("text-lightgray")) {
-                    $(this).find("div").find("i").removeClass("far fa-user");
-                    $(this).find("div").find("i").addClass("fas fa-user");
-                }
-                var column = $(this).closest("td").index();
-                if ($(this).data("date") == todayDate) {
-                    column = $("tr")
-                        .children(".c_" + column)
-                        .data("time");
-                    arrOfTimes = column.split(" - ");
-                    console.log(todayTime, arrOfTimes);
-                    if (
-                        todayTime > arrOfTimes[1] ||
-                        (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])
-                    ) {
-                        $(this)
-                            .find("div")
-                            .find("i")
-                            .removeClass("far fa-user");
-                        $(this).find("div").find("i").addClass("fas fa-user");
-                        $(this).addClass("text-lightgray");
-                        $(this).removeClass("cursor_pointer hoverable");
-                    }
-                }
-            });
+            addDisabledToSomeDateOfTodays();
         },
         error: function () {
             console.log("error");
@@ -136,33 +103,7 @@ function toPersianNum(num, dontTrim) {
 }
 $(document).ready(function () {
     $("select.select2").select2();
-    if (
-        !$(".arrow-left").data("clicked") &&
-        !$(".arrow-right").data("clicked")
-    ) {
-    }
-    $("td").each(function () {
-        if ($(this).hasClass("text-lightgray")) {
-            $(this).find("div").find("i").removeClass("far fa-user");
-            $(this).find("div").find("i").addClass("fas fa-user");
-        }
-        var column = $(this).closest("td").index();
-        if ($(this).data("date") == todayDate) {
-            column = $("tr")
-                .children(".c_" + column)
-                .data("time");
-            arrOfTimes = column.split(" - ");
-            if (
-                todayTime > arrOfTimes[1] ||
-                (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])
-            ) {
-                $(this).find("div").find("i").removeClass("far fa-user");
-                $(this).find("div").find("i").addClass("fas fa-user");
-                $(this).addClass("text-lightgray");
-                $(this).removeClass("cursor_pointer hoverable");
-            }
-        }
-    });
+    addDisabledToSomeDateOfTodays();
     $("td").on("click", function () {
         if (!$(this).hasClass("text-lightgray")) {
             $("#saveBtn").removeClass("display_none");
