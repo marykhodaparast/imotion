@@ -78,6 +78,7 @@ $(".arrow-right").on("click", function () {
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);
+                $("#id_" + i).data("time", key);
                 $("#id_" + i).attr("data-time", key);
                 i++;
             });
