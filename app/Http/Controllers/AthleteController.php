@@ -8,7 +8,6 @@ use App\Utils\PersianUtils;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
@@ -33,131 +32,15 @@ class AthleteController extends Controller
         return $output;
     }
     /**
-     * ajax for getting the other columns
+     * give UserSlots by to us by
      *
      * @return \Illuminate\Http\Response
      */
-    public function ajaxArrowLeftTable()
-    {
-        dd('1');
-    }
-    /**
-     * ajax for direct table to left
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function ajaxTableLeft(Request $request)
-    {
-
-        $persianUtils = new PersianUtils;
-        $arrOfTimes = [
-            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
-            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
-            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
-            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
-            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
-            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
-            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
-            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
-            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
-            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
-        ];
-        $arrOfTimeInView = [];
-        foreach($arrOfTimes as $key => $item) {
-           $arrOfTimeInView[] = explode(' - ', $key); 
-        }
-        return $arrOfTimes;
-
-    }
-    /**
-     * ajax for direct table to right
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function ajaxTableRight(Request $request)
-    {
-
-        $persianUtils = new PersianUtils;
-        $arrOfTimes = [
-            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
-            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
-            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
-            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
-            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
-            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
-            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
-            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
-            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
-            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5')
-        ];
-        return $arrOfTimes;
-
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getUserSlots($slotIndex, $start = null, $end = null)
     {
 
         $user = Auth::user();
-        $role = $user->role;
-        $from_date = null;
-        $i = 1;
-        $sw = 0;
         $countAthleteArr = [];
-        $persianUtils = new PersianUtils;
-        $showUsersInView = [
-            1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
-            2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
-            3 => '<i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>'
-        ];
-        $noUser = ' <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>';
-        $arrOfDays = [
-            0 => 'ج',
-            1 => 'ش',
-            2 => 'ی',
-            3 => 'د',
-            4 => 'س',
-            5 => 'چ',
-            6 => 'پ'
-        ];
-        $arrOfTimes = [
-            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
-            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
-            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
-            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
-            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
-            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
-            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
-            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
-            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
-            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5')
-            // '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
-            // '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
-            // '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
-            // '17:30 - 18:00' => $persianUtils->toPersianNum('17/5')
-        ];
-        $cancel = '';
         $slots = Slot::where('is_deleted', false)->get();
         $englishDates = [];
         for ($i = 1; $i <= $this->num_day; $i++) {
@@ -180,28 +63,6 @@ class AthleteController extends Controller
             $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
             $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
         }
-        $slotIndex = [
-            "08:00:00" => 1,
-            "08:30:00" => 2,
-            "09:00:00" => 3,
-            "09:30:00" => 4,
-            "10:00:00" => 5,
-            "10:30:00" => 6,
-            "11:00:00" => 7,
-            "11:30:00" => 8,
-            "12:00:00" => 9,
-            "12:30:00" => 10,
-            "13:00:00" => 11,
-            "13:30:00" => 12,
-            "14:00:00" => 13,
-            "14:30:00" => 14,
-            "15:00:00" => 15,
-            "15:30:00" => 16,
-            // "16:00:00" => 17,
-            // "16:30:00" => 18,
-            // "17:00:00" => 19,
-            // "17:30:00" => 20,
-        ];
         foreach ($slots as $item) {
             $date = jdate($item->date)->format('Y-m-d');
             if (in_array($date, $arrOfDates)) {
@@ -244,6 +105,158 @@ class AthleteController extends Controller
                 }
             }
         }
+        return [$theUserSlots, $countAthleteArr];
+    }
+    /**
+     * ajax for direct table to left
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxTableLeft(Request $request)
+    {
+
+        $persianUtils = new PersianUtils;
+        $slotIndex = [
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+            "16:00:00" => 17,
+            "16:30:00" => 18,
+            "17:00:00" => 19,
+            "17:30:00" => 20,
+        ];
+        $arrOfTimes = [
+            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
+            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
+            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
+            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
+            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+            '16:00 - 16:30' => $persianUtils->toPersianNum('16'),
+            '16:30 - 17:00' => $persianUtils->toPersianNum('16/5'),
+            '17:00 - 17:30' => $persianUtils->toPersianNum('17'),
+            '17:30 - 18:00' => $persianUtils->toPersianNum('17/5'),
+        ];
+        $arrOfTimeInView = [];
+        foreach ($arrOfTimes as $key => $item) {
+            $arrOfTimeInView[] = explode(' - ', $key);
+        }
+        $theUserSlots = $this->getUserSlots($slotIndex, 5, 20)[0];
+        return [$arrOfTimes, $theUserSlots];
+
+    }
+    /**
+     * ajax for direct table to right
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxTableRight(Request $request)
+    {
+
+        $persianUtils = new PersianUtils;
+        $arrOfTimes = [
+            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
+            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
+            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
+            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
+            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
+            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+        ];
+        return $arrOfTimes;
+
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+
+        $user = Auth::user();
+        $role = $user->role;
+        $from_date = null;
+        $i = 1;
+        $sw = 0;
+        $persianUtils = new PersianUtils;
+        $showUsersInView = [
+            1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
+            2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
+            3 => '<i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>',
+        ];
+        $noUser = ' <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>';
+        $arrOfDays = [
+            0 => 'ج',
+            1 => 'ش',
+            2 => 'ی',
+            3 => 'د',
+            4 => 'س',
+            5 => 'چ',
+            6 => 'پ',
+        ];
+        $arrOfTimes = [
+            '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+            '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+            '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+            '09:30 - 10:00' => $persianUtils->toPersianNum('9/5'),
+            '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
+            '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
+            '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
+            '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
+            '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
+            '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
+            '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
+            '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
+            '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
+            '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
+            '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+        ];
+        $slotIndex = [
+            "08:00:00" => 1,
+            "08:30:00" => 2,
+            "09:00:00" => 3,
+            "09:30:00" => 4,
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+        ];
+        $theUserSlots = $this->getUserSlots($slotIndex, 1, 16)[0];
+        $countAthleteArr = $this->getUserSlots($slotIndex, 1, 16)[1];
         $todayDate = jdate()->format('Y-m-d');
         $todayTime = jdate()->format('H:i');
         return view('Athlete.dashboard')->with([
@@ -258,10 +271,9 @@ class AthleteController extends Controller
             'todayTime' => $todayTime,
             'todayDate' => $todayDate,
             'count' => $countAthleteArr,
-            'cancel' => $cancel,
             'arrOfDays' => $arrOfDays,
             'showUsersInView' => $showUsersInView,
-            'noUser' => $noUser
+            'noUser' => $noUser,
         ]);
     }
     public function checkEnv($e)

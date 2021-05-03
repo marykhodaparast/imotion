@@ -32,6 +32,14 @@ function addDisabledToSomeDateOfTodays(){
 }
 let arrayOfTimes = [];
 $(".arrow-left").on("click", function () {
+    var counter = 0;
+    $.each(user_slots, function(key, value){
+        // for(var i = 1; i <= 16; i++){
+        //     //$('.class_'+ i).text('hello');
+        // }
+        //console.log(value);
+    });
+    
     emptyTds();
     $(".arrow-right").css("display", "block");
     $.ajax({
@@ -41,7 +49,8 @@ $(".arrow-left").on("click", function () {
             _token: csrf_token,
         },
         success: function (result) {
-            arrayOfTimes = result;
+            arrayOfTimes = result[0];
+            console.log(result[1]);
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);
