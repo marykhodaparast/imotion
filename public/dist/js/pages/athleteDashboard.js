@@ -1,7 +1,15 @@
+todayTime = "11:30";
+let i_fontawesome = "";
 function emptyTds(){
     $("td").each(function () {
-        $(this).find("div").find("i").removeClass("fas fa-user");
-        $(this).find("div").find("i").addClass("far fa-user");
+        //console.log($(this).find("div").find("i").attr('class'));
+        //console.log($(this).find("div").html());
+        i_fontawesome = $(this).find("div").find("i");
+        if(!i_fontawesome.hasClass("accepted") && !i_fontawesome.hasClass("danger")){
+            i_fontawesome.removeClass("fas fa-user");
+            i_fontawesome.addClass("far fa-user");
+        }
+        
         $(this).removeClass("text-lightgray");
         $(this).addClass("cursor_pointer hoverable");
     }); 
@@ -50,7 +58,7 @@ $(".arrow-left").on("click", function () {
         },
         success: function (result) {
             arrayOfTimes = result[0];
-            console.log(result[1]);
+            //console.log(result[1]);
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);
