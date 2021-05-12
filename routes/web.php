@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
         Route::post('/ajax/load-data-of-table','AthleteController@ajaxTableLeft')->name('ajaxtableleft');
         Route::post('/ajax/load-data-of-table-right','AthleteController@ajaxTableRight')->name('ajaxtableright');
+        Route::get('/x', 'AthleteController@x')->name('x');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
     });
     Route::group(['prefix' => '/admin'], function(){

@@ -1,9 +1,8 @@
 todayTime = "11:30";
 let i_fontawesome = "";
+let td_childs = "";
 function emptyTds(){
     $("td").each(function () {
-        //console.log($(this).find("div").find("i").attr('class'));
-        //console.log($(this).find("div").html());
         i_fontawesome = $(this).find("div").find("i");
         if(!i_fontawesome.hasClass("accepted") && !i_fontawesome.hasClass("danger")){
             i_fontawesome.removeClass("fas fa-user");
@@ -38,6 +37,15 @@ function addDisabledToSomeDateOfTodays(){
         }
     });
 }
+function cssClassesInTd(){
+    $("td").each(function(){
+        td_childs = $(this).find("div").find("i");
+        if(td_childs.hasClass("accepted") || td_childs.hasClass("danger")){
+            td_childs.removeClass();
+            td_childs.addClass("far fa-user");
+        } 
+    });
+}
 let arrayOfTimes = [];
 $(".arrow-left").on("click", function () {
     var counter = 0;
@@ -57,8 +65,23 @@ $(".arrow-left").on("click", function () {
             _token: csrf_token,
         },
         success: function (result) {
+            //cssClassesInTd();
             arrayOfTimes = result[0];
             //console.log(result[1]);
+            var cnt = 1;
+            $("table > tbody > tr > td:nth-child(4)").find("div").find("i:nth-child(1)").addClass("fas fa-user accepted");
+            //console.log($("table > tbody > tr > td:nth-child(2)"));
+            // $("td").each(function(){
+            //     td_childs = $(this).find("div").find("i");
+            //     if(td_childs.hasClass("accepted") || td_childs.hasClass("danger")){
+            //         td_childs.removeClass();
+            //         td_childs.addClass("far fa-user");
+            //     } 
+            // });
+            $.each(result[1], function(key, value){
+                //console.log(key, value["slot-3"]);
+                cnt++;
+            });
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);
