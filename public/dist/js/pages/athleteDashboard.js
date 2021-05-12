@@ -69,6 +69,7 @@ $(".arrow-left").on("click", function () {
             arrayOfTimes = result[0];
             //console.log(result[1]);
             var cnt = 1;
+            $("table > tbody > tr > td:nth-child(4)").find("div").find("i:nth-child(1)").removeClass();
             $("table > tbody > tr > td:nth-child(4)").find("div").find("i:nth-child(1)").addClass("fas fa-user accepted");
             //console.log($("table > tbody > tr > td:nth-child(2)"));
             // $("td").each(function(){
