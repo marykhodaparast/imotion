@@ -108,96 +108,6 @@ class AthleteController extends Controller
         }
         return [$theUserSlots, $countAthleteArr];
     }
-    public function x()
-    {
-
-        $slotIndex = [
-            "10:00:00" => 1,
-            "10:30:00" => 2,
-            "11:00:00" => 3,
-            "11:30:00" => 4,
-            "12:00:00" => 5,
-            "12:30:00" => 6,
-            "13:00:00" => 7,
-            "13:30:00" => 8,
-            "14:00:00" => 9,
-            "14:30:00" => 10,
-            "15:00:00" => 11,
-            "15:30:00" => 12,
-            "16:00:00" => 13,
-            "16:30:00" => 14,
-            "17:00:00" => 15,
-            "17:30:00" => 16,
-        ];
-        $user = Auth::user();
-        $countAthleteArr = [];
-        $slots = Slot::where('is_deleted', false)->get();
-        $englishDates = [];
-        for ($i = 1; $i <= $this->num_day; $i++) {
-            $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
-        }
-        foreach ($slots as $slot) {
-            for ($i = 0; $i < 16; $i++) {
-                $countAthleteArr[jdate($slot->date)->format('Y-m-d')][$i] = 0;
-            }
-        }
-        foreach ($slots as $slot) {
-            $slotsFoundByDate = Slot::where('is_deleted', false)->where('date', $slot->date)->get();
-            foreach ($slotsFoundByDate as $i => $item) {
-                $countAthleteArr[jdate($item->date)->format('Y-m-d')][$i] = count(array_filter([$item->athlete_id_1, $item->athlete_id_2, $item->athlete_id_3]));
-            }
-        }
-        $theUserSlots = [];
-        $arrOfDates = [];
-        for ($i = 1; $i <= $this->num_day; $i++) {
-            $theUserSlots[jdate()->addDays($i - 1)->format('Y-m-d')] = [];
-            $arrOfDates[] = jdate()->addDays($i - 1)->format('Y-m-d');
-        }
-        foreach ($slots as $item) {
-            $date = jdate($item->date)->format('Y-m-d');
-            if (in_array($date, $arrOfDates)) {
-                for ($j = 1; $j <= 16; $j++) {
-                    $theUserSlots[$date]["slot-" . $j] = ["is_mine" => null, "seat_count" => null];
-                }
-                $theUserSlots[$date]["is_mine"] = null;
-            }
-        }
-        Log::info($theUserSlots);
-        foreach ($slots as $index => $item) {
-            $date = jdate($item->date)->format('Y-m-d');
-            if (in_array($date, $arrOfDates)) {
-                $slotsFoundByDate = Slot::where('is_deleted', false)->where('date', $item->date)->get();
-                foreach ($slotsFoundByDate as $i => $s) {
-                    $theSwitch = Slot::where('is_deleted', false)->where('is_deleted', false)->where('date', $s->date)
-                        ->where('start', $s->start)
-                        ->where('end', $s->end)
-                        ->where(function ($query) use ($user) {
-                            $query->where('athlete_id_1', $user->id)
-                                ->orWhere('athlete_id_2', $user->id)
-                                ->orWhere('athlete_id_3', $user->id)
-                                ->first();
-                        })->first();
-                    $theSelf = $theSwitch != null ? 1 : 0;
-                    $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
-                }
-                $theUserSlots[$date]["is_mine"] = 0;
-            }
-        }
-        foreach ($theUserSlots as $x => $item) {
-            foreach ($item as $y => $index) {
-                if (!empty($theUserSlots)) {
-                    if (is_array($theUserSlots[$x][$y])) {
-                        if ($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"] != 0) {
-                            $theUserSlots[$x]["is_mine"] = $theUserSlots[$x][$y]["is_mine"];
-                        } elseif ($theUserSlots[$x][$y]["is_mine"] != null && $theUserSlots[$x][$y]["is_mine"] == 0) {
-                            $theUserSlots[$x]["is_mine"] = 0;
-                        }
-                    }
-                }
-            }
-        }
-        dd($theUserSlots);
-    }
     /**
      * ajax for direct table to left
      *
@@ -260,6 +170,24 @@ class AthleteController extends Controller
     {
 
         $persianUtils = new PersianUtils;
+        $slotIndex = [
+            "08:00:00" => 1,
+            "08:30:00" => 2,
+            "09:00:00" => 3,
+            "09:30:00" => 4,
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+        ];
         $arrOfTimes = [
             '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
             '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
@@ -278,7 +206,12 @@ class AthleteController extends Controller
             '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
             '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
         ];
-        return $arrOfTimes;
+        $arrOfTimeInView = [];
+        foreach ($arrOfTimes as $key => $item) {
+            $arrOfTimeInView[] = explode(' - ', $key);
+        }
+        $theUserSlots = $this->getUserSlots($slotIndex)[0];
+        return [$arrOfTimes, $theUserSlots];
 
     }
     /**
