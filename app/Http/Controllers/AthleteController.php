@@ -72,7 +72,6 @@ class AthleteController extends Controller
                 $theUserSlots[$date]["is_mine"] = null;
             }
         }
-        Log::info($theUserSlots);
         foreach ($slots as $index => $item) {
             $date = jdate($item->date)->format('Y-m-d');
             if (in_array($date, $arrOfDates)) {
@@ -88,7 +87,9 @@ class AthleteController extends Controller
                                 ->first();
                         })->first();
                     $theSelf = $theSwitch != null ? 1 : 0;
-                    $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                    if(isset($slotIndex[$s->start])){
+                        $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                    }
                 }
                 $theUserSlots[$date]["is_mine"] = 0;
             }
