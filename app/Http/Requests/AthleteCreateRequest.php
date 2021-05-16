@@ -28,7 +28,7 @@ class AthleteCreateRequest extends FormRequest
         return [
             'time1' => 'required|date_format:H:i',
             'time2' => 'required|date_format:H:i|after:time1',
-            'date' => 'required|date',
+            'date' => 'required',
         ];
     }
     /**
@@ -39,15 +39,9 @@ class AthleteCreateRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        
+
         if ($validator->fails()) {
             $errors = (new ValidationException($validator))->errors();
-            //dd($errors["time"][0]);
-            
-            // throw new HttpResponseException(
-            //     response()->json(['errors' => $errors], 422)
-            // );
-            //return Redirect::back()->withErrors($validator);
             return Redirect::back()->with(['msg_error' => ""]);
 
         }

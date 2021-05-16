@@ -1,4 +1,3 @@
-todayTime = "11:30";
 let i_fontawesome = "";
 let td_childs = "";
 function emptyTds(){
@@ -59,30 +58,36 @@ $(".arrow-left").on("click", function () {
         },
         success: function (result) {
             var slots = result[1];
+            console.log(slots);
             var row = 1;
-            var xx = 1;
-            //console.log($('table').find("tbody").find("tr:nth-child(1)").find("td:nth-child(1)"));
             $.each(slots, function(key, value){
                 if(Object.keys(value).length) {
-                   var k = 1;
                    for( var i = 1; i <= 16; i++) {
                         if(value["slot-" + i]["seat_count"] == 1) {
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass("far fa-user").addClass("fas fa-user accepted");
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");                          
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
                         } else if(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null) {
                             if(value["is_mine"] == 1) {
                                 $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
                             }
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("far fa-user");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");                          
-                        } 
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
+                        } else if(value["slot-" + i]["seat_count"] == 2) {
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("fas fa-user accepted");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("fas fa-user accepted");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
+                        } else if(value["slot-" + i]["seat_count"] == 3){
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("fas fa-user danger");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("fas fa-user danger");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("fas fa-user danger");
+                        }
                    }
                 }
                 row++;
             })
-           
+
             arrayOfTimes = result[0];
             var cnt = 1;
             var i = 0;
@@ -111,21 +116,35 @@ $(".arrow-right").on("click", function () {
         success: function (result) {
             arrayOfTimes = result[0];
             var slots = result[1];
-            //var row = 1;
-            // $.each(slots, function(key, value){
-            //     if(Object.keys(value).length) {
-            //         var k = 1;
-            //         console.log(row);
-            //        for( var i = 1; i <= 16; i++) {
-            //             if(value["slot-" + i]["seat_count"] == 1) {
-            //                $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass("far fa-user").addClass("fas fa-user accepted");
-            //                $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
-            //                $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
-            //             } 
-            //        }
-            //     }
-            //     row++;
-            // })
+            var row = 1;
+            $.each(slots, function(key, value){
+                if(Object.keys(value).length) {
+                    for( var i = 1; i <= 16; i++) {
+                     if(value["slot-" + i]["seat_count"] == 1) {
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass("far fa-user").addClass("fas fa-user accepted");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
+
+                        } else if(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null) {
+                            if(value["is_mine"] == 1) {
+                                $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
+                            }
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("far fa-user");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
+                        } else if(value["slot-" + i]["seat_count"] == 2) {
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("fas fa-user accepted");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("fas fa-user accepted");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
+                        } else if(value["slot-" + i]["seat_count"] == 3){
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("fas fa-user danger");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("fas fa-user danger");
+                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("fas fa-user danger");
+                        }
+                    }
+                 }
+                 row++;
+            })
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);

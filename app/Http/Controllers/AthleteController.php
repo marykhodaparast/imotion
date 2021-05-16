@@ -88,7 +88,10 @@ class AthleteController extends Controller
                         })->first();
                     $theSelf = $theSwitch != null ? 1 : 0;
                     if(isset($slotIndex[$s->start])){
-                        $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf, "seat_count" => $countAthleteArr[$date][$i]];
+                        $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => $theSelf , "seat_count" => $countAthleteArr[$date][$i]];
+                        if($theSelf == 0 && $countAthleteArr[$date][$i] == 0){
+                            $theUserSlots[$date]["slot-" . ($slotIndex[$s->start])] = ["is_mine" => null , "seat_count" => null];
+                        }
                     }
                 }
                 $theUserSlots[$date]["is_mine"] = 0;
