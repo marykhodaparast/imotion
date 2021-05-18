@@ -283,8 +283,31 @@ class AthleteController extends Controller
             "15:00:00" => 15,
             "15:30:00" => 16,
         ];
+        $fullSlotIndex = [
+            "08:00:00" => 1,
+            "08:30:00" => 2,
+            "09:00:00" => 3,
+            "09:30:00" => 4,
+            "10:00:00" => 5,
+            "10:30:00" => 6,
+            "11:00:00" => 7,
+            "11:30:00" => 8,
+            "12:00:00" => 9,
+            "12:30:00" => 10,
+            "13:00:00" => 11,
+            "13:30:00" => 12,
+            "14:00:00" => 13,
+            "14:30:00" => 14,
+            "15:00:00" => 15,
+            "15:30:00" => 16,
+            "16:00:00" => 17,
+            "16:30:00" => 18,
+            "17:00:00" => 19,
+            "17:30:00" => 20
+        ];
         $theUserSlots = $this->getUserSlots($slotIndex)[0];
         $countAthleteArr = $this->getUserSlots($slotIndex)[1];
+        $fullUserSlots = $this->getUserSlots($fullSlotIndex)[0];
         $todayDate = jdate()->format('Y-m-d');
         $todayTime = jdate()->format('H:i');
         return view('Athlete.dashboard')->with([
@@ -294,6 +317,7 @@ class AthleteController extends Controller
             'msg_error' => request()->session()->get('msg_error'),
             'role' => $role->type,
             'user_slots' => $theUserSlots,
+            'fullUserSlots' => $fullUserSlots,
             'i' => $i,
             'sw' => $sw,
             'todayTime' => $todayTime,

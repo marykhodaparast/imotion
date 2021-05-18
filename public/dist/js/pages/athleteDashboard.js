@@ -1,6 +1,6 @@
 let i_fontawesome = "";
 let td_childs = "";
-//console.log(user_slots);
+let sw = 0;
 function emptyTds(){
     $("td").each(function () {
         i_fontawesome = $(this).find("div").find("i");
@@ -48,7 +48,6 @@ function cssClassesInTd(){
 }
 let arrayOfTimes = [];
 $(".arrow-left").on("click", function () {
-    var counter = 0;
     emptyTds();
     $(".arrow-right").css("display", "block");
     $.ajax({
@@ -59,7 +58,6 @@ $(".arrow-left").on("click", function () {
         },
         success: function (result) {
             var slots = result[1];
-            //console.log(slots);
             var row = 1;
             $.each(slots, function(key, value){
                 if(Object.keys(value).length) {
@@ -69,12 +67,7 @@ $(".arrow-left").on("click", function () {
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
                         } else if(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null) {
-                            // if(user_slots["is_mine"] == 1) {
-                            //     value["is_mine"] = 1;
-                            // }
-                            //console.log(user_slots[key]["slot-"+ i]["is_mine"]);
-                            //if(value["is_mine"] == 1) {
-                            if(user_slots[key]["is_mine"] == 1) {
+                            if(full_user_slots[key]["is_mine"] == 1) {
                                 $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
                             }
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");
@@ -95,7 +88,6 @@ $(".arrow-left").on("click", function () {
             })
 
             arrayOfTimes = result[0];
-            var cnt = 1;
             var i = 0;
             $.each(arrayOfTimes, function (key, value) {
                 $("#id_" + i).text(value);
@@ -132,10 +124,7 @@ $(".arrow-right").on("click", function () {
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
 
                         } else if(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null) {
-                            // if(value["is_mine"] == 1) {
-                            //     $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
-                            // }
-                            if(user_slots[key]["is_mine"] == 1) {
+                            if(full_user_slots[key]["is_mine"] == 1) {
                                 $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
                             }
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");

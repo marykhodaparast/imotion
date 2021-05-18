@@ -78,7 +78,7 @@
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach ($user_slots as $date => $slots)
+                        @foreach ($fullUserSlots as $date => $slots)
                         <tr>
                             <th scope="row">
                                 @foreach ($arrOfDays as $index => $day)
@@ -125,6 +125,7 @@
     var route_ajaxtableleft = "{{ route('ajaxtableleft')}}";
     var route_ajaxtableright = "{{ route('ajaxtableright')}}";
     var user_slots = @json($user_slots);
+    var full_user_slots = @json($fullUserSlots);
 </script>
 <script src="/dist/js/pages/athleteDashboard.js"></script>
 @endsection
