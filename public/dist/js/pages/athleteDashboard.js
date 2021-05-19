@@ -46,6 +46,17 @@ function cssClassesInTd(){
             }
     });
 }
+function whatToDoAccordingToSeatCount(row, i, firstClassToRemove, firstClassToAdd, secondClassToRemove, secondClassToAdd, thirdClassToRemove, thirdClassToAdd, swRemoveClass = 0){
+    if(!swRemoveClass) {
+        $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass(firstClassToRemove).addClass(firstClassToAdd);
+        $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass(secondClassToRemove).addClass(secondClassToAdd);
+        $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass(thirdClassToRemove).addClass(thirdClassToAdd); 
+    }
+    $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass(firstClassToAdd);
+    $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass(secondClassToAdd);
+    $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass(thirdClassToAdd); 
+   
+}
 let arrayOfTimes = [];
 $(".arrow-left").on("click", function () {
     emptyTds();
@@ -63,16 +74,19 @@ $(".arrow-left").on("click", function () {
                 if(Object.keys(value).length) {
                    for( var i = 1; i <= 16; i++) {
                         if(value["slot-" + i]["seat_count"] == 1) {
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass("far fa-user").addClass("fas fa-user accepted");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
+                            whatToDoAccordingToSeatCount(row, i, "far fa-user", "fas fa-user accepted", "fas", "far", "fas", "far");
+                            // $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass("far fa-user").addClass("fas fa-user accepted");
+                            // $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass("fas").addClass("far");
+                            // $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass("fas").addClass("far");
                         } else if(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null) {
                             if(full_user_slots[key]["is_mine"] == 1) {
                                 $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
                             }
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("far fa-user");
-                            $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
+                            whatToDoAccordingToSeatCount(row, i, "", "far fa-user", "", "far fa-user", "", "far fa-user", 1);
+
+                            //$('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("far fa-user");
+                            //$('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("far fa-user");
+                            //$('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass("far fa-user");
                         } else if(value["slot-" + i]["seat_count"] == 2) {
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass("fas fa-user accepted");
                             $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass("fas fa-user accepted");
