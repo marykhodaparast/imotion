@@ -1,6 +1,6 @@
 let i_fontawesome = "";
 let td_childs = "";
-todayTime = "11:30";
+//todayTime = "11:30";
 let sw = 0;
 function emptyTds(){
     $("td").each(function () {
@@ -80,7 +80,7 @@ $(".arrow-left").on("click", function () {
             var row = 1;
             $.each(slots, function(key, value){
                 if(Object.keys(value).length) {
-                   for( var i = 1; i <= 16; i++) {
+                   for( var i = 1; i <= 10; i++) {
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
                         disableSomeSlots(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
                         whatToDoAccordingToSeatCount(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
@@ -119,7 +119,7 @@ $(".arrow-right").on("click", function () {
             var row = 1;
             $.each(slots, function(key, value){
                 if(Object.keys(value).length) {
-                    for( var i = 1; i <= 16; i++) {
+                    for( var i = 1; i <= 10; i++) {
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
                         disableSomeSlots(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
                         whatToDoAccordingToSeatCount(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");

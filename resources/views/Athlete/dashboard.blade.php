@@ -87,7 +87,7 @@
                                 @endif
                                 @endforeach
                             </th>
-                            @for ($j = 1; $j <= 16; $j++) @if ((jdate()->format('w') + $i) % 7) <td class="{{ isset($slots['slot-' . $j]) ? $athlete::showCssClass($slots['slot-' . $j]['seat_count'], $slots['slot-' . $j]['is_mine'], $slots['is_mine']) : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
+                            @for ($j = 1; $j <= 10; $j++) @if ((jdate()->format('w') + $i) % 7) <td class="{{ isset($slots['slot-' . $j]) ? $athlete::showCssClass($slots['slot-' . $j]['seat_count'], $slots['slot-' . $j]['is_mine'], $slots['is_mine']) : 'cursor_pointer hoverable' }}" data-date="{{ jdate()->addDays($i - 1)->format('Y-m-d') }}" data-nameOfDay="{{ jdate()->addDays($i - 1)->format('l') }}">
                                     <div class="row width-50 mx-auto class_{{$j}}">
                                         {!! !empty($slots) && isset($showUsersInView[$slots['slot-' . $j]['seat_count']]) ? $showUsersInView[$slots['slot-' . $j]['seat_count']] : $noUser !!}
                                     </div>
