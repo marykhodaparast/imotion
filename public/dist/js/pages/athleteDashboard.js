@@ -1,5 +1,6 @@
 let i_fontawesome = "";
 let td_childs = "";
+todayTime = "11:30";
 let sw = 0;
 function emptyTds(){
     $("td").each(function () {
@@ -21,14 +22,10 @@ function addDisabledToSomeDateOfTodays(){
         }
         var column = $(this).closest("td").index();
         if ($(this).data("date") == todayDate) {
-            column = $("tr")
-                .children(".c_" + column)
-                .data("time");
+            column = $("tr").children(".c_" + column).data("time");
             arrOfTimes = column.split(" - ");
-            if (
-                todayTime > arrOfTimes[1] ||
-                (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])
-            ) {
+            //console.log(todayTime, arrOfTimes);
+            if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
                 $(this).find("div").find("i").removeClass("far fa-user");
                 $(this).find("div").find("i").addClass("fas fa-user");
                 $(this).addClass("text-lightgray");
@@ -53,8 +50,8 @@ function whatToDoAccordingToSeatCount(condition, row, i, firstClassToAdd, second
         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass(thirdClassToAdd); 
     } 
 }
-function disableSomeSlots(row, i, is_mine){
-    if(is_mine == 1) {
+function disableSomeSlots(condition, row, i, is_mine){    
+    if(condition && is_mine == 1) {
         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
     } 
 }
@@ -85,7 +82,7 @@ $(".arrow-left").on("click", function () {
                 if(Object.keys(value).length) {
                    for( var i = 1; i <= 16; i++) {
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
-                        disableSomeSlots(row, i, full_user_slots[key]["is_mine"]);
+                        disableSomeSlots(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
                         whatToDoAccordingToSeatCount(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 2, row, i, "fas fa-user accepted", "fas fa-user accepted", "far fa-user");
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 3, row, i, "fas fa-user danger", "fas fa-user danger", "fas fa-user danger");
@@ -124,7 +121,7 @@ $(".arrow-right").on("click", function () {
                 if(Object.keys(value).length) {
                     for( var i = 1; i <= 16; i++) {
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
-                        disableSomeSlots(row, i, full_user_slots[key]["is_mine"]);
+                        disableSomeSlots(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
                         whatToDoAccordingToSeatCount(value["slot-"+ i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 2, row, i, "fas fa-user accepted", "fas fa-user accepted", "far fa-user");
                         whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 3, row, i, "fas fa-user danger", "fas fa-user danger", "fas fa-user danger");
