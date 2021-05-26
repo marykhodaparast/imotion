@@ -1,6 +1,13 @@
 let i_fontawesome = "";
 let td_childs = "";
 //todayTime = "11:30";
+console.log($(window).width());
+function isMobile(){
+    return($(window).width >= 320 && $(window).width <=768); 
+}
+function isDesktop(){
+    return($(window).width >= 1024 && $(window).width <=2056); 
+}
 let sw = 0;
 function emptyTds(){
     $("td").each(function () {
