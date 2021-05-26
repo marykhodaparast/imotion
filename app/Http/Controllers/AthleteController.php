@@ -231,12 +231,9 @@ class AthleteController extends Controller
         $role = $user->role;
         $from_date = null;
         $slotCounter = 10;
-        // if($agent->isMobile()){
-        //     $slotCounter = 3;
-        // }
+        $persianUtils = new PersianUtils;  
         $i = 1;
         $sw = 0;
-        $persianUtils = new PersianUtils;
         $showUsersInView = [
             1 => '<i class="fas fa-user accepted"></i><i class="far fa-user"></i><i class="far fa-user"></i>',
             2 => '<i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>',
@@ -310,6 +307,18 @@ class AthleteController extends Controller
             "17:00:00" => 19,
             "17:30:00" => 20
         ];
+        if($agent->isMobile()){
+            $arrOfTimes = [
+                '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
+                '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
+                '09:00 - 09:30' => $persianUtils->toPersianNum('9')
+            ];
+            $slotIndex = [
+                "08:00:00" => 1,
+                "08:30:00" => 2,
+                "09:00:00" => 3
+            ];  
+        }
         $theUserSlots = $this->getUserSlots($slotIndex)[0];
         $countAthleteArr = $this->getUserSlots($slotIndex)[1];
         $fullUserSlots = $this->getUserSlots($fullSlotIndex)[0];
