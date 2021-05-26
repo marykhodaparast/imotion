@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Redirect;
+use Jenssegers\Agent\Agent;
 use Log;
 
 class AthleteController extends Controller
@@ -226,9 +226,14 @@ class AthleteController extends Controller
     public function index()
     {
 
+        $agent = new Agent();
         $user = Auth::user();
         $role = $user->role;
         $from_date = null;
+        $slotCounter = 10;
+        // if($agent->isMobile()){
+        //     $slotCounter = 3;
+        // }
         $i = 1;
         $sw = 0;
         $persianUtils = new PersianUtils;
@@ -320,6 +325,7 @@ class AthleteController extends Controller
             'fullUserSlots' => $fullUserSlots,
             'i' => $i,
             'sw' => $sw,
+            'slotCounter' => $slotCounter,
             'todayTime' => $todayTime,
             'todayDate' => $todayDate,
             'count' => $countAthleteArr,
