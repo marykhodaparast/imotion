@@ -6,7 +6,7 @@ function isMobile(){
     return($(window).width >= 320 && $(window).width <=768); 
 }
 function isDesktop(){
-    return($(window).width >= 1024 && $(window).width <=2056); 
+    return($(window).width >= 1024 && $(window).width <=2560); 
 }
 let sw = 0;
 function emptyTds(){
