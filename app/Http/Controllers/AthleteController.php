@@ -166,6 +166,24 @@ class AthleteController extends Controller
 
     }
     /**
+     * ajax for direct table to left
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxTableLeftFirst(Request $request)
+    {
+
+        $slotIndex = $request->input('slot_index');
+        $arrOfTimes = $request->input('arrOfTimes');
+        $arrOfTimeInView = [];
+        foreach ($arrOfTimes as $key => $item) {
+            $arrOfTimeInView[] = explode(' - ', $key);
+        }
+        $theUserSlots = $this->getUserSlots($slotIndex)[0];
+        return [$arrOfTimes, $theUserSlots];
+
+    }
+    /**
      * ajax for direct table to right
      *
      * @return \Illuminate\Http\Response
@@ -231,7 +249,7 @@ class AthleteController extends Controller
         $role = $user->role;
         $from_date = null;
         $slotCounter = 10;
-        $persianUtils = new PersianUtils;  
+        $persianUtils = new PersianUtils;
         $i = 1;
         $sw = 0;
         $showUsersInView = [
@@ -317,7 +335,7 @@ class AthleteController extends Controller
                 "08:00:00" => 1,
                 "08:30:00" => 2,
                 "09:00:00" => 3
-            ];  
+            ];
         }
         $theUserSlots = $this->getUserSlots($slotIndex)[0];
         $countAthleteArr = $this->getUserSlots($slotIndex)[1];

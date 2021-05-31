@@ -1,51 +1,123 @@
 let i_fontawesome = "";
 let td_childs = "";
 //todayTime = "11:30";
-function isMobile(){
-    return($(window).width >= 320 && $(window).width <=768); 
+function isMobile() {
+    return ($(window).width >= 320 && $(window).width <= 768);
 }
-function isDesktop(){
-    return($(window).width >= 1024 && $(window).width <=2560); 
+
+function isDesktop() {
+    return ($(window).width >= 1024 && $(window).width <= 2560);
 }
-if(isMobile()) {
-    $counter_arrow_left = 0;
-    $('.arrow-left').on('click', function(){
-        $counter_arrow_left++;
-        console.log($counter_arrow_left);    
+//console.log(isMobile());
+//if(isMobile()) {
+//console.log('mobile');
+let counter_arrow_left = 0;
+let slotIndex = {
+    "09:30:00":1,
+    "10:00:00":2,
+    "10:30:00":3
+};
+let arrOfTimes = {
+    '09:30 - 10:00':'۹/۵',
+    '10:00 - 10:30':'۱۰',
+    '10:00 - 11:00':'۱۰/۵'
+};
+$('.arrow-left').on('click', function () {
+    counter_arrow_left++;
+    switch (counter_arrow_left) {
+        case 1:
+            emptyTds();
+            $(".arrow-right").css("display", "block");
+            $.ajax({
+                url: route_ajaxtableleftfirst,
+                type: "POST",
+                data: {
+                    _token: csrf_token,
+                    slot_index: slotIndex,
+                    arrOfTimes: arrOfTimes
+                },
+                success: function (result) {
+                    var slots = result[1];
+                    var row = 1;
+                    $.each(slots, function (key, value) {
+                        if (Object.keys(value).length) {
+                            for (var i = 1; i <= 10; i++) {
+                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
+                                disableSomeSlots(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
+                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
+                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 2, row, i, "fas fa-user accepted", "fas fa-user accepted", "far fa-user");
+                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 3, row, i, "fas fa-user danger", "fas fa-user danger", "fas fa-user danger");
+                            }
+                        }
+                        row++;
+                    })
+
+                    arrayOfTimes = result[0];
+                    var i = 0;
+                    $.each(arrayOfTimes, function (key, value) {
+                        changeTime(i, value, key);
+                        i++;
+                    });
+                    addDisabledToSomeDateOfTodays();
+                },
+                error: function () {
+                    console.log("error");
+                },
+            });
+            break;
+        case 2:
+            day = "Monday";
+            break;
+        case 3:
+            day = "Tuesday";
+            break;
+        case 4:
+            day = "Wednesday";
+            break;
+        case 5:
+            day = "Thursday";
+            break;
+        case 6:
+            day = "Friday";
+            break;
+        case 7:
+            day = "Saturday";
+    }
+});
+
+//}
+// let sw = 0;
+function emptyTds() {
+    $("td").each(function () {
+        i_fontawesome = $(this).find("div").find("i");
+        if (!i_fontawesome.hasClass("accepted") && !i_fontawesome.hasClass("danger")) {
+            i_fontawesome.removeClass("fas fa-user");
+            i_fontawesome.addClass("far fa-user");
+        }
+
+        $(this).removeClass("text-lightgray");
+        $(this).addClass("cursor_pointer hoverable");
     });
 }
-// let sw = 0;
-// function emptyTds(){
-//     $("td").each(function () {
-//         i_fontawesome = $(this).find("div").find("i");
-//         if(!i_fontawesome.hasClass("accepted") && !i_fontawesome.hasClass("danger")){
-//             i_fontawesome.removeClass("fas fa-user");
-//             i_fontawesome.addClass("far fa-user");
-//         }
-
-//         $(this).removeClass("text-lightgray");
-//         $(this).addClass("cursor_pointer hoverable");
-//     });
-// }
-// function addDisabledToSomeDateOfTodays(){
-//     $("td").each(function () {
-//         if ($(this).hasClass("text-lightgray")) {
-//             $(this).find("div").find("i").removeClass("far fa-user");
-//             $(this).find("div").find("i").addClass("fas fa-user");
-//         }
-//         var column = $(this).closest("td").index();
-//         if ($(this).data("date") == todayDate) {
-//             column = $("tr").children(".c_" + column).data("time");
-//             arrOfTimes = column.split(" - ");
-//             if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
-//                 $(this).find("div").find("i").removeClass("far fa-user");
-//                 $(this).find("div").find("i").addClass("fas fa-user");
-//                 $(this).addClass("text-lightgray");
-//                 $(this).removeClass("cursor_pointer hoverable");
-//             }
-//         }
-//     });
-// }
+function addDisabledToSomeDateOfTodays(){
+    $("td").each(function () {
+        if ($(this).hasClass("text-lightgray")) {
+            $(this).find("div").find("i").removeClass("far fa-user");
+            $(this).find("div").find("i").addClass("fas fa-user");
+        }
+        var column = $(this).closest("td").index();
+        if ($(this).data("date") == todayDate) {
+            column = $("tr").children(".c_" + column).data("time");
+            arrOfTimes = column.split(" - ");
+            if (todayTime > arrOfTimes[1] || (todayTime > arrOfTimes[0] && todayTime < arrOfTimes[1])) {
+                $(this).find("div").find("i").removeClass("far fa-user");
+                $(this).find("div").find("i").addClass("fas fa-user");
+                $(this).addClass("text-lightgray");
+                $(this).removeClass("cursor_pointer hoverable");
+            }
+        }
+    });
+}
 // function cssClassesInTd(){
 //     $("td").each(function(){
 //         td_childs = $(this).find("div").find("i");
@@ -59,19 +131,19 @@ if(isMobile()) {
 //     if(condition) {
 //         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(1)").removeClass().addClass(firstClassToAdd);
 //         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(2)").removeClass().addClass(secondClassToAdd);
-//         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass(thirdClassToAdd); 
-//     } 
+//         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").find("div").find("i:nth-child(3)").removeClass().addClass(thirdClassToAdd);
+//     }
 // }
-// function disableSomeSlots(condition, row, i, is_mine){    
+// function disableSomeSlots(condition, row, i, is_mine){
 //     if(condition && is_mine == 1) {
 //         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
-//     } 
+//     }
 // }
-// function changeTime(i, value, key){
-//     $("#id_" + i).text(value);
-//     $("#id_" + i).data("time", key);
-//     $("#id_" + i).attr("data-time", key);
-// }
+function changeTime(i, value, key){
+    $("#id_" + i).text(value);
+    $("#id_" + i).data("time", key);
+    $("#id_" + i).attr("data-time", key);
+}
 // function saveOrCancel(button_txt, classToRemove, classToAdd){
 //     $("#saveBtn").text(button_txt);
 //     $("#saveBtn").removeClass(classToRemove);
