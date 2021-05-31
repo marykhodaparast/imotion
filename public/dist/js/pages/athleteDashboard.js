@@ -8,80 +8,86 @@ function isMobile() {
 function isDesktop() {
     return ($(window).width >= 1024 && $(window).width <= 2560);
 }
+
+function clickArrowLeftOnMobile(slotIndex, arrOfTimes) {
+    emptyTds();
+    $(".arrow-right").css("display", "block");
+    $.ajax({
+        url: route_ajaxtableleftmobile,
+        type: "POST",
+        data: {
+            _token: csrf_token,
+            slot_index: slotIndex,
+            arrOfTimes: arrOfTimes
+        },
+        success: function (result) {
+            var slots = result[1];
+            var row = 1;
+            $.each(slots, function (key, value) {
+                if (Object.keys(value).length) {
+                    for (var i = 1; i <= 10; i++) {
+                        whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
+                        disableSomeSlots(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
+                        whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
+                        whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 2, row, i, "fas fa-user accepted", "fas fa-user accepted", "far fa-user");
+                        whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 3, row, i, "fas fa-user danger", "fas fa-user danger", "fas fa-user danger");
+                    }
+                }
+                row++;
+            })
+
+            arrayOfTimes = result[0];
+            var i = 0;
+            $.each(arrayOfTimes, function (key, value) {
+                changeTime(i, value, key);
+                i++;
+            });
+            addDisabledToSomeDateOfTodays();
+        },
+        error: function () {
+            console.log("error");
+        },
+    });
+}
 //console.log(isMobile());
 //if(isMobile()) {
 //console.log('mobile');
 let counter_arrow_left = 0;
-let slotIndex = {
-    "09:30:00":1,
-    "10:00:00":2,
-    "10:30:00":3
-};
-let arrOfTimes = {
-    '09:30 - 10:00':'۹/۵',
-    '10:00 - 10:30':'۱۰',
-    '10:00 - 11:00':'۱۰/۵'
-};
+let slotIndex = {};
+let arrOfTimes = {};
 $('.arrow-left').on('click', function () {
     counter_arrow_left++;
     switch (counter_arrow_left) {
         case 1:
-            emptyTds();
-            $(".arrow-right").css("display", "block");
-            $.ajax({
-                url: route_ajaxtableleftfirst,
-                type: "POST",
-                data: {
-                    _token: csrf_token,
-                    slot_index: slotIndex,
-                    arrOfTimes: arrOfTimes
-                },
-                success: function (result) {
-                    var slots = result[1];
-                    var row = 1;
-                    $.each(slots, function (key, value) {
-                        if (Object.keys(value).length) {
-                            for (var i = 1; i <= 10; i++) {
-                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 1, row, i, "fas fa-user accepted", "far fa-user", "far fa-user");
-                                disableSomeSlots(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, full_user_slots[key]["is_mine"]);
-                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == null && value["slot-" + i]["is_mine"] == null, row, i, "far fa-user", "far fa-user", "far fa-user");
-                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 2, row, i, "fas fa-user accepted", "fas fa-user accepted", "far fa-user");
-                                whatToDoAccordingToSeatCount(value["slot-" + i]["seat_count"] == 3, row, i, "fas fa-user danger", "fas fa-user danger", "fas fa-user danger");
-                            }
-                        }
-                        row++;
-                    })
-
-                    arrayOfTimes = result[0];
-                    var i = 0;
-                    $.each(arrayOfTimes, function (key, value) {
-                        changeTime(i, value, key);
-                        i++;
-                    });
-                    addDisabledToSomeDateOfTodays();
-                },
-                error: function () {
-                    console.log("error");
-                },
-            });
+            slotIndex = {"09:30:00": 1,"10:00:00": 2,"10:30:00": 3};
+            arrOfTimes = {'09:30 - 10:00': '۹/۵','10:00 - 10:30': '۱۰','10:00 - 11:00': '۱۰/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
         case 2:
-            day = "Monday";
+            slotIndex = {"11:00:00": 1,"11:30:00": 2,"12:00:00": 3};
+            arrOfTimes = {'11:00 - 11:30': '۱۱','11:30 - 12:00': '۱۱/۵','12:00 - 12:30': '۱۲'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
         case 3:
-            day = "Tuesday";
+            slotIndex = {"12:30:00": 1,"13:00:00": 2,"13:30:00": 3};
+            arrOfTimes = {'12:30 - 13:00': '۱۲/۵','13:00 - 13:30': '۱۳','13:30 - 14:00': '۱۳/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
         case 4:
-            day = "Wednesday";
+            slotIndex = {"14:00:00": 1,"14:30:00": 2,"15:00:00": 3};
+            arrOfTimes = {'14:00 - 14:30': '۱۴','14:30 - 15:00': '۱۴/۵','15:00 - 15:30': '۱۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
         case 5:
-            day = "Thursday";
+            slotIndex = {"15:30:00": 1,"16:00:00": 2,"16:30:00": 3};
+            arrOfTimes = {'15:30 - 16:00': '۱۵/۵','16:00 - 16:30': '۱۶','16:30 - 17:00': '۱۶/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
         case 6:
-            day = "Friday";
+            slotIndex = {"17:00:00": 1,"17:30:00": 2};
+            arrOfTimes = {'17:00 - 17:30': '۱۷','17:30 - 18:00': '۱۷/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
-        case 7:
-            day = "Saturday";
     }
 });
 
@@ -99,7 +105,8 @@ function emptyTds() {
         $(this).addClass("cursor_pointer hoverable");
     });
 }
-function addDisabledToSomeDateOfTodays(){
+
+function addDisabledToSomeDateOfTodays() {
     $("td").each(function () {
         if ($(this).hasClass("text-lightgray")) {
             $(this).find("div").find("i").removeClass("far fa-user");
@@ -139,7 +146,7 @@ function addDisabledToSomeDateOfTodays(){
 //         $('table').find("tbody").find("tr:nth-child(" + row + ")").find("td:nth-child(" + (i+1) + ")").removeClass("cursor_pointer hoverable").addClass("text-lightgray");
 //     }
 // }
-function changeTime(i, value, key){
+function changeTime(i, value, key) {
     $("#id_" + i).text(value);
     $("#id_" + i).data("time", key);
     $("#id_" + i).attr("data-time", key);

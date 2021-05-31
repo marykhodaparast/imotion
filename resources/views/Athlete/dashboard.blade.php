@@ -128,7 +128,7 @@
     var csrf_token = '{{ csrf_token() }}';
     var route_ajaxtableleft = "{{ route('ajaxtableleft')}}";
     var route_ajaxtableright = "{{ route('ajaxtableright')}}";
-    var route_ajaxtableleftfirst = "{{ route('ajaxtableleftfirst')}}";
+    var route_ajaxtableleftmobile = "{{ route('ajaxtableleftmobile')}}";
     var user_slots = @json($user_slots);
     var full_user_slots = @json($fullUserSlots);
 </script>

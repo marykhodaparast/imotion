@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
         Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
         Route::post('/ajax/load-data-of-table','AthleteController@ajaxTableLeft')->name('ajaxtableleft');
-        Route::post('/ajax/load-data-of-table-first','AthleteController@ajaxTableLeftFirst')->name('ajaxtableleftfirst');
+        Route::post('/ajax/load-data-of-table-mobile','AthleteController@ajaxTableLeftMobile')->name('ajaxtableleftmobile');
         Route::post('/ajax/load-data-of-table-right','AthleteController@ajaxTableRight')->name('ajaxtableright');
         Route::get('/x', 'AthleteController@x')->name('x');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');

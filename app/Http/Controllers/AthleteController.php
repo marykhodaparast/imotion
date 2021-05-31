@@ -170,7 +170,7 @@ class AthleteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ajaxTableLeftFirst(Request $request)
+    public function ajaxTableLeftMobile(Request $request)
     {
 
         $slotIndex = $request->input('slot_index');
