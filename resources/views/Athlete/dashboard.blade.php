@@ -52,11 +52,6 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
-    @if($agent->isMobile())
-       @php
-           $slotCounter = 3;
-       @endphp
-    @endif
     <div class="row">
         <div class="col">
             <div class="table-responsive my_rounded">
@@ -131,6 +126,7 @@
     var route_ajaxtableleftmobile = "{{ route('ajaxtableleftmobile')}}";
     var user_slots = @json($user_slots);
     var full_user_slots = @json($fullUserSlots);
+    var slotCounter = "{{ $slotCounter }}";
 </script>
 <script src="/dist/js/pages/athleteDashboard.js"></script>
 @endsection

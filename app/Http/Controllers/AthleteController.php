@@ -122,12 +122,6 @@ class AthleteController extends Controller
 
         $persianUtils = new PersianUtils;
         $slotIndex = [
-            // "10:00:00" => 1,
-            // "10:30:00" => 2,
-            // "11:00:00" => 3,
-            // "11:30:00" => 4,
-            // "12:00:00" => 5,
-            // "12:30:00" => 6,
             "13:00:00" => 1,
             "13:30:00" => 2,
             "14:00:00" => 3,
@@ -140,12 +134,6 @@ class AthleteController extends Controller
             "17:30:00" => 10
         ];
         $arrOfTimes = [
-            // '10:00 - 10:30' => $persianUtils->toPersianNum('10'),
-            // '10:30 - 11:00' => $persianUtils->toPersianNum('10/5'),
-            // '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
-            // '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
-            // '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-            // '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
             '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
             '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
             '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
@@ -202,13 +190,7 @@ class AthleteController extends Controller
             "11:00:00" => 7,
             "11:30:00" => 8,
             "12:00:00" => 9,
-            "12:30:00" => 10,
-            // "13:00:00" => 11,
-            // "13:30:00" => 12,
-            // "14:00:00" => 13,
-            // "14:30:00" => 14,
-            // "15:00:00" => 15,
-            // "15:30:00" => 16,
+            "12:30:00" => 10
         ];
         $arrOfTimes = [
             '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
@@ -220,13 +202,7 @@ class AthleteController extends Controller
             '11:00 - 11:30' => $persianUtils->toPersianNum('11'),
             '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
             '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
-            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5'),
-            // '13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            // '13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            // '14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            // '14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            // '15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            // '15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
+            '12:30 - 13:00' => $persianUtils->toPersianNum('12/5')
         ];
         $arrOfTimeInView = [];
         foreach ($arrOfTimes as $key => $item) {
@@ -278,12 +254,6 @@ class AthleteController extends Controller
             '11:30 - 12:00' => $persianUtils->toPersianNum('11/5'),
             '12:00 - 12:30' => $persianUtils->toPersianNum('12'),
             '12:30 - 13:00' => $persianUtils->toPersianNum('12/5')
-            //'13:00 - 13:30' => $persianUtils->toPersianNum('13'),
-            //'13:30 - 14:00' => $persianUtils->toPersianNum('13/5'),
-            //'14:00 - 14:30' => $persianUtils->toPersianNum('14'),
-            //'14:30 - 15:00' => $persianUtils->toPersianNum('14/5'),
-            //'15:00 - 15:30' => $persianUtils->toPersianNum('15'),
-            //'15:30 - 16:00' => $persianUtils->toPersianNum('15/5'),
         ];
         $slotIndex = [
             "08:00:00" => 1,
@@ -296,12 +266,6 @@ class AthleteController extends Controller
             "11:30:00" => 8,
             "12:00:00" => 9,
             "12:30:00" => 10
-            //"13:00:00" => 11,
-            //"13:30:00" => 12,
-            //"14:00:00" => 13,
-            //"14:30:00" => 14,
-            //"15:00:00" => 15,
-            //"15:30:00" => 16,
         ];
         $fullSlotIndex = [
             "08:00:00" => 1,
@@ -326,15 +290,18 @@ class AthleteController extends Controller
             "17:30:00" => 20
         ];
         if($agent->isMobile()){
+            $slotCounter = 4;
             $arrOfTimes = [
                 '08:00 - 08:30' => $persianUtils->toPersianNum('8'),
                 '08:30 - 09:00' => $persianUtils->toPersianNum('8/5'),
-                '09:00 - 09:30' => $persianUtils->toPersianNum('9')
+                '09:00 - 09:30' => $persianUtils->toPersianNum('9'),
+                '09:30 - 10:00' => $persianUtils->toPersianNum('9/5')
             ];
             $slotIndex = [
                 "08:00:00" => 1,
                 "08:30:00" => 2,
-                "09:00:00" => 3
+                "09:00:00" => 3,
+                "09:30:00" => 4
             ];
         }
         $theUserSlots = $this->getUserSlots($slotIndex)[0];
