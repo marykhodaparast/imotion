@@ -1,6 +1,7 @@
 let i_fontawesome = "";
 let td_childs = "";
 //todayTime = "11:30";
+let firstSquare = $('table').find('thead').find('tr').find("th:nth-child(2)").text();
 function isMobile() {
     return ($(window).width >= 320 && $(window).width <= 768);
 }
@@ -55,26 +56,52 @@ let counter_arrow_left = 0;
 let slotIndex = {};
 let arrOfTimes = {};
 $('.arrow-left').on('click', function () {
-    counter_arrow_left++;
-    switch (counter_arrow_left) {
-        case 1:
+    $(".arrow-right").css("display", "block");
+    let x = $('table').find('thead').find('tr').find("th:nth-child(2)").text();
+    switch (x) {
+        case '۸':
             slotIndex = {"10:00:00": 1,"10:30:00": 2, "11:00:00":3, "11:30:00": 4};
             arrOfTimes = {'10:00 - 10:30': '۱۰','10:30 - 11:00': '۱۰/۵','11:00 - 11:30': '۱۱','11:30 - 12:00': '۱۱/۵'};
             clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
-        case 2:
+        case '۱۰':
             slotIndex = {"12:00:00": 1,"12:30:00": 2,"13:00:00": 3,"13:30:00": 4};
             arrOfTimes = {'12:00 - 12:30': '۱۲','12:30 - 13:00': '۱۲/۵','13:00 - 13:30': '۱۳','13:30 - 14:00': '۱۳/۵'};
             clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
-        case 3:
+        case '۱۲':
             slotIndex = {"14:00:00": 1,"14:30:00": 2,"15:00:00": 3,"15:30:00": 4};
             arrOfTimes = {'14:00 - 14:30': '۱۴','14:30 - 15:00': '۱۴/۵','15:00 - 15:30': '۱۵','15:30 - 16:00': '۱۵/۵'};
             clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
-        case 4:
+        case '۱۴':
             slotIndex = {"16:00:00": 1,"16:30:00": 2,"17:00:00": 3,"17:30:00": 4};
             arrOfTimes = {'16:00 - 16:30': '۱۶','16:30 - 17:00': '۱۶/۵','17:00 - 17:30': '۱۷','17:30 - 18:00': '۱۷/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
+            break;
+    }
+});
+$('.arrow-right').on('click', function(){
+    firstSquare = $('table').find('thead').find('tr').find("th:nth-child(2)").text();
+    switch(firstSquare){
+        case "۱۰":
+            slotIndex = {"08:00:00": 1,"08:30:00": 2, "09:00:00":3, "09:30:00": 4};
+            arrOfTimes = {'08:00 - 08:30': '۸','08:30 - 09:00': '۸/۵','09:00 - 09:30': '۹','09:30 - 10:00': '۹/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
+            break;
+        case "۱۲":
+            slotIndex = {"10:00:00": 1,"10:30:00": 2, "11:00:00":3, "11:30:00": 4};
+            arrOfTimes = {'10:00 - 10:30': '۱۰','10:30 - 11:00': '۱۰/۵','11:00 - 11:30': '۱۱','11:30 - 12:00': '۱۱/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
+            break;
+        case "۱۴":
+            slotIndex = {"12:00:00": 1,"12:30:00": 2,"13:00:00": 3,"13:30:00": 4};
+            arrOfTimes = {'12:00 - 12:30': '۱۲','12:30 - 13:00': '۱۲/۵','13:00 - 13:30': '۱۳','13:30 - 14:00': '۱۳/۵'};
+            clickArrowLeftOnMobile(slotIndex, arrOfTimes);
+            break;
+        case "۱۶":
+            slotIndex = {"14:00:00": 1,"14:30:00": 2,"15:00:00": 3,"15:30:00": 4};
+            arrOfTimes = {'14:00 - 14:30': '۱۴','14:30 - 15:00': '۱۴/۵','15:00 - 15:30': '۱۵','15:30 - 16:00': '۱۵/۵'};
             clickArrowLeftOnMobile(slotIndex, arrOfTimes);
             break;
     }
@@ -242,6 +269,8 @@ function toPersianNum(num, dontTrim) {
     return res;
 }
 $(document).ready(function () {
+    $(".arrow-right").css("display", "none");
+    firstSquare = $('table').find('thead').find('tr').find("th:nth-child(2)").text();
     $("select.select2").select2();
     addDisabledToSomeDateOfTodays();
     $("td").on("click", function () {
