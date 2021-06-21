@@ -28,7 +28,7 @@ class SlotCreateRequest extends FormRequest
         return [
             'time1' => 'required|date_format:H:i',
             'time2' => 'required|date_format:H:i|after:time1',
-            'date' => 'required',
+            'date' => ['required','regex:/^[1-4]\d{3}\-((0[1-6]\-((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|([1-2][0-9])|(0[1-9]))))$/'],
         ];
     }
     /**
