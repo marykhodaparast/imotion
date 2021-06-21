@@ -29,7 +29,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form method="POST" action="{{ route('athletecreate') }}">
+                    <form method="POST" action="{{ route('slotcreate') }}">
                         @csrf
                         <input type="hidden" id="hidden_day" name="date">
                         <input type="hidden" id="hidden_time1" name="time1">

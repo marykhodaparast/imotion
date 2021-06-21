@@ -278,6 +278,7 @@ $(document).ready(function () {
             $("#saveBtn").removeClass("display_none");
         }
         if ($(this).siblings().hasClass("text-lightgray") && $(this).data("date") != todayDate) {
+        //if ($(this).siblings().hasClass("text-lightgray")) {
             saveOrCancel("لغو", "btn-primary", "btn-danger");
         } else {
             saveOrCancel("ذخیره", "btn-danger", "btn-primary");

@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => '/athlete'], function () {
         Route::any('profile','AthleteController@profile')->name('athleteprofile');
         Route::get('dashboard','AthleteController@index')->name('athletedashboard');
-        Route::any('/create','AthleteController@create')->name('athletecreate');
+        //Route::any('/create','AthleteController@create')->name('athletecreate');
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
         Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
         Route::post('/ajax/load-data-of-table','AthleteController@ajaxTableLeft')->name('ajaxtableleft');
@@ -33,6 +33,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/ajax/load-data-of-table-right','AthleteController@ajaxTableRight')->name('ajaxtableright');
         Route::get('/x', 'AthleteController@x')->name('x');
         // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
+    });
+    Route::group(['prefix' => '/slot'], function(){
+        Route::any('/create','SlotController@create')->name('slotcreate');
     });
     Route::group(['prefix' => '/admin'], function(){
         Route::get('/','AdminController@dashboard')->name('admin_dashboard');

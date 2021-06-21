@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Redirect;
 
-class AthleteCreateRequest extends FormRequest
+class SlotCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
