@@ -33,161 +33,177 @@
       margin-right:0 !important;
       width:100% !important;
       /* width:20px  !important; **/
-@media only screen and (min-width: 1024px) and (max-width:2560px) {
-    .arrow-up{
-        transform:rotate(270deg);
-        width:80px;
-        height:80px;
-        cursor:pointer;
-        position:absolute;
-        top:-10px;
+@media only screen and (min-width: 1024px) and (max-width: 2560px) {
+    .arrow-up {
+        transform: rotate(270deg);
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        position: absolute;
+        top: -10px;
         opacity: 0.3;
     }
-    .div-arrow-up-img{
-        text-align:center;
+    .div-arrow-up-img {
+        text-align: center;
     }
-    .arrow-bottom{
-        transform:rotate(90deg);
-        width:80px;
-        height:80px;
-        cursor:pointer;
+    .arrow-bottom {
+        transform: rotate(90deg);
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
         position: absolute;
         bottom: 1px;
         opacity: 0.3;
     }
-    .div-arrow-bottom-img{
-        text-align:center;
+    .div-arrow-bottom-img {
+        text-align: center;
     }
-    .arrow-right{
-        width:80px;
-        height:80px;
-        position:absolute;
-        top:180px;
-        cursor:pointer;
+    .arrow-right {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
-        display:none;
+        display: none;
     }
-    .div-arrow-right-img{
-        text-align:center;
+    .div-arrow-right-img {
+        text-align: center;
         /* z-index:10; */
     }
-    .arrow-left{
-        transform:rotate(180deg);
-        width:80px;
-        height:80px;
-        position:absolute;
-        left:35px;
-        top:180px;
-        cursor:pointer;
+    .arrow-left {
+        transform: rotate(180deg);
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        left: 35px;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
     }
-    .div-arrow-left-img{
-        text-align:center;
+    .div-arrow-left-img {
+        text-align: center;
         /* z-index:10; */
     }
-    #athlete_table{
-      /* margin-right:80px !important; */
-      width:100% !important;
-      /* width:20px !important; */
+    #athlete_table {
+        /* margin-right:80px !important; */
+        width: 100% !important;
+        /* width:20px !important; */
     }
 }
-@media only screen and (min-width: 769px) and (max-width:1020px) {
-    .arrow-up{
-        transform:rotate(270deg);
-        width:70px;
-        height:70px;
-        cursor:pointer;
+@media only screen and (min-width: 769px) and (max-width: 1020px) {
+    .arrow-up {
+        transform: rotate(270deg);
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
     }
-    .div-arrow-up-img{
-        text-align:center;
+    .div-arrow-up-img {
+        text-align: center;
     }
-    .arrow-bottom{
-        transform:rotate(90deg);
-        width:70px;
-        height:70px;
-        cursor:pointer;
+    .arrow-bottom {
+        transform: rotate(90deg);
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
     }
-    .div-arrow-bottom-img{
-        text-align:center;
+    .div-arrow-bottom-img {
+        text-align: center;
     }
-    .arrow-right{
-        width:80px;
-        height:80px;
-        position:absolute;
-        top:180px;
-        cursor:pointer;
+    .arrow-right {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
     }
-    .div-arrow-right-img{
-        text-align:center;
+    .div-arrow-right-img {
+        text-align: center;
         /* z-index:10; */
     }
-    .arrow-left{
-        transform:rotate(180deg);
-        width:80px;
-        height:80px;
-        position:absolute;
-        left:35px;
-        top:180px;
-        cursor:pointer;
+    .arrow-left {
+        transform: rotate(180deg);
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        left: 35px;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
     }
-    .div-arrow-left-img{
-        text-align:center;
+    .div-arrow-left-img {
+        text-align: center;
         /* z-index:10; */
     }
-    #athlete_table{
-      margin-right:100px !important;
-      width:100% !important;
+    #athlete_table {
+        margin-right: 100px !important;
+        width: 100% !important;
     }
 }
-@media only screen and (min-width: 320px) and (max-width:768px) {
-    .arrow-up{
-        transform:rotate(270deg);
-        width:50px;
-        height:50px;
-        cursor:pointer;
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .arrow-up {
+        transform: rotate(270deg);
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
     }
-    .div-arrow-up-img{
-        text-align:center;
+    .div-arrow-up-img {
+        text-align: center;
     }
-    .arrow-bottom{
-        transform:rotate(90deg);
-        width:50px;
-        height:50px;
-        cursor:pointer;
+    .arrow-bottom {
+        transform: rotate(90deg);
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
     }
-    .div-arrow-bottom-img{
-        text-align:center;
+    .div-arrow-bottom-img {
+        text-align: center;
     }
-    .arrow-right{
-        width:80px;
-        height:80px;
-        position:absolute;
-        top:180px;
-        cursor:pointer;
+    .arrow-right {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
     }
-    .div-arrow-right-img{
-        text-align:center;
+    .div-arrow-right-img {
+        text-align: center;
         /* z-index:10; */
     }
-    .arrow-left{
-        transform:rotate(180deg);
-        width:80px;
-        height:80px;
-        position:absolute;
-        left:0;
-        top:180px;
-        cursor:pointer;
+    .arrow-left {
+        transform: rotate(180deg);
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        left: 0;
+        top: 180px;
+        cursor: pointer;
         opacity: 0.3;
     }
-    .div-arrow-left-img{
-        text-align:center;
+    .div-arrow-left-img {
+        text-align: center;
         /* z-index:10; */
     }
-    #athlete_table{
-      /* margin-right:50px !important; */
-      width:100% !important;
+    #athlete_table {
+        /* margin-right:50px !important; */
+        width: 100% !important;
+    }
+}
+@media only screen and (min-width: 320px) and (max-width: 425px) {
+    #success {
+        position: fixed !important;
+        left: 10px !important;
+        bottom: 10px !important;
+        right: 0px !important;
+        width: 94% !important;
+    }
+    #error{
+        position: fixed !important;
+        left: 10px !important;
+        bottom: 10px !important;
+        right: 0px !important;
+        width: 94% !important;
     }
 }

@@ -169,7 +169,7 @@
         <div class="content-wrapper">
             @yield('content')
             @if (isset($msg_success))
-            <div class="card card-success" style="width: 400px;position: fixed;left: 10px;bottom: 10px;">
+            <div class="card card-success" id="success">
                 <div class="card-header">
                     <h3 class="card-title">موفقیت</h3>
 
@@ -188,7 +188,7 @@
             </div>
             @endif
             @if (isset($msg_error))
-            <div class="card card-danger" style="width: 400px;position: fixed;left: 10px;bottom: 10px;">
+            <div class="card card-danger" id="error">
                 <div class="card-header">
                     <h3 class="card-title">خطا</h3>
 
