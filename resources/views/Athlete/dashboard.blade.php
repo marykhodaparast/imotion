@@ -108,6 +108,33 @@
         </div>
         <!-- /.col -->
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    راهنما
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-3">
+                             صندلی خالی
+                             <i class="far fa-user"></i><i class="far fa-user"></i><i class="far fa-user"></i>
+                        </div>
+                        <div class="col-xs-12 col-lg-3">
+                            صندلی پر
+                            <i class="fas fa-user danger"></i><i class="fas fa-user danger"></i><i class="fas fa-user danger"></i>
+                        </div>
+                        <div class="col-xs-12 col-lg-3">
+                             صندلی نیمه پر
+                             <i class="fas fa-user accepted"></i><i class="fas fa-user accepted"></i><i class="far fa-user"></i>
+                        </div>
+                        <div class="col-xs-12 col-lg-3">
+                            صندلی غیرفعال
+                            <i class="fas fa-user text-lightgray"></i><i class="fas fa-user text-lightgray"></i><i class="fas fa-user text-lightgray"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.row -->
 </section>
 <!-- /.content -->

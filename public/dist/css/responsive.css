@@ -160,14 +160,14 @@
     #success {
         position: fixed !important;
         left: 10px !important;
-        bottom: 10px !important;
+        bottom: 335px !important;
         right: 0px !important;
         width: 94% !important;
     }
     #error{
         position: fixed !important;
         left: 10px !important;
-        bottom: 10px !important;
+        bottom: 335px !important;
         right: 0px !important;
         width: 94% !important;
     }
