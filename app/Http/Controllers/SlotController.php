@@ -45,7 +45,7 @@ class SlotController extends Controller
      */
     public function create(SlotCreateRequest $request)
     {
-        
+
         $sw = 0;
         $start = null;
         $end = null;
@@ -53,6 +53,7 @@ class SlotController extends Controller
         $user = Auth::user();
         $user_id = $user->id;
         $englishDates = [];
+        $error_message = null;
         for ($i = 1; $i <= $this->num_day; $i++) {
             $englishDates[] = Carbon::now()->addDays($i - 1)->format('Y-m-d');
         }
@@ -109,9 +110,31 @@ class SlotController extends Controller
             }
         }
         $message = $sw ? "با موفقیت حذف شدید" : "با موفقیت ثبت شدید";
+        if ($sw) {
+            $x = Carbon::now()->format('Y-m-d H:i');
+            //$x = "2021-06-26 12:35";
+            $y = $from_date . " " . $time1;
+            $diff = abs(strtotime($y) - strtotime($x));
+            $years = floor($diff / (365 * 60 * 60 * 24));
+            $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
+            $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
+            $hours   = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24)/ (60*60)); 
+            $minuts  = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60); 
+            $hours = $days*24 + $hours;
+            $error_message = "salam";
+            if($hours > 48 || ($hours == 48 && $minuts > 0)){
+               $error_message = "یک کارت زرد گرفتید"; 
+            } 
+        }
         try {
-            $found->save();
-            $request->session()->flash("msg_success", $message);
+            if(!$sw) {
+                $found->save();
+                $request->session()->flash("msg_success", $message);
+            } else if($sw) {
+                if($error_message != null) {
+                    $request->session()->flash("msg_error", $error_message);
+                }
+            }
             return redirect()->back();
         } catch (Exception $e) {
             $this->checkEnv($e);
