@@ -1,5 +1,6 @@
 let i_fontawesome = "";
 let td_childs = "";
+let is_mobile = false;
 //todayTime = "11:30";
 let firstSquare = $("table")
     .find("thead")
@@ -7,11 +8,7 @@ let firstSquare = $("table")
     .find("th:nth-child(2)")
     .text();
 function isMobile() {
-    return $(window).width >= 320 && $(window).width <= 768;
-}
-
-function isDesktop() {
-    return $(window).width >= 1024 && $(window).width <= 2560;
+    return  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 function clickArrowLeftOnMobile(slotIndex, arrOfTimes) {
     emptyTds();
@@ -89,7 +86,6 @@ function clickArrowLeftOnMobile(slotIndex, arrOfTimes) {
     });
 }
 if (isMobile()) {
-    console.log('mobile');
     let counter_arrow_left = 0;
     let slotIndex = {};
     let arrOfTimes = {};
