@@ -126,7 +126,7 @@ class SlotController extends Controller
             } 
         }
         try {
-            if(!$sw) {
+            if(!$sw || ($sw && $error_message == null)) {
                 $found->save();
                 $request->session()->flash("msg_success", $message);
             } else if($sw) {
