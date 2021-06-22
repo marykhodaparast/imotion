@@ -121,7 +121,6 @@ class SlotController extends Controller
             $hours   = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24)/ (60*60)); 
             $minuts  = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60); 
             $hours = $days*24 + $hours;
-            $error_message = "salam";
             if($hours > 48 || ($hours == 48 && $minuts > 0)){
                $error_message = "یک کارت زرد گرفتید"; 
             } 
