@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Jenssegers\Agent\Agent;
+use App\User;
+use App\SmsValidation;
+use App\Utils\SendSms;
 
 class AthleteController extends Controller
 {
@@ -216,6 +219,21 @@ class AthleteController extends Controller
      */
     public function index()
     {
+
+        $user = User::where('is_deleted', false)->find(2);
+        $code = rand(1000, 9999);
+        SmsValidation::updateOrCreate(
+            [
+                "mobile" => $user->email,
+            ],
+            [
+                "mobile" => $user->email,
+                "sms_code" => $code,
+                "user_info" => json_encode($user, JSON_UNESCAPED_UNICODE),
+            ]
+        );
+        $sms = new SendSms;
+        $sms->sendCode($user->email, $code);
 
         $agent = new Agent();
         $user = Auth::user();

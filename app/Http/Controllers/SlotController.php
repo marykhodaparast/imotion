@@ -137,6 +137,15 @@ class SlotController extends Controller
         } catch (Exception $e) {
             $this->checkEnv($e);
         }
+        // $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+        // $slot = Slot::where('is_deleted', false)->where('date', $tomorrow)->first();
+        // $athlete_id_1 = $slot->athlete_id_1;
+        // $athlete_id_2 = $slot->athlete_id_2;
+        // $athlete_id_3 = $slot->athlete_id_3;
+        // if($athlete_id_1) {
+        //     $user = User::where('is_deleted', false)->find($athlete_id_1);
+        // }
+            
     }
 
     /**
