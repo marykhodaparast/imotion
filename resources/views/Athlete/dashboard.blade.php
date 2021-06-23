@@ -110,7 +110,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card mt-3">
                 <div class="card-body">
                     راهنما
                     <div class="row">
