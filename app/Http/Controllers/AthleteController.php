@@ -325,5 +325,19 @@ class AthleteController extends Controller
             'noUser' => $noUser,
         ]);
     }
+     /**
+     * Display rules
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rules()
+    {
+
+        $user = Auth::user();
+        $role = $user->role;
+        return view('Athlete.rule')->with([
+            'role' => $role->type
+        ]);
+    }
    
 }

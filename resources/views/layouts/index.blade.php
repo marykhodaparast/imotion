@@ -95,33 +95,31 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            {{-- @if(strpos(\Request::route()->getName(), 'dashboard')===0) --}}
-                            {{-- <a href="/" class="nav-link active"> --}}
-                                {{-- @else --}}
+                            @if(Request::route()->getName() == 'athletedashboard' || Request::route()->getName() =="admin_dashboard" )
+                                <a href="/" class="nav-link active">
+                                   @else
                                 <a href="{{ $role == 'athlete' ? route('athletedashboard') : route('admin_dashboard') }}" class="nav-link">
-                                    {{-- @endif --}}
+                                    @endif
                                     <!-- <i class="far fa-circle nav-icon"></i> -->
                                     <p>داشبورد</p>
                                 </a>
+                            {{-- @endif     --}}
                         </li>
+                        @if($role == 'athlete')
+                        <li class="nav-item">
+                            @if(Request::route()->getName() == 'athleterule')
+                            <a href="/athlete/rules" class="nav-link active">
+                                @else
+                            <a href="{{ route('athleterule') }}" class="nav-link">
+                                @endif
+                                <p>قوانین</p>
+                            </a>
+                        </li>
+                        @endif
                         {{-- @if (Gate::allows('parameters')) --}}
                         <!-- <li class="nav-header">تعاریف پایه</li> -->
-                        @if(strpos(\Request::route()->getName(), 'tag')===0 || strpos(\Request::route()->getName(),
-                        'need_tag')===0 || strpos(\Request::route()->getName(), 'parent_tag')===0 ||
-                        strpos(\Request::route()->getName(), 'need_parent_tag')===0 ||
-                        strpos(\Request::route()->getName(), 'temperature')===0 ||
-                        strpos(\Request::route()->getName(), 'school')===0 ||
-                        strpos(\Request::route()->getName(), 'collection')===0 ||
-                        strpos(\Request::route()->getName(), 'product')===0 ||
-                        strpos(\Request::route()->getName(), 'source')===0 ||
-                        strpos(\Request::route()->getName(), 'user_all')===0 ||
-                        strpos(\Request::route()->getName(), 'call_result')===0 ||
-                        strpos(\Request::route()->getName(), 'notice')===0 ||
-                        strpos(\Request::route()->getName(), 'province')===0 ||
-                        strpos(\Request::route()->getName(), 'class_room')===0 ||
-                        strpos(\Request::route()->getName(), 'cit')===0 ||
-                        strpos(\Request::route()->getName(), 'lesson')===0 ||
-                        strpos(\Request::route()->getName(), 'exam')===0)
+                        @if(strpos(\Request::route()->getName(), 'athlete')===0 || strpos(\Request::route()->getName(),
+                        'admin')===0)
                         <li class="nav-item has-treeview menu-open">
                             @else
                         <li class="nav-item has-treeview">

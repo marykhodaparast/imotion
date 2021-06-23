@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', 'UserController@login')->name('login');
 Route::post('/login', 'UserController@login')->name('dologin');
 Route::get('/register', 'RegisterController@index')->name('register');
-// Route::post('/register', 'RegisterController@sendsms')->name('sendsms');
-// Route::post('/register/checksms', 'RegisterController@checksms')->name('checksms');
-// Route::post('/register/createuser', 'RegisterController@createuser')->name('createuser');
 Route::post('/register','RegisterController@createuser')->name('createuser');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard_admin');
@@ -25,14 +22,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => '/athlete'], function () {
         Route::any('profile','AthleteController@profile')->name('athleteprofile');
         Route::get('dashboard','AthleteController@index')->name('athletedashboard');
-        //Route::any('/create','AthleteController@create')->name('athletecreate');
         Route::any('/delete/{id}','AthleteController@destroy')->name('athletedestroy');
         Route::post('/ajax/arrow-left','AthleteController@ajaxArrowLeftTable')->name('ajaxarrowtable');
         Route::post('/ajax/load-data-of-table','AthleteController@ajaxTableLeft')->name('ajaxtableleft');
         Route::post('/ajax/load-data-of-table-mobile','AthleteController@ajaxTableLeftMobile')->name('ajaxtableleftmobile');
         Route::post('/ajax/load-data-of-table-right','AthleteController@ajaxTableRight')->name('ajaxtableright');
-        Route::get('/x', 'AthleteController@x')->name('x');
-        // Route::any('take_turn','AthleteController@takeTurn')->name('athletetaketurn');
+        Route::get('/rules','AthleteController@rules')->name('athleterule');
     });
     Route::group(['prefix' => '/slot'], function(){
         Route::any('/create','SlotController@create')->name('slotcreate');
