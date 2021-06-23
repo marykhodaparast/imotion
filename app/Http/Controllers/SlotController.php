@@ -111,10 +111,9 @@ class SlotController extends Controller
         }
         $message = $sw ? "با موفقیت حذف شدید" : "با موفقیت ثبت شدید";
         if ($sw) {
-            $x = Carbon::now()->format('Y-m-d H:i');
-            //$x = "2021-06-26 12:35";
-            $y = $from_date . " " . $time1;
-            $diff = abs(strtotime($y) - strtotime($x));
+            $todayDateTime = Carbon::now()->format('Y-m-d H:i');
+            $selectedDateTime = $from_date . " " . $time1;
+            $diff = abs(strtotime($todayDateTime) - strtotime($selectedDateTime));
             $years = floor($diff / (365 * 60 * 60 * 24));
             $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
             $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
